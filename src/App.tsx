@@ -1,12 +1,13 @@
 import { Routes, Route } from "react-router";
 
 import PhysicianLayout from "./Layouts/physician-layout/PhysicianLayout";
+import Physician from "./Pages/Physician";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<PhysicianLayout children={undefined} />}>
-      <Route index element={<h1>Home</h1>} />
+      <Route path="/" element={<PhysicianLayout />}>
+      <Route index element={<Physician />} />
       </Route>
     </Routes>
   );
