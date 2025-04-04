@@ -18,7 +18,7 @@ import {
 const data = {
   navMain: [
     {
-      title: "Getting Started",
+      title: "Main",
       url: "#",
       items: [
         {
@@ -32,7 +32,7 @@ const data = {
       ],
     },
     {
-      title: "Building Your Application",
+      title: "Tests and Results",
       url: "#",
       items: [
         {
@@ -44,90 +44,12 @@ const data = {
           url: "#",
           isActive: true,
         },
-        {
-          title: "Rendering",
-          url: "#",
-        },
-        {
-          title: "Caching",
-          url: "#",
-        },
-        {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
-        },
       ],
     },
     {
-      title: "API Reference",
+      title: "Components",
       url: "#",
       items: [
-        {
-          title: "Components",
-          url: "#",
-        },
-        {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
         {
           title: "Next.js Compiler",
           url: "#",
@@ -148,6 +70,14 @@ const data = {
       items: [
         {
           title: "Contribution Guide",
+          url: "#",
+        },
+        {
+          title: "Channels",
+          url: "#",
+        },
+        {
+          title: "Chats",
           url: "#",
         },
       ],

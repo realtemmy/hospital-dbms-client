@@ -17,14 +17,14 @@ const colorClasses: Record<Card["colour"], string> = {
 
 const DashboardCard = ({ card }: { card: Card }) => {
   return (
-    <section className="rounded shadow-lg p-8 flex items-center gap-4 bg-white border border-gray-200 hover:shadow-xl transition-shadow duration-300 ease-in-out">
+    <section className="rounded shadow-lg p-8 px-4 flex items-center gap-8 bg-white border border-gray-200 hover:shadow-xl transition-shadow duration-300 ease-in-out">
       {/* Icon and title */}
       <div className={`${colorClasses[card.colour]} text-white rounded p-2`}>
         <card.icon />
       </div>
-      <div>
+      <div className="flex flex-col items-end">
         <p className="text-gray-600 font-semibold">{card.title}</p>
-        <p className="text-lg font-bold">{card.count}</p>
+        <p className="text-lg font-bold items-end">{card.count}</p>
       </div>
     </section>
   );
