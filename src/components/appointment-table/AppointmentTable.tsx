@@ -1,4 +1,4 @@
-import { Clock, Download, Edit, Phone, Trash2 } from "lucide-react";
+import { Clock, Download, Edit, Phone, Trash2, Ellipsis } from "lucide-react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -20,9 +20,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // Sample usage: <AppointmentTable appointments={[{...}, {...}]} />
-
 
 type Appointment = {
   name: string;
@@ -35,9 +42,13 @@ type Appointment = {
   email: string;
   visitType: string;
   avatar?: string;
-}
+};
 
-const AppointmentTable = ({ appointments = [] }: { appointments: Appointment[] }) => {
+const AppointmentTable = ({
+  appointments = [],
+}: {
+  appointments: Appointment[];
+}) => {
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div>
@@ -77,7 +88,7 @@ const AppointmentTable = ({ appointments = [] }: { appointments: Appointment[] }
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Download />
+                    <Download className="cursor-pointer" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Download</p>
@@ -91,7 +102,7 @@ const AppointmentTable = ({ appointments = [] }: { appointments: Appointment[] }
         {/* Scrollable container */}
         <div className="overflow-x-auto overflow-y-auto max-h-[500px] rounded-md rounded-t-none border">
           <Table>
-            <TableCaption>Appointment list</TableCaption>
+            {/* <TableCaption>Appointment list</TableCaption> */}
             <TableHeader>
               <TableRow>
                 <TableHead>Patient Name</TableHead>
@@ -133,9 +144,18 @@ const AppointmentTable = ({ appointments = [] }: { appointments: Appointment[] }
                     {appt.email}
                   </TableCell>
                   <TableCell>{appt.visitType}</TableCell>
-                  <TableCell className="text-right flex items-center gap-1 justify-end">
-                    <Edit size={20} color="blue" />
-                    <Trash2 size={20} color="red" />
+                  <TableCell className="text-right flex justify-end">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="cursor-pointer">
+                        <Ellipsis  />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                        <DropdownMenuItem>Cancel appointment</DropdownMenuItem>
+                        <DropdownMenuItem>Team</DropdownMenuItem>
+                        <DropdownMenuItem>Subscription</DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
               ))}
