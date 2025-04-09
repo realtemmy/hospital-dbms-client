@@ -92,7 +92,9 @@ const PhysicianLayout = () => {
             </DropdownMenu>
           </div>
         </header>
-        <Outlet />
+        <main className="w-full md:w-[calc(100vw-20rem)]">
+          <Outlet />
+        </main>
       </SidebarInset>
     </SidebarProvider>
   );

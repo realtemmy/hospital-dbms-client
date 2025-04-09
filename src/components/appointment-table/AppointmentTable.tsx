@@ -120,7 +120,7 @@ const AppointmentTable = ({
             <TableBody>
               {appointments.map((appt, idx) => (
                 <TableRow key={idx}>
-                  <TableCell className="max-w-[150px] flex items-center gap-1">
+                  <TableCell className="max-w-[150px] flex items-center justify-center gap-1">
                     <Avatar>
                       <AvatarImage src={appt.avatar || ""} alt={appt.name} />
                       <AvatarFallback>
