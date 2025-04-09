@@ -35,6 +35,8 @@ import { NotificationPreview } from "../../components/Notification/Notification"
 const PhysicianLayout = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const handleSidebarOpen = () => setSidebarOpen(!sidebarOpen);
 
   return (
     <SidebarProvider
@@ -43,6 +45,8 @@ const PhysicianLayout = () => {
           "--sidebar-width": "19rem",
         } as React.CSSProperties
       }
+      open={sidebarOpen}
+      onOpenChange={setSidebarOpen}
     >
       <AppSidebar />
       <SidebarInset>
@@ -92,7 +96,7 @@ const PhysicianLayout = () => {
             </DropdownMenu>
           </div>
         </header>
-        <main className="w-full md:w-[calc(100vw-20rem)]">
+        <main className={sidebarOpen ? "w-full md:w-[calc(100vw-19rem)]" : undefined}>
           <Outlet />
         </main>
       </SidebarInset>
