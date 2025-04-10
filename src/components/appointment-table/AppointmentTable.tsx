@@ -42,6 +42,7 @@ type Appointment = {
   email: string;
   visitType: string;
   avatar?: string;
+  disease?: string;
 };
 
 const AppointmentTable = ({
@@ -114,6 +115,7 @@ const AppointmentTable = ({
                 <TableHead>Mobile</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Visit Type</TableHead>
+                <TableHead>Disease</TableHead>
                 <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -144,6 +146,9 @@ const AppointmentTable = ({
                     {appt.email}
                   </TableCell>
                   <TableCell>{appt.visitType}</TableCell>
+                  <TableCell className="max-w-[150px] truncate">
+                    {appt.disease || "N/A"}
+                  </TableCell>
                   <TableCell className="text-right flex justify-end">
                     <DropdownMenu>
                       <DropdownMenuTrigger className="cursor-pointer">
