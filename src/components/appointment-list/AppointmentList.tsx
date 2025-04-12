@@ -1,7 +1,7 @@
-import React from 'react'
-import { Link } from 'react-router'
+import React from "react";
+import { Link } from "react-router";
 
-import AppointmentTable from '../appointment-table/AppointmentTable';
+import AppointmentTable from "../appointment-table/AppointmentTable";
 
 // Apppountment list for doctors: Date, timeMobile, email, status, visit type, action
 // Apppountment list for patients: Date, timeMobile, email, status, visit type, action
@@ -18,6 +18,8 @@ const sampleAppointments = [
     email: "temiloluwaogunti8@gmail.com",
     visitType: "New patient",
     avatar: "https://github.com/shadcn.png",
+    address: "3, road 103, teachers estate, Ibafo, Ogun state.",
+    lastVisit: "04/02/2025"
   },
   {
     name: "Realtemmy Oreoluwa",
@@ -30,6 +32,8 @@ const sampleAppointments = [
     email: "temmy4jamb@gmail.com",
     visitType: "Follow-up",
     avatar: "https://github.com/shadcn.png",
+    address: "Teachers estate, torotoro, Ibafo, Ogun state.",
+    lastVisit: "02/01/2024"
   },
 ];
 
@@ -43,9 +47,8 @@ const AppointmentList = () => {
         </Link>
       </div>
       <AppointmentTable appointments={sampleAppointments} />
-
     </div>
   );
-}
+};
 
-export default AppointmentList
+export default AppointmentList;

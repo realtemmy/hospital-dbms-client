@@ -1,7 +1,6 @@
-import { Clock, Download, Edit, Phone, Trash2, Ellipsis } from "lucide-react";
+import { Clock, Download, Phone, Ellipsis } from "lucide-react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -43,6 +42,10 @@ type Appointment = {
   visitType: string;
   avatar?: string;
   disease?: string;
+  address: string;
+  lastVisit: string;
+  department?: string;
+  id: string;
 };
 
 const AppointmentTable = ({
@@ -109,13 +112,16 @@ const AppointmentTable = ({
                 <TableHead>Patient Name</TableHead>
                 <TableHead>Gender</TableHead>
                 <TableHead>Age</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead>Appointment date</TableHead>
                 <TableHead>Time</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Department</TableHead>
                 <TableHead>Mobile</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Visit Type</TableHead>
                 <TableHead>Disease</TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Last visit</TableHead>
                 <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
@@ -131,13 +137,27 @@ const AppointmentTable = ({
                     </Avatar>
                     <span className="truncate capitalize">{appt.name}</span>
                   </TableCell>
-                  <TableCell className="capitalize">{appt.gender}</TableCell>
+                  <TableCell>
+                    <span
+                      className={`capitalize p-1 rounded ${
+                        appt.gender.toLowerCase() === "male"
+                          ? "bg-green-200 text-green-600"
+                          : "bg-purple-200 text-purple-600"
+                      }`}
+                    >
+                      {appt.gender}
+                    </span>
+                  </TableCell>
                   <TableCell>{appt.age}</TableCell>
                   <TableCell>{appt.date}</TableCell>
                   <TableCell className="flex items-center gap-1">
-                    <Clock color="blue" size={18} /> <span>{appt.time}</span>
+                    <Clock color="blue" size={18} />
+                    <span>{appt.time}</span>
                   </TableCell>
                   <TableCell>{appt.status}</TableCell>
+                  <TableCell className="capitalize text-center">
+                    {appt.department || "General"}
+                  </TableCell>
                   <TableCell className="flex items-center gap-1">
                     <Phone size={15} />
                     <span>{appt.mobile}</span>
@@ -149,15 +169,22 @@ const AppointmentTable = ({
                   <TableCell className="max-w-[150px] truncate">
                     {appt.disease || "N/A"}
                   </TableCell>
+                  <TableCell
+                    className="max-w-[250px] truncate"
+                    title={appt.address}
+                  >
+                    <span>{appt.address}</span>
+                  </TableCell>
+                  <TableCell>{appt.lastVisit}</TableCell>
                   <TableCell className="text-right flex justify-end">
                     <DropdownMenu>
                       <DropdownMenuTrigger className="cursor-pointer">
-                        <Ellipsis  />
+                        <Ellipsis />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                        <DropdownMenuItem>Start appointment</DropdownMenuItem>
                         <DropdownMenuItem>Cancel appointment</DropdownMenuItem>
-                        <DropdownMenuItem>Team</DropdownMenuItem>
                         <DropdownMenuItem>Subscription</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

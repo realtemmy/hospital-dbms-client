@@ -10,11 +10,12 @@ type patientInfo = {
   address: string;
   mobile: string;
   bloodGroup: string;
+  date: string;
 };
 
 const PatientCard = ({ patient }: { patient: patientInfo }) => {
   return (
-    <section className="shadow w-[320px] border rounded-md p-4 bg-white dark:bg-gray-800 text-sm leading-6">
+    <section className="shadow min-w-[300px] border rounded-md p-4 bg-white dark:bg-gray-800 text-sm leading-6">
       <div className="pt-2 pb-6 grid grid-cols-3 items-center border-b">
         <div className="col-span-2 flex gap-2 items-center">
           <Avatar className="w-10 h-10">
@@ -28,7 +29,7 @@ const PatientCard = ({ patient }: { patient: patientInfo }) => {
         </div>
         <div className="text-xs col-span-1 font-semibold text-slate-600">
           <p className="mb-2">{patient.timeSlot}</p>
-          <p>Friday, June 26</p>
+          <p>{patient.date}</p>
         </div>
       </div>
       <div className="py-4 border-b">

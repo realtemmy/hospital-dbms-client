@@ -46,7 +46,7 @@ const PhysicianLayout = () => {
         } as React.CSSProperties
       }
       open={sidebarOpen}
-      onOpenChange={setSidebarOpen}
+      onOpenChange={handleSidebarOpen}
     >
       <AppSidebar />
       <SidebarInset>
@@ -96,7 +96,7 @@ const PhysicianLayout = () => {
             </DropdownMenu>
           </div>
         </header>
-        <main className={sidebarOpen ? "w-full md:w-[calc(100vw-19rem)]" : undefined}>
+        <main className={sidebarOpen ? "w-full md:w-[calc(100vw-20rem)]" : undefined}>
           <Outlet />
         </main>
       </SidebarInset>

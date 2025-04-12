@@ -5,6 +5,7 @@ import Physician from "./Pages/Physician";
 import AppointmentList from "./components/appointment-list/AppointmentList";
 import PatientTable from "./components/patient-table/PatientTable";
 import Patients from "./components/features/Physician/Patients/Patients";
+import AppointmentPage from "./Pages/appointment-page/AppointmentPage.tsx"
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       <Route path="/" element={<PhysicianLayout />}>
         <Route index element={<Physician />} />
         <Route path="appointments" element={<AppointmentList />} />
-        <Route path="patients" element={<Patients />} />
+        <Route path="appointments/:id" element={<AppointmentPage />} />
+        <Route path="patients" element={<Patients />} />  
       </Route>
     </Routes>
   );
