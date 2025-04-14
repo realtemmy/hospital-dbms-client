@@ -4,7 +4,6 @@ import {
   Clock,
   Pill,
   CircleCheck,
-  Dot,
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import {
@@ -17,6 +16,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+
+import { ScrollArea } from "../../components/ui/scroll-area";
 
 const AppointmentPage = () => {
   return (
@@ -33,94 +34,135 @@ const AppointmentPage = () => {
                 Summary of all your past appointments
               </SheetDescription>
             </SheetHeader>
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Laboriosam eveniet aspernatur ratione quia velit, dolorum tempore
-              esse amet praesentium ex.
-            </div>
+            <ScrollArea className="text-sm mx-2 h-[calc(100vh-10rem)]">
+              <ol className="relative ms-3 border-s border-gray-200 dark:border-gray-700">
+                <li className="mb-10 ms-6">
+                  <span className="rounded-full bg-yellow-500 absolute -start-3 flex h-2 ml-2 w-2 top-2 items-center justify-center ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800"></span>
+                  <div className="flex gap-4 items-center">
+                    <div className="text-sm">
+                      <p className="text-slate-700 font-semibold">03/02/2025</p>
+                      <span className="text-slate-500">06:30 PM</span>
+                    </div>
+
+                    <div className="flex w-full items-center justify-between gap-2 py-3 px-2 rounded border border-yellow-400 bg-yellow-100">
+                      <p className="font-medium">High blood pressure checkup</p>
+                      <Clock
+                        className="bg-yellow-500 text-white rounded-full"
+                        size={20}
+                      />
+                    </div>
+                  </div>
+                </li>
+
+                <li className="mb-10 ms-6 relative">
+                  <span className="rounded-full bg-green-500 absolute -start-9 top-2 flex h-2 ml-2 w-2 items-center justify-center ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800"></span>
+
+                  <div className="flex gap-4 items-center">
+                    <div className="text-sm">
+                      <p className="text-slate-700 font-semibold">03/02/2025</p>
+                      <span className="text-slate-500">06:30 PM</span>
+                    </div>
+
+                    <div className="flex w-full items-center justify-between gap-2 py-3 px-2 rounded border border-green-400 bg-green-100">
+                      <p className="font-medium">Routine Checkup</p>
+                      <CircleCheck
+                        className="bg-green-500 text-white rounded-full"
+                        size={20}
+                      />
+                    </div>
+                  </div>
+                </li>
+
+                <li className="mb-10 ms-6 text-primary-700 dark:text-primary-500 relative">
+                  <span className="rounded-full bg-green-500 absolute -start-9 top-2 flex h-2 ml-2 w-2 items-center justify-center ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800"></span>
+                  <div className="flex gap-4 items-center">
+                    <div className="text-sm">
+                      <p className="text-slate-700 font-semibold">03/02/2025</p>
+                      <span className="text-slate-500">06:30 PM</span>
+                    </div>
+
+                    <div className="flex w-full items-center justify-between gap-2 py-3 px-2 rounded border border-green-400 bg-green-100">
+                      <p className="font-medium max-w-[180px] truncate">
+                        Follow up for diagnosis and Hypertension
+                      </p>
+                      <CircleCheck
+                        className="bg-green-500 text-white rounded-full"
+                        size={20}
+                      />
+                    </div>
+                  </div>
+                </li>
+
+                <li className="mb-10 ms-6 text-primary-700 dark:text-primary-500 relative">
+                  <span className="rounded-full bg-green-500 absolute -start-9 top-2 flex h-2 ml-2 w-2 items-center justify-center ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800"></span>
+                  <div className="flex gap-4 items-center">
+                    <div className="text-sm">
+                      <p className="text-slate-700 font-semibold">03/02/2025</p>
+                      <span className="text-slate-500">06:30 PM</span>
+                    </div>
+
+                    <div className="flex w-full items-center justify-between gap-2 py-3 px-2 rounded border border-green-400 bg-green-100">
+                      <p className="font-medium max-w-[180px] truncate">
+                        Medication review and side effects
+                      </p>
+                      <CircleCheck
+                        className="bg-green-500 text-white rounded-full"
+                        size={20}
+                      />
+                    </div>
+                  </div>
+                </li>
+
+                <li className="mb-10 ms-6 text-primary-700 dark:text-primary-500 relative">
+                  <span className="rounded-full bg-green-500 absolute -start-9 top-2 flex h-2 ml-2 w-2 items-center justify-center ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800"></span>
+                  <div className="flex gap-4 items-center">
+                    <div className="text-sm">
+                      <p className="text-slate-700 font-semibold">03/02/2025</p>
+                      <span className="text-slate-500">06:30 PM</span>
+                    </div>
+
+                    <div className="flex w-full items-center justify-between gap-2 py-3 px-2 rounded border border-green-400 bg-green-100">
+                      <p className="font-medium">High cholesterol check</p>
+                      <CircleCheck
+                        className="bg-green-500 text-white rounded-full"
+                        size={20}
+                      />
+                    </div>
+                  </div>
+                </li>
+
+                <li className="mb-10 ms-6 text-primary-700 dark:text-primary-500 relative">
+                  <span className="rounded-full bg-green-500 absolute -start-9 top-2 flex h-2 ml-2 w-2 items-center justify-center ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800"></span>
+                  <div className="flex gap-4 items-center">
+                    <div className="text-sm">
+                      <p className="text-slate-700 font-semibold">03/02/2025</p>
+                      <span className="text-slate-500">06:30 PM</span>
+                    </div>
+
+                    <div className="flex w-full items-center justify-between gap-2 py-3 px-2 rounded border border-green-400 bg-green-100">
+                      <p className="font-medium">Dizziness and fatigue</p>
+                      <CircleCheck
+                        className="bg-green-500 text-white rounded-full"
+                        size={20}
+                      />
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </ScrollArea>
+            <SheetFooter className="border p-0">
+              <SheetClose asChild>
+                <Button
+                  variant="link"
+                  className="w-full text-blue-700 hover:text-blue-600"
+                >
+                  +View more
+                </Button>
+              </SheetClose>
+            </SheetFooter>
           </SheetContent>
         </Sheet>
       </div>
-      <section className="border shadow rounded-2xl p-4 border-s-blue-500">
-        <div className="flex gap-4 items-center">
-          <div className="text-xs">
-            <p className="text-slate-700 font-semibold">03/02/2025</p>
-            <span className="text-slate-500">06:30 PM</span>
-          </div>
-          <span className="p-1 rounded-full bg-green-500 ml-4">
-            {/* <Dot color="green" size={40} /> */}
-          </span>
-
-          <div className="flex items-center gap-2 py-3 px-2 rounded border border-yellow-400 bg-yellow-100">
-            <p className="font-medium">High blood pressure checkup</p>
-            <Clock
-              className="bg-yellow-500 text-white rounded-full"
-              size={20}
-            />
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <ol className="relative ms-3 border-s border-gray-200 dark:border-gray-700">
-          <li className="mb-10 ms-6">
-            <span className="rounded-full bg-yellow-500 absolute -start-3 flex h-2 ml-2 w-2 top-2 items-center justify-center ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800"></span>
-            <div className="flex gap-4 items-center">
-              <div className="text-sm">
-                <p className="text-slate-700 font-semibold">03/02/2025</p>
-                <span className="text-slate-500">06:30 PM</span>
-              </div>
-
-              <div className="flex w-full items-center justify-between gap-2 py-3 px-2 rounded border border-yellow-400 bg-yellow-100">
-                <p className="font-medium">High blood pressure checkup</p>
-                <Clock
-                  className="bg-yellow-500 text-white rounded-full"
-                  size={20}
-                />
-              </div>
-            </div>
-          </li>
-
-          <li className="mb-10 ms-6 relative">
-            <span className="rounded-full bg-green-500 absolute -start-9 top-2 flex h-2 ml-2 w-2 items-center justify-center ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800"></span>
-
-            <div className="flex gap-4 items-center">
-              <div className="text-sm">
-                <p className="text-slate-700 font-semibold">03/02/2025</p>
-                <span className="text-slate-500">06:30 PM</span>
-              </div>
-
-              <div className="flex w-full items-center justify-between gap-2 py-3 px-2 rounded border border-green-400 bg-green-100">
-                <p className="font-medium">Routine Checkup</p>
-                <CircleCheck
-                  className="bg-green-500 text-white rounded-full"
-                  size={20}
-                />
-              </div>
-            </div>
-          </li>
-
-          <li className="mb-10 ms-6 text-primary-700 dark:text-primary-500 relative">
-            <span className="rounded-full bg-green-500 absolute -start-9 top-2 flex h-2 ml-2 w-2 items-center justify-center ring-8 ring-white dark:bg-gray-700 dark:ring-gray-800"></span>
-            <div className="flex gap-4 items-center">
-              <div className="text-sm">
-                <p className="text-slate-700 font-semibold">03/02/2025</p>
-                <span className="text-slate-500">06:30 PM</span>
-              </div>
-
-              <div className="flex w-full items-center justify-between gap-2 py-3 px-2 rounded border border-green-400 bg-green-100">
-                <p className="font-medium">
-                  Follow up for diagnosis and Hypertension
-                </p>
-                <CircleCheck
-                  className="bg-green-500 text-white rounded-full"
-                  size={20}
-                />
-              </div>
-            </div>
-          </li>
-        </ol>
-      </section>
 
       {/* Appointment details */}
       <section className="border shadow rounded-2xl col-span-2">
