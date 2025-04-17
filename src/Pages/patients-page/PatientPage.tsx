@@ -6,6 +6,7 @@ import {
   Edit,
   ChevronUpIcon,
   ChevronDownIcon,
+  CalendarDays
 } from "lucide-react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,6 +18,7 @@ import {
 } from "../../components/ui/avatar";
 
 const PatientPage = () => {
+  // Find a way to add bloogType, blood group, allergies, and all other parameters to the patient profile
   return (
     <div>
       <Tabs defaultValue="overview" className="order">
@@ -70,8 +72,8 @@ const PatientPage = () => {
             </div>
           </section>
         </TabsContent>
-        <TabsContent value="profile">
-          <section className="grid grid-cols-5 shadow border rounded-md px-4 py-4 gap-2">
+        <TabsContent value="profile" className="grid grid-cols-4 gap-2">
+          <section className="col-span-4 grid grid-cols-5 shadow border rounded-md px-4 py-4 gap-2">
             <div className="col-span-4 flex gap-4">
               <Avatar className="w-35 h-35 rounded-none">
                 <AvatarImage
@@ -82,7 +84,7 @@ const PatientPage = () => {
               </Avatar>
 
               <div className="flex flex-col justify-between w-full">
-                <div >
+                <div>
                   <h2 className="font-semibold">Ahmed Ali Hussian</h2>
                   <div className="flex flex-wrap gap-2 text-xs my-1">
                     <p className="flex items-center">
@@ -138,7 +140,7 @@ const PatientPage = () => {
                       </span>
                     </p>
                     <div className="flex text-slate-600 text-sm font-semibold">
-                      <span>BMI</span> <ChevronUpIcon size={20} color="green" />
+                      <span>Height</span> <ChevronUpIcon size={20} color="green" />
                       <span className="text-green-500">10</span>
                     </div>
                   </div>
@@ -158,23 +160,45 @@ const PatientPage = () => {
                 <Edit /> Edit
               </Button>
               <div className="my-2">
-                <p className="font-semibold text-sm text-slate-700">Own diagnosis</p>
+                <p className="font-semibold text-sm text-slate-700">
+                  Own diagnosis
+                </p>
                 <div className="flex text-xs capitalize gap-1 py-1">
-                  {["obesity", "diabetes", "hypertension"].map((item, index) => (
-                  <div key={index} className="bg-yellow-50 rounded-2xl px-1 text-orange-600 font-semibold">{item}</div>
-                ))}
+                  {["obesity", "diabetes", "hypertension"].map(
+                    (item, index) => (
+                      <div
+                        key={index}
+                        className="bg-yellow-50 rounded-2xl px-1 text-orange-600 font-semibold"
+                      >
+                        {item}
+                      </div>
+                    )
+                  )}
                 </div>
-                
               </div>
               <div className="my-2">
-                <p className="font-semibold text-sm text-slate-700">Health barriers</p>
+                <p className="font-semibold text-sm text-slate-700">
+                  Health barriers
+                </p>
                 <div className="flex text-xs capitalize gap-1 py-1">
-                  {["obesity", "diabetes", "hypertension"].map((item, index) => (
-                  <div key={index} className="bg-blue-100 text-blue-900 rounded-2xl px-1 font-semibold">{item}</div>
-                ))}
+                  {["obesity", "diabetes", "hypertension"].map(
+                    (item, index) => (
+                      <div
+                        key={index}
+                        className="bg-blue-100 text-blue-900 rounded-2xl px-1 font-semibold"
+                      >
+                        {item}
+                      </div>
+                    )
+                  )}
                 </div>
-                
               </div>
+            </div>
+          </section>
+          <section className="grid-cols-1 shadow border rounded-md">
+            <div className="flex justify-between items-center border-b px-4 py-2">
+              <h3 className="flex px-2"><CalendarDays /><span>Timeline</span></h3>
+              <span className="font-semibold text-slate-600">Edit</span>
             </div>
           </section>
         </TabsContent>
