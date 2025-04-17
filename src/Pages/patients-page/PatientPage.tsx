@@ -6,8 +6,12 @@ import {
   Edit,
   ChevronUpIcon,
   ChevronDownIcon,
-  CalendarDays
+  CalendarDays,
+  CircleSmall,
+  FileStack,
+  HeartPulse,
 } from "lucide-react";
+import { ScrollArea } from "../../components/ui/scroll-area";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -140,7 +144,8 @@ const PatientPage = () => {
                       </span>
                     </p>
                     <div className="flex text-slate-600 text-sm font-semibold">
-                      <span>Height</span> <ChevronUpIcon size={20} color="green" />
+                      <span>Height</span>{" "}
+                      <ChevronUpIcon size={20} color="green" />
                       <span className="text-green-500">10</span>
                     </div>
                   </div>
@@ -195,10 +200,150 @@ const PatientPage = () => {
               </div>
             </div>
           </section>
-          <section className="grid-cols-1 shadow border rounded-md">
-            <div className="flex justify-between items-center border-b px-4 py-2">
-              <h3 className="flex px-2"><CalendarDays /><span>Timeline</span></h3>
-              <span className="font-semibold text-slate-600">Edit</span>
+          <section className="grid-cols-1 p-1 shadow-sm rounded-md">
+            <div className="flex justify-between items-center border-b p-2">
+              <h3 className="flex px-1">
+                <CalendarDays />
+                <span className="ms-1 font-semibold">Timeline</span>
+              </h3>
+              <span className="font-semibold text-slate-600 text-sm">Edit</span>
+            </div>
+            <div className="p-2">
+              <div className="flex gap-2">
+                <div className="text-sm font-semibold">
+                  Dec <span className="block text-slate-600">2022</span>
+                </div>
+                <div className="relative border-s-2 px-2 py-1">
+                  <CircleSmall
+                    size={15}
+                    color="green"
+                    className="absolute -left-2 bg-white"
+                  />
+                  <h4 className="font-semibold">Pre-diabetic</h4>
+                  <span className="text-xs text-gray-500">A1c:10.4</span>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <div className="text-sm font-semibold">
+                  Dec <span className="block text-slate-600">2022</span>
+                </div>
+                <div className="relative border-s-2 px-2 py-1">
+                  <CircleSmall
+                    size={15}
+                    color="green"
+                    className="absolute -left-2 bg-white"
+                  />
+                  <h4 className="font-semibold">Pre-diabetic</h4>
+                  <span className="text-xs text-gray-500">A1c:10.4</span>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section className="col-span-3 shadow-sm rounded-md">
+            <div className="flex justify-between items-center border-b p-2">
+              <h3 className="flex px-1">
+                <FileStack />
+                <span className="ms-1 font-semibold">Medical history</span>
+              </h3>
+              <span className="font-semibold text-slate-600 text-sm">Edit</span>
+            </div>
+            <div className="p-2 grid grid-cols-2 gap-2">
+              <div className="flex gap-2 shadow-sm p-2 rounded col-span-1">
+                <HeartPulse />
+                <div>
+                  <p className="font-medium text-sm text-slate-500">
+                    Chronic disease
+                  </p>
+                  <div className="flex gap-1 font-medium text-sm">
+                    <div className="flex flex-wrap gap-1">
+                      {["obesity", "IHD", "Chronic thyroid disorder"].map(
+                        (el, index, array) => (
+                          <div key={index} className="capitalize">
+                            {el}
+                            {index < array.length - 1 && ","}
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-2 shadow-sm p-2 rounded col-span-1">
+                <HeartPulse />
+                <div>
+                  <p className="font-medium text-sm text-slate-500">
+                    Diabetes Emergencies
+                  </p>
+                  <div className="flex gap-1 font-medium text-sm">
+                    <div className="flex flex-wrap gap-1">
+                      {["Diabetes ketoacidosis"].map((el, index, array) => (
+                        <div key={index} className="capitalize">
+                          {el}
+                          {index < array.length - 1 && ","}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-2 shadow-sm p-2 rounded col-span-1">
+                <HeartPulse />
+                <div>
+                  <p className="font-medium text-sm text-slate-500">Surgery</p>
+                  <div className="flex gap-1 font-medium text-sm">
+                    <div className="flex flex-wrap gap-1">
+                      {["Liposuction"].map((el, index, array) => (
+                        <div key={index} className="capitalize">
+                          {el}
+                          {index < array.length - 1 && ","}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-2 shadow-sm p-2 rounded col-span-1">
+                <HeartPulse />
+                <div>
+                  <p className="font-medium text-sm text-slate-500">
+                    Family disease
+                  </p>
+                  <div className="flex gap-1 font-medium text-sm">
+                    <div className="flex flex-wrap gap-1">
+                      {["Obesity (Father)"].map((el, index, array) => (
+                        <div key={index} className="capitalize">
+                          {el}
+                          {index < array.length - 1 && ","}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-2 shadow-sm p-2 rounded col-span-2">
+                <HeartPulse />
+                <div>
+                  <p className="font-medium text-sm text-slate-500">
+                    Diabetes related complications
+                  </p>
+                  <div className="flex gap-1 font-medium text-sm">
+                    <div className="flex flex-wrap gap-1">
+                      {[
+                        "nephropathy",
+                        "neuropathy",
+                        "retinopathy",
+                        "diabetic foot",
+                        "sexual dysfunction",
+                      ].map((el, index, array) => (
+                        <div key={index} className="capitalize">
+                          {el}
+                          {index < array.length - 1 && ","}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
         </TabsContent>
