@@ -10,6 +10,8 @@ import {
   CircleSmall,
   FileStack,
   HeartPulse,
+  Contact,
+  Eye,
 } from "lucide-react";
 import { ScrollArea } from "../../components/ui/scroll-area";
 
@@ -23,6 +25,10 @@ import {
 
 const PatientPage = () => {
   // Find a way to add bloogType, blood group, allergies, and all other parameters to the patient profile
+  // contact info: phone numbers, email address, emergency contacts
+  // appointment history: past appointments, diagnosis, and treatments
+  // clinical data: Medical history, allergies, medications, lab results etc
+  // financial information: insurance details, payment history and outstanding balances
   return (
     <div>
       <Tabs defaultValue="overview" className="order">
@@ -116,11 +122,16 @@ const PatientPage = () => {
                   </div>
                 </div>
                 <div className="flex gap-2 text-sm">
-                  <div className="shadow border border-dashed rounded-md p-2 pe-8">
-                    <p className="font-bold text-xl">22.4</p>
+                  <div className="shadow border border-dashed rounded-md p-2 pe-4">
+                    <p className="font-bold text-xl">AA</p>
                     <div className="flex text-slate-600 text-sm font-semibold">
-                      <span>BMI</span> <ChevronUpIcon size={20} color="green" />
-                      <span className="text-green-500">10</span>
+                      <span>Blood type</span>
+                    </div>
+                  </div>
+                  <div className="shadow border border-dashed rounded-md p-2 pe-4">
+                    <p className="font-bold text-xl">AB+</p>
+                    <div className="flex text-slate-600 text-sm font-semibold">
+                      <span>Genotype</span>
                     </div>
                   </div>
                   <div className="shadow border border-dashed rounded-md p-2 pe-8">
@@ -130,10 +141,8 @@ const PatientPage = () => {
                         kg
                       </span>
                     </p>
-                    <div className="flex text-slate-600 text-sm font-semibold">
-                      <span>Weight </span>{" "}
-                      <ChevronUpIcon size={20} color="green" />
-                      <span className="text-green-500">10kg</span>
+                    <div className="text-slate-600 text-sm font-semibold">
+                      Weight
                     </div>
                   </div>
                   <div className="shadow border border-dashed rounded-md p-2 pe-8">
@@ -143,18 +152,14 @@ const PatientPage = () => {
                         Cm
                       </span>
                     </p>
-                    <div className="flex text-slate-600 text-sm font-semibold">
-                      <span>Height</span>{" "}
-                      <ChevronUpIcon size={20} color="green" />
-                      <span className="text-green-500">10</span>
+                    <div className="text-slate-600 text-sm font-semibold">
+                      Height
                     </div>
                   </div>
                   <div className="shadow border border-dashed rounded-md p-2 pe-8">
                     <p className="font-bold text-xl">124/80</p>
                     <div className="flex text-slate-600 text-sm font-semibold">
-                      <span>Blood pressure</span>{" "}
-                      <ChevronDownIcon size={20} color="red" />
-                      <span className="text-red-500">10</span>
+                      Blood pressure
                     </div>
                   </div>
                 </div>
@@ -186,11 +191,12 @@ const PatientPage = () => {
                   Health barriers
                 </p>
                 <div className="flex text-xs capitalize gap-1 py-1">
-                  {["obesity", "diabetes", "hypertension"].map(
+                  {["fear of medication", "fear of insulin"].map(
                     (item, index) => (
                       <div
                         key={index}
-                        className="bg-blue-100 text-blue-900 rounded-2xl px-1 font-semibold"
+                        title={item}
+                        className="bg-blue-100 cursor-pointer text-blue-900 rounded-2xl px-1 font-semibold truncate"
                       >
                         {item}
                       </div>
@@ -200,41 +206,38 @@ const PatientPage = () => {
               </div>
             </div>
           </section>
-          <section className="grid-cols-1 p-1 shadow-sm rounded-md">
-            <div className="flex justify-between items-center border-b p-2">
-              <h3 className="flex px-1">
-                <CalendarDays />
-                <span className="ms-1 font-semibold">Timeline</span>
-              </h3>
-              <span className="font-semibold text-slate-600 text-sm">Edit</span>
-            </div>
-            <div className="p-2">
-              <div className="flex gap-2">
-                <div className="text-sm font-semibold">
-                  Dec <span className="block text-slate-600">2022</span>
-                </div>
-                <div className="relative border-s-2 px-2 py-1">
-                  <CircleSmall
-                    size={15}
-                    color="green"
-                    className="absolute -left-2 bg-white"
-                  />
-                  <h4 className="font-semibold">Pre-diabetic</h4>
-                  <span className="text-xs text-gray-500">A1c:10.4</span>
-                </div>
+          <section className="col-span-1 p-1 shadow-sm rounded-md h-auto">
+            <div className="flex justify-between">
+              <h3 className="flex ps-3 font-semibold items-center">Contact Information</h3>
+              <div className="flex gap-1">
+                <Button variant="ghost" size="icon" className="w-6">
+                  <Edit />
+                </Button>
+                <Button variant="ghost" size="icon" className="w-6">
+                  <Eye />
+                </Button>
               </div>
-              <div className="flex gap-2">
-                <div className="text-sm font-semibold">
-                  Dec <span className="block text-slate-600">2022</span>
-                </div>
-                <div className="relative border-s-2 px-2 py-1">
-                  <CircleSmall
-                    size={15}
-                    color="green"
-                    className="absolute -left-2 bg-white"
-                  />
-                  <h4 className="font-semibold">Pre-diabetic</h4>
-                  <span className="text-xs text-gray-500">A1c:10.4</span>
+            </div>
+
+            <div className="p-2 text-sm font-medium text-slate-600">
+              <div>
+                Name: <span>Oreoluwa Temiloluwa</span>
+              </div>
+              <div>
+                Email: <span>temmy4jamb@gmail.com</span>
+              </div>
+              <div>
+                Phone: <span>+20 123 456 7890</span>
+              </div>
+              <div>
+                <p className="font-medium text-sm text-black mt-2">
+                  Emergency contacts
+                </p>
+                <div className="mb-2">
+                  <div>Name: John Doe</div>
+                  <div>Relationship: Sibling</div>
+                  <div>Email: johndoe@mail.io</div>
+                  <div>Phone: +20 123 456 7890</div>
                 </div>
               </div>
             </div>
@@ -342,6 +345,45 @@ const PatientPage = () => {
                       ))}
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section className="grid-cols-1 p-1 shadow-sm rounded-md">
+            <div className="flex justify-between items-center border-b p-2">
+              <h3 className="flex px-1">
+                <CalendarDays />
+                <span className="ms-1 font-semibold">Timeline</span>
+              </h3>
+              <span className="font-semibold text-slate-600 text-sm">Edit</span>
+            </div>
+            <div className="p-2">
+              <div className="flex gap-2">
+                <div className="text-sm font-semibold">
+                  Dec <span className="block text-slate-600">2022</span>
+                </div>
+                <div className="relative border-s-2 px-2 py-1">
+                  <CircleSmall
+                    size={15}
+                    color="green"
+                    className="absolute -left-2 bg-white"
+                  />
+                  <h4 className="font-semibold">Pre-diabetic</h4>
+                  <span className="text-xs text-gray-500">A1c:10.4</span>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <div className="text-sm font-semibold">
+                  Dec <span className="block text-slate-600">2022</span>
+                </div>
+                <div className="relative border-s-2 px-2 py-1">
+                  <CircleSmall
+                    size={15}
+                    color="green"
+                    className="absolute -left-2 bg-white"
+                  />
+                  <h4 className="font-semibold">Pre-diabetic</h4>
+                  <span className="text-xs text-gray-500">A1c:10.4</span>
                 </div>
               </div>
             </div>
