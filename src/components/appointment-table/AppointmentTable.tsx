@@ -45,7 +45,7 @@ type Appointment = {
   address: string;
   lastVisit: string;
   department?: string;
-  id: string;
+  id: number;
 };
 
 const AppointmentTable = ({
@@ -126,8 +126,8 @@ const AppointmentTable = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {appointments.map((appt, idx) => (
-                <TableRow key={idx}>
+              {appointments.map((appt) => (
+                <TableRow key={appt.id} className="hover:bg-gray-100 dark:hover:bg-gray-700">
                   <TableCell className="max-w-[150px] flex items-center justify-center gap-1">
                     <Avatar>
                       <AvatarImage src={appt.avatar || ""} alt={appt.name} />

@@ -23,12 +23,46 @@ import {
   AvatarFallback,
 } from "../../components/ui/avatar";
 
+import AppointmentTable from "../../components/appointment-table/AppointmentTable";
+
 const PatientPage = () => {
   // Find a way to add bloogType, blood group, allergies, and all other parameters to the patient profile
   // contact info: phone numbers, email address, emergency contacts
   // appointment history: past appointments, diagnosis, and treatments
   // clinical data: Medical history, allergies, medications, lab results etc
   // financial information: insurance details, payment history and outstanding balances
+  const sampleAppointments = [
+    {
+      id: 1,
+      name: "Temiloluwa Oreoluwa",
+      gender: "male",
+      age: 26,
+      date: "04/08/2025",
+      time: "09:00",
+      status: "Scheduled",
+      mobile: "8066771553",
+      email: "temiloluwaogunti8@gmail.com",
+      visitType: "New patient",
+      avatar: "https://github.com/shadcn.png",
+      address: "3, road 103, teachers estate, Ibafo, Ogun state.",
+      lastVisit: "04/02/2025",
+    },
+    {
+      id: 2,
+      name: "Realtemmy Oreoluwa",
+      gender: "female",
+      age: 24,
+      date: "04/08/2025",
+      time: "09:30",
+      status: "Confirmed",
+      mobile: "7068401238",
+      email: "temmy4jamb@gmail.com",
+      visitType: "Follow-up",
+      avatar: "https://github.com/shadcn.png",
+      address: "Teachers estate, torotoro, Ibafo, Ogun state.",
+      lastVisit: "02/01/2024",
+    },
+  ];
   return (
     <div>
       <Tabs defaultValue="overview" className="order">
@@ -391,6 +425,7 @@ const PatientPage = () => {
         </TabsContent>
         <TabsContent value="appointments">
           <p>Appointments can be by drugs, therapy or surgery</p>
+          <AppointmentTable appointments={sampleAppointments} />
         </TabsContent>
         <TabsContent value="treatments">
           <p>Treatments</p>
