@@ -8,6 +8,7 @@ import AppointmentTable from "../appointment-table/AppointmentTable";
 
 const sampleAppointments = [
   {
+    id:1,
     name: "Temiloluwa Oreoluwa",
     gender: "male",
     age: 26,
@@ -22,6 +23,7 @@ const sampleAppointments = [
     lastVisit: "04/02/2025"
   },
   {
+    id:2,
     name: "Realtemmy Oreoluwa",
     gender: "female",
     age: 24,
