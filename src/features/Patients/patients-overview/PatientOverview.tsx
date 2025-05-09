@@ -1,5 +1,4 @@
 import { Calendar, Eye, FileStack, HeartPulse } from 'lucide-react';
-import React from 'react'
 import { Button } from '../../../components/ui/button';
 
 const PatientOverview = () => {
