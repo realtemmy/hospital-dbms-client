@@ -6,7 +6,7 @@ const PatientsAppointment = () => {
   return (
     <div>
       {/* Appointment Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
           <div className="flex justify-between items-start">
             <div>
@@ -50,7 +50,7 @@ const PatientsAppointment = () => {
       </div>
 
       {/* Appointment Controls */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-lg shadow">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-lg shadow mb-4">
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <Button className="bg-blue-600 text-white hover:bg-blue-700">
             <Calendar className="w-4 h-4 mr-2" />

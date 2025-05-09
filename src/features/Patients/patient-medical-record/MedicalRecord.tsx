@@ -5,7 +5,7 @@ const MedicalRecord = () => {
   return (
     <div>
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
           <div className="flex justify-between items-start">
             <div>
