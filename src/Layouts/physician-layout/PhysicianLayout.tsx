@@ -1,4 +1,4 @@
-import { Bell } from "lucide-react";
+import { Bell, Search } from "lucide-react";
 import { Outlet } from "react-router";
 import { useState } from "react";
 import {
@@ -13,7 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "../../components/ui/dropdown-menu";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,22 +21,24 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
+} from "../../components/ui/breadcrumb";
+import { Input } from "../../components/ui/input";
+import { Separator } from "../../components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "../../components/ui/sidebar";
 
 import { AppSidebar } from "../../components/app-sidebar/AppSidebar";
 import { NotificationPreview } from "../../components/Notification/Notification";
 
 const PhysicianLayout = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(!open);
+  const [notificationOpen, setNotificationOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const handleSidebarOpen = () => setSidebarOpen(!sidebarOpen);
+  
+  const toggleNotification = () => setNotificationOpen(!notificationOpen);
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
     <SidebarProvider
@@ -46,57 +48,89 @@ const PhysicianLayout = () => {
         } as React.CSSProperties
       }
       open={sidebarOpen}
-      onOpenChange={handleSidebarOpen}
+      onOpenChange={setSidebarOpen}
     >
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/">
-                  Building Your Application
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-          <div className="flex items-center gap-4 ml-auto">
-            <span
-              className="border p-1 rounded cursor-pointer "
-              onClick={handleOpen}
-            >
-              <Bell />
+        <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex w-full items-center px-4">
+            <SidebarTrigger className="mr-2" />
 
-              {open && (
-                <div className="absolute top-16 right-4 z-50">
-                  <NotificationPreview />
-                </div>
-              )}
-            </span>
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar className="rounded">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
-                <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem>Subscription</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div className="flex items-center gap-2 md:w-1/3">
+              <div className="relative w-full max-w-[300px] md:flex">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search..."
+                  className="w-full pl-8 md:w-[300px] lg:w-[300px]"
+                />
+              </div>
+            </div>
+
+            <div className="ml-auto flex items-center gap-4">
+              <Breadcrumb className="hidden md:flex">
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+
+              <div className="relative">
+                <button
+                  className="flex h-9 w-9 items-center justify-center rounded-full border bg-background hover:bg-muted"
+                  onClick={toggleNotification}
+                >
+                  <Bell className="h-4 w-4" />
+                  <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
+                    3
+                  </span>
+                </button>
+
+                {notificationOpen && (
+                  <div className="absolute right-0 top-12 z-50">
+                    <NotificationPreview />
+                  </div>
+                )}
+              </div>
+
+              <Separator orientation="vertical" className="h-8" />
+
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center gap-2 outline-none">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>SS</AvatarFallback>
+                  </Avatar>
+                  <div className="hidden text-left md:block">
+                    <p className="text-sm font-medium">Sarah Smith</p>
+                    <p className="text-xs text-muted-foreground">Surgeon</p>
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-destructive">
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </header>
-        <main className={sidebarOpen ? "w-full md:w-[calc(100vw-20rem)]" : undefined}>
+
+        <main
+          className={
+            sidebarOpen ? "w-full md:w-[calc(100vw-20rem)]" : undefined
+          }
+        >
           <Outlet />
         </main>
       </SidebarInset>

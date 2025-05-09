@@ -4,6 +4,7 @@ import PhysicianLayout from "./Layouts/physician-layout/PhysicianLayout";
 import AdminLayout from "./Layouts/admin-layout/AdminLayout";
 import PatientLayout from "./Layouts/patient-layout/PatientLayout";
 import Login from "./Pages/auth/Login";
+import NotFound from "./Pages/NotFound";
 
 import Physician from "./Pages/Physician";
 import AppointmentList from "./components/appointment-list/AppointmentList";
@@ -50,6 +51,9 @@ function App() {
         <Route path="profile" element={<div>My Profile</div>} />
         <Route path="medical-records" element={<div>Medical Records</div>} />
       </Route>
+
+      {/* 404 Page - Catch-all Route */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
