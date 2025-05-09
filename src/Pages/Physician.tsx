@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { ScrollArea } from "../components/ui/scroll-area";
+import PhysicianBanner from "../components/physician-banner/PhysicianBanner";
 
 // Import doctor images - replace these with actual paths when available
 const maleDoctorImage = "https://cdn-icons-png.flaticon.com/512/3304/3304567.png";
@@ -28,7 +29,7 @@ const Physician = () => {
   const doctor = {
     firstName: "William",
     lastName: "Smith",
-    gender: "male", // or "female"
+    gender: "male" as "male" | "female", // Type assertion to match the expected type
     specialty: "Cardiologist",
     experience: 15,
     appointments: {
@@ -162,43 +163,18 @@ const Physician = () => {
     }
   ];
 
+  // Get current time of day for greeting
+  const getCurrentTimeOfDay = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "morning";
+    if (hour < 18) return "afternoon";
+    return "evening";
+  };
+
   return (
     <div className="pb-10">
-      {/* Hero Banner */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl overflow-hidden mb-8 shadow-lg">
-        <div className="flex flex-col md:flex-row items-center">
-          <div className="p-8 md:p-10 flex-1">
-            <span className="inline-block bg-blue-900/30 text-blue-100 px-3 py-1 rounded-full text-sm mb-4">
-              {doctor.specialty} • {doctor.experience} Years Experience
-            </span>
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-              Welcome back, Dr. {doctor.lastName}
-            </h1>
-            <p className="text-blue-100 text-lg md:text-xl mb-6">
-              You have {doctor.appointments.today} appointments scheduled for today
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Button className="bg-white text-blue-700 hover:bg-blue-50">
-                <CalendarDays className="w-4 h-4 mr-2" />
-                View Schedule
-              </Button>
-              <Button variant="outline" className="text-white border-white/30 hover:bg-blue-700/30 hover:border-white">
-                <FileText className="w-4 h-4 mr-2" />
-                Patient Records
-              </Button>
-            </div>
-          </div>
-          <div className="hidden md:block relative h-full">
-            <div className="absolute bottom-0 right-0">
-              <img 
-                src={doctor.gender === "female" ? femaleDoctorImage : maleDoctorImage} 
-                alt={`Dr. ${doctor.lastName}`}
-                className="h-64 object-contain object-bottom"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Hero Banner - Now using the PhysicianBanner component */}
+      <PhysicianBanner doctor={doctor} />
       
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
