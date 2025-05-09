@@ -5,7 +5,7 @@ const PatientOverview = () => {
   return (
     <div>
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
           <div className="flex justify-between items-start">
             <div>
@@ -49,7 +49,7 @@ const PatientOverview = () => {
       </div>
 
       {/* Patient Summary and Vitals */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
         {/* Recent Vitals */}
         <div className="bg-white rounded-lg shadow">
           <div className="flex items-center justify-between border-b p-4">

@@ -17,8 +17,8 @@ import {
 } from "lucide-react";
 import { ScrollArea,ScrollBar } from "../../components/ui/scroll-area";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
+import { Button } from "../../components/ui/button";
 import {
   Avatar,
   AvatarImage,
@@ -62,7 +62,7 @@ const PatientPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-hidden">
       <div className="container mx-auto px-4 py-6">
         <Tabs defaultValue="overview" className="space-y-6">
           {/* Sticky Tabs Header */}
@@ -128,16 +128,16 @@ const PatientPage = () => {
           </div>
 
           {/* Tab Content with Container */}
-          <div className="max-w-[1600px] mx-auto">
+          <div className="w-full mx-auto">
             <TabsContent value="overview" className="space-y-6 mt-0">
-             <PatientOverview />
+              <PatientOverview />
             </TabsContent>
 
             <TabsContent value="profile" className="space-y-6 mt-0">
               <PatientsProfile />
             </TabsContent>
 
-            <TabsContent value="appointments" className="space-y-6 mt-0">
+            <TabsContent value="appointments" className="space-y-6 mt-0 w-full">
               <PatientsAppointment />
             </TabsContent>
 

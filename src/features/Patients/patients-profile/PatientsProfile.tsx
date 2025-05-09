@@ -7,7 +7,7 @@ const PatientsProfile = () => {
   return (
     <div>
       {/* Personal Info Section */}
-      <section className="bg-white shadow border rounded-lg overflow-hidden">
+      <section className="bg-white shadow border rounded-lg overflow-hidden mb-4">
         <div className="mt-6 p-4 sm:p-6">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
             {/* Demographics */}
@@ -133,7 +133,7 @@ const PatientsProfile = () => {
       </section>
 
       {/* Contact and Financial Information */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         <section className="shadow-sm rounded-md">
           <div className="flex justify-between items-center border-b p-2">
             <h3 className="flex px-1">
@@ -267,7 +267,7 @@ const PatientsProfile = () => {
       </div>
 
       {/* Medical Information Sections */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
         {/* Blood Information & Vitals */}
         <section className="bg-white shadow rounded-lg overflow-hidden">
           <div className="flex items-center justify-between border-b p-4">
