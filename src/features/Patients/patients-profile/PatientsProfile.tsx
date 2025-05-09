@@ -1,4 +1,4 @@
-import { Briefcase, Contact, Edit, FileStack, HeartPulse, MapPin, Phone, User } from 'lucide-react';
+import { Briefcase, Contact, Edit, FileStack, HeartPulse, MapPin, MapPinHouse, Phone, User } from 'lucide-react';
 import React from 'react'
 import { Button } from '../../../components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar';
@@ -9,7 +9,7 @@ const PatientsProfile = () => {
     <div>
       {/* Personal Info Section */}
       <section className="bg-white shadow border rounded-lg overflow-hidden">
-        <div className="relative min-h-[200px] sm:h-48 bg-gradient-to-br from-indigo-700 via-blue-800 to-blue-900">
+        {/* <div className="relative min-h-[200px] sm:h-48 bg-gradient-to-br from-indigo-700 via-blue-800 to-blue-900">
           <div className="absolute inset-0 bg-black/10"></div>
           <div className="absolute left-0 right-0 bottom-0 h-full bg-gradient-to-t from-black/40 via-black/20 to-transparent"></div>
           <div className="absolute bottom-4 left-4 sm:left-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
@@ -73,7 +73,7 @@ const PatientsProfile = () => {
               Edit Profile
             </Button>
           </div>
-        </div>
+        </div> */}
 
         <div className="mt-6 p-4 sm:p-6">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -82,7 +82,7 @@ const PatientsProfile = () => {
               <h3 className="font-semibold text-lg border-b pb-2">
                 Demographics
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-slate-500">Gender</p>
                   <p className="font-medium flex items-center gap-2">
@@ -115,6 +115,13 @@ const PatientsProfile = () => {
                 <div>
                   <p className="text-sm text-slate-500">Language</p>
                   <p className="font-medium">English</p>
+                </div>
+                <div className='col-span-2'>
+                  <p className="text-sm text-slate-500">Location</p>
+                  <p className="font-medium">
+                    
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, blanditiis?
+                  </p>
                 </div>
               </div>
             </div>
