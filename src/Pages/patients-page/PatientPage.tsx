@@ -1,23 +1,19 @@
 import {
-  Briefcase,
   Calendar,
-  MapPin,
   User,
   Edit,
-  ChevronUpIcon,
-  ChevronDownIcon,
-  CalendarDays,
-  CircleSmall,
   FileStack,
   HeartPulse,
-  Contact,
-  Eye,
   Phone,
-  Clock,
 } from "lucide-react";
-import { ScrollArea,ScrollBar } from "../../components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../../components/ui/scroll-area";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../../components/ui/tabs";
 import { Button } from "../../components/ui/button";
 import {
   Avatar,
@@ -25,14 +21,12 @@ import {
   AvatarFallback,
 } from "../../components/ui/avatar";
 import PatientOverview from "../../features/Patients/patients-overview/PatientOverview";
-import AppointmentTable from "../../components/appointment-table/AppointmentTable";
 import PatientsProfile from "../../features/Patients/patients-profile/PatientsProfile";
 import PatientsAppointment from "../../features/Patients/patients-appointment/PatientsAppointment";
 import PatientTreatment from "../../features/Patients/patients-treatment/PatientTreatment";
 import MedicalRecord from "../../features/Patients/patient-medical-record/MedicalRecord";
 
 const PatientPage = () => {
-
   const data = [
     {
       icon: FileStack,
