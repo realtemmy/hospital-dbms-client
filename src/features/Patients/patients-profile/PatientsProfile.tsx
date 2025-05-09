@@ -1,7 +1,6 @@
-import { Briefcase, Contact, Edit, FileStack, HeartPulse, MapPin, Phone, User } from 'lucide-react';
-import React from 'react'
+import { Briefcase, Contact, Edit, FileStack, HeartPulse, User } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar';
+
 import { Calendar } from 'lucide-react';
 
 const PatientsProfile = () => {
@@ -9,72 +8,6 @@ const PatientsProfile = () => {
     <div>
       {/* Personal Info Section */}
       <section className="bg-white shadow border rounded-lg overflow-hidden">
-        <div className="relative min-h-[200px] sm:h-48 bg-gradient-to-br from-indigo-700 via-blue-800 to-blue-900">
-          <div className="absolute inset-0 bg-black/10"></div>
-          <div className="absolute left-0 right-0 bottom-0 h-full bg-gradient-to-t from-black/40 via-black/20 to-transparent"></div>
-          <div className="absolute bottom-4 left-4 sm:left-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-            <div className="relative group">
-              <Avatar className="w-24 h-24 sm:w-32 sm:h-32 border-4 border-white/90 rounded-2xl shadow-lg">
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  className="rounded-2xl object-cover"
-                />
-                <AvatarFallback className="text-xl sm:text-2xl">
-                  AH
-                </AvatarFallback>
-              </Avatar>
-              <button className="absolute bottom-2 right-2 bg-white rounded-full p-1.5 shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
-                <Edit className="w-4 h-4 text-blue-600" />
-              </button>
-            </div>
-            <div className="text-white drop-shadow-md">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-                <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                  Ahmed Ali Hussian
-                </h2>
-                <div className="flex items-center gap-1 bg-emerald-500/20 backdrop-blur-sm px-2 py-1 rounded-full text-xs border border-emerald-500/20 w-fit">
-                  <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-                  <span className="text-emerald-50">Active Patient</span>
-                </div>
-              </div>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mt-3 text-gray-100">
-                <p className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full text-sm">
-                  <FileStack className="w-4 h-4 text-blue-200" />
-                  <span className="text-white">ID: PAT-2024-001</span>
-                </p>
-                <p className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full text-sm">
-                  <Calendar className="w-4 h-4 text-blue-200" />
-                  <span className="text-white">Registered: Jan 2024</span>
-                </p>
-                <p className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full text-sm">
-                  <MapPin className="w-4 h-4 text-blue-200" />
-                  <span className="text-white">Elshiekh zayed, Giza</span>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="absolute top-4 right-4 flex flex-col sm:flex-row gap-2">
-            <Button
-              variant="outline"
-              className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:text-white shadow-lg sm:text-base text-sm"
-            >
-              <Phone className="w-4 h-4 mr-2" />
-              Contact
-            </Button>
-            <Button
-              variant="outline"
-              className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:text-white shadow-lg sm:text-base text-sm"
-            >
-              <Calendar className="w-4 h-4 mr-2" />
-              Schedule
-            </Button>
-            <Button className="bg-white text-blue-700 hover:bg-white/90 shadow-lg sm:text-base text-sm">
-              <Edit className="w-4 h-4 mr-2" />
-              Edit Profile
-            </Button>
-          </div>
-        </div>
-
         <div className="mt-6 p-4 sm:p-6">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
             {/* Demographics */}
@@ -82,7 +15,7 @@ const PatientsProfile = () => {
               <h3 className="font-semibold text-lg border-b pb-2">
                 Demographics
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-slate-500">Gender</p>
                   <p className="font-medium flex items-center gap-2">
@@ -115,6 +48,13 @@ const PatientsProfile = () => {
                 <div>
                   <p className="text-sm text-slate-500">Language</p>
                   <p className="font-medium">English</p>
+                </div>
+                <div className='col-span-2'>
+                  <p className="text-sm text-slate-500">Location</p>
+                  <p className="font-medium">
+                    
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, blanditiis?
+                  </p>
                 </div>
               </div>
             </div>

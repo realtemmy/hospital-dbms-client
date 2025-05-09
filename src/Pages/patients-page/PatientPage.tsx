@@ -68,7 +68,7 @@ const PatientPage = () => {
           {/* Sticky Tabs Header */}
           <div className="sticky top-0 z-10 bg-gray-50/95 backdrop-blur-sm pt-2 pb-4 -mx-4 px-4 shadow-sm">
             <ScrollArea className="w-full whitespace-nowrap">
-              <TabsList className="flex w-max gap-2 p-1 bg-white rounded-xl shadow-sm">
+              <TabsList className="mb-2 flex w-full gap-2 p-1 bg-white rounded-xl shadow-sm">
                 {data.map((item, index) => (
                   <TabsTrigger
                     key={index}
