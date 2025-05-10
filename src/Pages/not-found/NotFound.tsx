@@ -1,7 +1,7 @@
 import { Home, ArrowLeft } from "lucide-react";
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
-import { ErrorIllustration } from "../components/ui/error-illustration";
+import { ErrorIllustration } from "../../components/ui/error-illustration";
 
 const NotFound = () => {
   const [count, setCount] = useState(5);

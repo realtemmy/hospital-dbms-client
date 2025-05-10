@@ -4,24 +4,31 @@ import PhysicianLayout from "./Layouts/physician-layout/PhysicianLayout";
 import AdminLayout from "./Layouts/admin-layout/AdminLayout";
 import PatientLayout from "./Layouts/patient-layout/PatientLayout";
 import Login from "./Pages/auth/Login";
-import NotFound from "./Pages/NotFound";
+import NotFound from "./Pages/not-found/NotFound";
 
-import Physician from "./Pages/Physician";
+import Physician from "./Pages/physician/Physician";
 import AppointmentList from "./components/appointment-list/AppointmentList";
 import PatientTable from "./components/patient-table/PatientTable";
 import Patients from "./components/features/Physician/Patients/Patients";
 import AppointmentPage from "./Pages/appointment-page/AppointmentPage";
 import PatientPage from "./Pages/patients-page/PatientPage";
+import Chat from "./Pages/chat/Chat";
 
 function App() {
+  // In chat, there should be ai generated response or suggestions for physicians
+  // Plus the way whatsapp used to have the ability to search for stuff from the web
   return (
     <Routes>
       {/* Auth Routes */}
       <Route path="/" element={<Login />} />
+      
+      {/* Chat (General Chat) */}
+      <Route path="/chat" element={<Chat />} />
 
       {/* Doctor/Physician Routes */}
       <Route path="/doctor" element={<PhysicianLayout />}>
         <Route index element={<Physician />} />
+        <Route path="chat" element={<Chat />} />
         <Route path="appointments">
           <Route index element={<AppointmentList />} />
           <Route path=":id" element={<AppointmentPage />} />
