@@ -56,7 +56,6 @@ export const AppSidebar = ({
         </SidebarMenu>
       </SidebarHeader>
 
-      <Separator className="mx-4" />
 
       <SidebarContent className="pt-4">
         <div className="px-4 mb-6">
