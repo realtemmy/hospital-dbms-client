@@ -12,11 +12,11 @@ import {
   FileText,
   Bell
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import { Button } from "../components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { ScrollArea } from "../components/ui/scroll-area";
-import PhysicianBanner from "../components/physician-banner/PhysicianBanner";
+import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
+import { Button } from "../../components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
+import { ScrollArea } from "../../components/ui/scroll-area";
+import PhysicianBanner from "../../components/physician-banner/PhysicianBanner";
 
 // Import doctor images - replace these with actual paths when available
 const maleDoctorImage = "https://cdn-icons-png.flaticon.com/512/3304/3304567.png";

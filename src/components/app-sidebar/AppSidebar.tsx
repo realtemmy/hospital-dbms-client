@@ -128,7 +128,7 @@ export const AppSidebar = ({
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link
-                  to="/chats"
+                  to="/doctor/chat"
                   className="flex items-center space-x-3 font-medium"
                 >
                   <MessageSquare className="h-4 w-4" />
