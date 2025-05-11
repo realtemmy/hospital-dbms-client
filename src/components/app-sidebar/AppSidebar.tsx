@@ -9,6 +9,7 @@ import {
   FileText,
   HelpCircle,
   LogOut,
+  Cross,
 } from "lucide-react";
 import { Link } from "react-router";
 
@@ -37,7 +38,7 @@ export const AppSidebar = ({
   ...props
 }: React.ComponentProps<typeof Sidebar>) => {
   return (
-    <Sidebar variant="floating" {...props} >
+    <Sidebar variant="floating" {...props}>
       <SidebarHeader className="py-4">
         <SidebarMenu>
           <SidebarMenuItem>
@@ -55,7 +56,6 @@ export const AppSidebar = ({
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-
 
       <SidebarContent className="pt-4">
         <div className="px-4 mb-6">
@@ -105,6 +105,17 @@ export const AppSidebar = ({
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link
+                  to="/doctor/diagnosis"
+                  className="flex items-center space-x-3 font-medium"
+                >
+                  <Cross className="h-4 w-4" />
+                  <span>Diagnosis</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link
                   to="/doctor/patients"
                   className="flex items-center space-x-3 font-medium"
                 >
@@ -116,7 +127,7 @@ export const AppSidebar = ({
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link
-                  to="/schedule"
+                  to="/doctor/schedule"
                   className="flex items-center space-x-3 font-medium"
                 >
                   <Clock className="h-4 w-4" />

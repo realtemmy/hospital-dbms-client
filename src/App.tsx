@@ -14,8 +14,8 @@ import AppointmentPage from "./Pages/appointment-page/AppointmentPage";
 import PatientPage from "./Pages/patients-page/PatientPage";
 import Chat from "./Pages/chat/Chat";
 import ChatLayout from "./Layouts/chat-layout/ChatLayout";
-
-
+import Schedule from "./Pages/schedule/Schedule";
+import Diagnosis from "./Pages/diagnosis/Diagnosis";
 
 function App() {
   // In chat, there should be ai generated response or suggestions for physicians
@@ -26,7 +26,7 @@ function App() {
       <Route path="/" element={<Login />} />
 
       {/* Chat (General Chat) */}
-      <Route path="chat" element={<ChatLayout />}>
+      <Route path="/chat" element={<ChatLayout />}>
         <Route path=":id" element={<Chat />} />
       </Route>
 
@@ -45,6 +45,8 @@ function App() {
           <Route path=":id" element={<PatientPage />} />
           <Route path=":id/appointments" element={<PatientTable />} />
         </Route>
+        <Route path="schedule" element={<Schedule />} />
+        <Route path="diagnosis" element={<Diagnosis />} />
       </Route>
 
       {/* Admin Routes */}
