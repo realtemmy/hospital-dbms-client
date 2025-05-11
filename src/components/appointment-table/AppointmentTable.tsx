@@ -1,24 +1,5 @@
-import { Clock, Download, Phone, Ellipsis } from "lucide-react";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-
+import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,10 +8,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Edit, Eye, MoreHorizontal } from "lucide-react";
+import { Key } from "react";
+import StatusBadge from "../status-badge/StatusBadge";
+import AppointmentCard from "../appointment-card/AppointmentCard";
 
 // Sample usage: <AppointmentTable appointments={[{...}, {...}]} />
 
-type Appointment = {
+export type Appointment = {
+  id: number;
   name: string;
   gender: string;
   age: number;
@@ -40,162 +27,241 @@ type Appointment = {
   mobile: string;
   email: string;
   visitType: string;
-  avatar?: string;
-  disease?: string;
+  avatar: string;
   address: string;
   lastVisit: string;
-  department?: string;
-  id: number;
+  doctor: string;
+  department: string;
+  notes: string;
 };
 
 const AppointmentTable = ({
-  appointments = [],
+  appointments,
+  tabsStatus,
 }: {
   appointments: Appointment[];
+  tabsStatus: string[];
 }) => {
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
-      <div>
-        <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-          <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-            <div className="w-full md:w-1/2">
-              <form className="flex items-center">
-                <Label htmlFor="simple-search" className="sr-only">
-                  Search
-                </Label>
-                <div className="relative w-full">
-                  <div className="absolute inset-y-0 right-2 flex items-center pl-3 pointer-events-none">
-                    <svg
-                      className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <Input
-                    type="text"
-                    id="simple-search"
-                    placeholder="Search"
-                    className="pl-10 p-2 w-full text-sm rounded-lg dark:bg-gray-700 dark:text-white"
-                  />
-                </div>
-              </form>
-            </div>
+    <Tabs defaultValue={tabsStatus[0]}>
+      <TabsList className="mb-6">
+        {tabsStatus.map((tab, index) => (
+          <TabsTrigger value={tab} className="capitalize" key={index}>
+            {tab}
+          </TabsTrigger>
+        ))}
 
-            <div className="w-full md:w-auto flex flex-col md:flex-row items-stretch md:items-center justify-end space-y-2 md:space-y-0 md:space-x-3 flex-shrink-0">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Download className="cursor-pointer" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Download</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-          </div>
-        </div>
+      </TabsList>
 
-        {/* Scrollable container */}
-        <div className="overflow-x-auto overflow-y-auto max-h-[500px] rounded-md rounded-t-none border">
-          <Table>
-            {/* <TableCaption>Appointment list</TableCaption> */}
-            <TableHeader>
-              <TableRow>
-                <TableHead>Patient Name</TableHead>
-                <TableHead>Gender</TableHead>
-                <TableHead>Age</TableHead>
-                <TableHead>Appointment date</TableHead>
-                <TableHead>Time</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Department</TableHead>
-                <TableHead>Mobile</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Visit Type</TableHead>
-                <TableHead>Disease</TableHead>
-                <TableHead>Address</TableHead>
-                <TableHead>Last visit</TableHead>
-                <TableHead className="text-right">Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {appointments.map((appt) => (
-                <TableRow key={appt.id} className="hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <TableCell className="max-w-[150px] flex items-center justify-center gap-1">
-                    <Avatar>
-                      <AvatarImage src={appt.avatar || ""} alt={appt.name} />
-                      <AvatarFallback>
-                        {appt.name?.slice(0, 2).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="truncate capitalize">{appt.name}</span>
-                  </TableCell>
-                  <TableCell>
-                    <span
-                      className={`capitalize p-1 rounded ${
-                        appt.gender.toLowerCase() === "male"
-                          ? "bg-green-200 text-green-600"
-                          : "bg-purple-200 text-purple-600"
-                      }`}
-                    >
-                      {appt.gender}
-                    </span>
-                  </TableCell>
-                  <TableCell>{appt.age}</TableCell>
-                  <TableCell>{appt.date}</TableCell>
-                  <TableCell className="flex items-center gap-1">
-                    <Clock color="blue" size={18} />
-                    <span>{appt.time}</span>
-                  </TableCell>
-                  <TableCell>{appt.status}</TableCell>
-                  <TableCell className="capitalize text-center">
-                    {appt.department || "General"}
-                  </TableCell>
-                  <TableCell className="flex items-center gap-1">
-                    <Phone size={15} />
-                    <span>{appt.mobile}</span>
-                  </TableCell>
-                  <TableCell className="truncate max-w-[100px]">
-                    {appt.email}
-                  </TableCell>
-                  <TableCell>{appt.visitType}</TableCell>
-                  <TableCell className="max-w-[150px] truncate">
-                    {appt.disease || "N/A"}
-                  </TableCell>
-                  <TableCell
-                    className="max-w-[250px] truncate"
-                    title={appt.address}
+      {tabsStatus.map((tab: string, index: Key | null | undefined) => (
+        <TabsContent value={tab} className="space-y-6" key={index}>
+          {/* Desktop view */}
+          <div className="hidden md:block rounded-lg border overflow-x-scroll bg-white ">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    <span>{appt.address}</span>
-                  </TableCell>
-                  <TableCell>{appt.lastVisit}</TableCell>
-                  <TableCell className="text-right flex justify-end">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger className="cursor-pointer">
-                        <Ellipsis />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                        <DropdownMenuItem>Start appointment</DropdownMenuItem>
-                        <DropdownMenuItem>Cancel appointment</DropdownMenuItem>
-                        <DropdownMenuItem>Subscription</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-    </section>
+                    Patient
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Date & Time
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Doctor
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Contact
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Status
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {appointments.length > 0 ? (
+                  appointments.map((appointment) => (
+                    <tr key={appointment.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 h-10 w-10">
+                            <Avatar>
+                              <AvatarImage
+                                src={appointment.avatar}
+                                alt={appointment.name}
+                              />
+                              <AvatarFallback>
+                                {appointment.name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </AvatarFallback>
+                            </Avatar>
+                          </div>
+                          <div className="ml-4">
+                            <div className="text-sm font-medium text-gray-900">
+                              {appointment.name}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {appointment.visitType}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">
+                          {appointment.date}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {appointment.time}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">
+                          {appointment.doctor}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {appointment.department}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">
+                          {appointment.mobile}
+                        </div>
+                        <div className="text-sm text-gray-500 truncate max-w-[200px]">
+                          {appointment.email}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <StatusBadge status={appointment.status} />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div className="flex justify-end items-center space-x-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0"
+                              >
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem>View Details</DropdownMenuItem>
+                              <DropdownMenuItem>
+                                Edit Appointment
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>Reschedule</DropdownMenuItem>
+                              <DropdownMenuItem className="text-red-600">
+                                Cancel
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan={6}
+                      className="px-6 py-4 text-center text-sm text-gray-500"
+                    >
+                      No appointments found matching your filters
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile view */}
+          <div className="md:hidden space-y-4">
+            {appointments.length > 0 ? (
+              appointments.map((appointment) => (
+                <AppointmentCard
+                  key={appointment.id}
+                  appointment={appointment}
+                />
+              ))
+            ) : (
+              <div className="text-center py-10 bg-white rounded-lg border">
+                <p className="text-gray-500">
+                  No appointments found matching your filters
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Pagination */}
+          {/* <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 rounded-lg">
+            <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm text-gray-700">
+                  Showing <span className="font-medium">1</span> to{" "}
+                  <span className="font-medium">
+                    {filteredAppointments.length}
+                  </span>{" "}
+                  of{" "}
+                  <span className="font-medium">
+                    {filteredAppointments.length}
+                  </span>{" "}
+                  results
+                </p>
+              </div>
+              <div>
+                <nav
+                  className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+                  aria-label="Pagination"
+                >
+                  <Button variant="outline" className="rounded-l-md">
+                    Previous
+                  </Button>
+                  <Button variant="outline" className="rounded-r-md ml-2">
+                    Next
+                  </Button>
+                </nav>
+              </div>
+            </div>
+          </div> */}
+        </TabsContent>
+      ))}
+    </Tabs>
   );
 };
 
