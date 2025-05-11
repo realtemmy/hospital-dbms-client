@@ -1,25 +1,16 @@
 import React, { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Outlet } from "react-router";
 import {
-  LogOut,
-  Search,
-  MessageSquare,
   Phone,
   Video,
   MoreVertical,
-  Calendar,
-  FileText,
-  Clock,
-  Mail,
   Menu,
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Drawer,
+  DrawerTitle,
+  DrawerHeader,
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer";
@@ -99,15 +90,20 @@ const ChatLayout = () => {
                     <Menu className="h-5 w-5 text-gray-500" />
                   </Button>
                 </DrawerTrigger>
-                <DrawerContent className="h-[calc(100vh-70px)]">
-                  <ChatLayout
-                    selectedChat={selectedChat}
-                    setSelectedChat={setSelectedChat}
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                    conversations={conversations}
-                    onChatSelect={handleToggleShow}
-                  />
+                <DrawerContent className="data-[vaul-drawer-direction=bottom]:max-h-[100vh]">
+                  <DrawerHeader>
+                    <DrawerTitle>Chat</DrawerTitle>
+
+                  </DrawerHeader>
+                  <div className="h-full overflow-y-auto">
+                    <ChatSidebar
+                      selectedChat={selectedChat}
+                      setSelectedChat={setSelectedChat}
+                      searchQuery={searchQuery}
+                      setSearchQuery={setSearchQuery}
+                      conversations={conversations}
+                    />
+                  </div>
                 </DrawerContent>
               </Drawer>
             ) : (
