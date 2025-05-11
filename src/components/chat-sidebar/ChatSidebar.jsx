@@ -17,7 +17,7 @@ const ChatSidebar = ({
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b border-gray-200">
-        <h1 className="font-bold text-xl text-blue-600 mb-4">Patient Portal</h1>
+        <h1 className="font-bold text-xl text-blue-600 mb-4 hidden ld:block">Patient Portal</h1>
         <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <Input
@@ -131,25 +131,7 @@ const ChatSidebar = ({
         </TabsContent>
       </Tabs>
 
-      <div className="p-4 border-t border-gray-200">
-        <div className="flex items-center gap-3 p-2">
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>PT</AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium text-gray-900">Ahmed Ali</div>
-            <div className="text-xs text-gray-500">ahmed@example.com</div>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-gray-500 hover:text-gray-700"
-          >
-            <LogOut className="h-5 w-5" />
-          </Button>
-        </div>
-      </div>
+
     </div>
   );
 };
