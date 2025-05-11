@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { 
   CalendarDays, 
   Users, 
@@ -23,6 +24,7 @@ const maleDoctorImage = "https://cdn-icons-png.flaticon.com/512/3304/3304567.png
 const femaleDoctorImage = "https://cdn-icons-png.flaticon.com/512/3304/3304633.png";
 
 const Physician = () => {
+  const navigate = useNavigate();
   const [timeFilter, setTimeFilter] = useState("today");
   
   // Doctor profile data
@@ -268,7 +270,7 @@ const Physician = () => {
               )}
             </div>
             <div className="p-4 border-t bg-slate-50 rounded-b-lg">
-              <Button variant="link" className="w-full text-blue-600">
+              <Button variant="link" className="w-full text-blue-600" onClick={() => navigate("/doctor/appointments")}>
                 View all appointments <ChevronRight className="h-4 w-4 ml-1" />
               </Button>
             </div>
@@ -316,7 +318,7 @@ const Physician = () => {
               </div>
             </div>
             <div className="p-4 border-t bg-slate-50 rounded-b-lg">
-              <Button variant="link" className="w-full text-blue-600">
+              <Button variant="link" className="w-full text-blue-600" onClick={() => navigate("/doctor/patients")}>
                 View all patients <ChevronRight className="h-4 w-4 ml-1" />
               </Button>
             </div>
