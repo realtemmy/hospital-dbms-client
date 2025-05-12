@@ -18,6 +18,9 @@ import Schedule from "./Pages/schedule/Schedule";
 import Diagnosis from "./Pages/diagnosis/Diagnosis";
 import EditProfile from "./features/profile/EditProfile";
 
+
+import Admin from "./Pages/admin/Admin";
+
 function App() {
   // In chat, there should be ai generated response or suggestions for physicians
   // Plus the way whatsapp used to have the ability to search for stuff from the web
@@ -53,7 +56,7 @@ function App() {
 
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<div>Admin Dashboard</div>} />
+        <Route index element={<Admin />} />
         <Route path="doctors" element={<div>Doctors Management</div>} />
         <Route path="patients" element={<div>Patients Management</div>} />
         <Route
