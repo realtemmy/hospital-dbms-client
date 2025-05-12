@@ -1,123 +1,151 @@
+import { useState } from "react";
 import { Outlet } from "react-router";
-import { 
-  Users, 
-  CalendarDays, 
+import {
+  Users,
+  CalendarDays,
   LayoutDashboard,
   Settings,
-  LogOut
+  LogOut,
+  Search,
+  Bell,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../components/ui/avatar";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../../components/ui/dropdown-menu";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../../components/ui/breadcrumb";
+import { Input } from "../../components/ui/input";
+import { Separator } from "../../components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "../../components/ui/sidebar";
+
+import { AdminSidebar } from "../../components/admin-sidebar/AdminSidebar";
+import { NotificationPreview } from "../../components/Notification/Notification";
 
 const AdminLayout = () => {
-  const sidebarItems = [
-    {
-      icon: LayoutDashboard,
-      text: "Dashboard",
-      path: "/admin",
-    },
-    {
-      icon: Users,
-      text: "Doctors",
-      path: "/admin/doctors",
-    },
-    {
-      icon: Users,
-      text: "Patients",
-      path: "/admin/patients",
-    },
-    {
-      icon: CalendarDays,
-      text: "Appointments",
-      path: "/admin/appointments",
-    },
-    {
-      icon: Settings,
-      text: "Settings",
-      path: "/admin/settings",
-    },
-  ];
+
+
+    const [notificationOpen, setNotificationOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+
+    const toggleNotification = () => setNotificationOpen(!notificationOpen);
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <div className="hidden md:flex w-64 flex-col fixed inset-y-0 z-50">
-        <div className="flex flex-col flex-grow bg-white border-r shadow-sm">
-          <div className="h-16 flex items-center px-4 border-b">
-            <h1 className="font-bold text-xl text-blue-600">Hospital DBMS</h1>
-          </div>
-          <div className="flex-1 overflow-y-auto">
-            <nav className="px-2 py-4 space-y-1">
-              {sidebarItems.map((item, index) => (
-                <a
-                  key={index}
-                  href={item.path}
-                  className="flex items-center px-4 py-3 text-sm font-medium rounded-md hover:bg-blue-50 hover:text-blue-700"
-                >
-                  <item.icon className="mr-3 h-5 w-5" />
-                  {item.text}
-                </a>
-              ))}
-            </nav>
-          </div>
-          <div className="p-4 border-t">
-            <a
-              href="/"
-              className="flex items-center px-4 py-3 text-sm font-medium rounded-md text-red-600 hover:bg-red-50"
-            >
-              <LogOut className="mr-3 h-5 w-5" />
-              Logout
-            </a>
-          </div>
-        </div>
-      </div>
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "19rem",
+        } as React.CSSProperties
+      }
+      open={sidebarOpen}
+      onOpenChange={setSidebarOpen}
+    >
+      <AdminSidebar />
+      <SidebarInset>
+        <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex w-full items-center px-4">
+            <SidebarTrigger className="mr-2" />
 
-      {/* Main Content */}
-      <div className="md:pl-64 flex flex-col flex-1">
-        {/* Header */}
-        <header className="h-16 bg-white shadow-sm flex items-center justify-between px-4 md:px-6">
-          <div className="flex items-center">
-            <h2 className="text-lg font-medium">Admin Dashboard</h2>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-blue-600"></span>
-              <button className="text-gray-500 hover:text-gray-700">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="flex items-center gap-2">
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>AD</AvatarFallback>
-              </Avatar>
-              <div className="hidden md:block">
-                <div className="text-sm font-medium">Admin User</div>
-                <div className="text-xs text-gray-500">admin@hospital.com</div>
+            <div className="flex items-center gap-2 md:w-1/3">
+              <div className="relative w-full max-w-[300px] md:flex">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder="Search..."
+                  className="w-full pl-8 md:w-[300px] lg:w-[300px]"
+                />
               </div>
+            </div>
+
+            <div className="ml-auto flex items-center gap-4">
+              <Breadcrumb className="hidden md:flex">
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+
+              <div className="relative">
+                <button
+                  className="flex h-9 w-9 items-center justify-center rounded-full border bg-background hover:bg-muted"
+                  onClick={toggleNotification}
+                >
+                  <Bell className="h-4 w-4" />
+                  <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
+                    3
+                  </span>
+                </button>
+
+                {notificationOpen && (
+                  <div className="absolute right-0 top-12 z-50">
+                    <NotificationPreview />
+                  </div>
+                )}
+              </div>
+
+              <Separator orientation="vertical" className="h-8" />
+
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center gap-2 outline-none">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>SS</AvatarFallback>
+                  </Avatar>
+                  <div className="hidden text-left md:block">
+                    <p className="text-sm font-medium">Sarah Smith</p>
+                    <p className="text-xs text-muted-foreground">Surgeon</p>
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-destructive">
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </header>
 
-        {/* Page content */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 w-full md:w-[calc(100vw-20rem)]">
+        <main
+          className={
+            sidebarOpen ? "w-full md:w-[calc(100vw-20rem)]" : undefined
+          }
+        >
           <Outlet />
         </main>
-      </div>
-    </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 };
 
-export default AdminLayout; 
+export default AdminLayout;
