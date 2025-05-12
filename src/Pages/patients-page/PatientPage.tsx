@@ -20,11 +20,22 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "../../components/ui/avatar";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+
 import PatientOverview from "../../features/Patients/patients-overview/PatientOverview";
 import PatientsProfile from "../../features/Patients/patients-profile/PatientsProfile";
 import PatientsAppointment from "../../features/Patients/patients-appointment/PatientsAppointment";
 import PatientTreatment from "../../features/Patients/patients-treatment/PatientTreatment";
 import MedicalRecord from "../../features/Patients/patient-medical-record/MedicalRecord";
+import VoiceCalls from "../../features/calls/voice-calls/VoiceCalls";
 
 const PatientPage = () => {
   const data = [
@@ -94,14 +105,22 @@ const PatientPage = () => {
                 </div>
               </div>
               <div className="flex flex-wrap justify-center sm:justify-end gap-2 w-full sm:w-auto">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 sm:flex-none justify-center"
-                >
-                  <Phone className="w-4 h-4 mr-2" />
-                  Contact
-                </Button>
+                <Dialog className="">
+                  <DialogTrigger>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 sm:flex-none justify-center"
+                    >
+                      <Phone className="w-4 h-4 mr-2" />
+                      Contact
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="h-[calc(100vh-50px)]">
+                    <VoiceCalls />
+                  </DialogContent>
+                </Dialog>
+
                 <Button
                   variant="outline"
                   size="sm"

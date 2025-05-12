@@ -4,8 +4,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
@@ -14,7 +12,6 @@ import { Key } from "react";
 import StatusBadge from "../status-badge/StatusBadge";
 import AppointmentCard from "../appointment-card/AppointmentCard";
 
-// Sample usage: <AppointmentTable appointments={[{...}, {...}]} />
 
 export type Appointment = {
   id: number;
@@ -229,36 +226,7 @@ const AppointmentTable = ({
           </div>
 
           {/* Pagination */}
-          {/* <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 rounded-lg">
-            <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-              <div>
-                <p className="text-sm text-gray-700">
-                  Showing <span className="font-medium">1</span> to{" "}
-                  <span className="font-medium">
-                    {filteredAppointments.length}
-                  </span>{" "}
-                  of{" "}
-                  <span className="font-medium">
-                    {filteredAppointments.length}
-                  </span>{" "}
-                  results
-                </p>
-              </div>
-              <div>
-                <nav
-                  className="isolate inline-flex -space-x-px rounded-md shadow-sm"
-                  aria-label="Pagination"
-                >
-                  <Button variant="outline" className="rounded-l-md">
-                    Previous
-                  </Button>
-                  <Button variant="outline" className="rounded-r-md ml-2">
-                    Next
-                  </Button>
-                </nav>
-              </div>
-            </div>
-          </div> */}
+
         </TabsContent>
       ))}
     </Tabs>
