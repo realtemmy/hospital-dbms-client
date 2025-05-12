@@ -16,6 +16,7 @@ import Chat from "./Pages/chat/Chat";
 import ChatLayout from "./Layouts/chat-layout/ChatLayout";
 import Schedule from "./Pages/schedule/Schedule";
 import Diagnosis from "./Pages/diagnosis/Diagnosis";
+import EditProfile from "./features/profile/EditProfile";
 
 function App() {
   // In chat, there should be ai generated response or suggestions for physicians
@@ -43,6 +44,7 @@ function App() {
         <Route path="patients">
           <Route index element={<Patients />} />
           <Route path=":id" element={<PatientPage />} />
+          <Route path=":id/edit" element={<EditProfile />} />
           <Route path=":id/appointments" element={<PatientTable />} />
         </Route>
         <Route path="schedule" element={<Schedule />} />
