@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { Outlet } from "react-router";
 import {
-  Users,
-  CalendarDays,
-  LayoutDashboard,
-  Settings,
-  LogOut,
   Search,
   Bell,
 } from "lucide-react";

@@ -2,16 +2,16 @@ import * as React from "react";
 import {
   GalleryVerticalEnd,
   LayoutDashboard,
-  Calendar,
   Users,
-  Clock,
-  MessageSquare,
-  FileText,
   HelpCircle,
   LogOut,
-  Cross,
   CalendarDays,
   Settings,
+  Hospital,
+  TableOfContents,
+  SquareLibrary,
+  Handshake,
+  UsersRound,
 } from "lucide-react";
 import { Link } from "react-router";
 
@@ -26,9 +26,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarFooter,
 } from "../ui/sidebar";
 
@@ -50,7 +47,7 @@ export const AdminSidebar = ({
       path: "/admin/doctors",
     },
     {
-      icon: Users,
+      icon: UsersRound,
       text: "Patients",
       path: "/admin/patients",
     },
@@ -58,6 +55,26 @@ export const AdminSidebar = ({
       icon: CalendarDays,
       text: "Appointments",
       path: "/admin/appointments",
+    },
+    {
+      icon: Hospital,
+      text: "Rooms",
+      path: "/admin/rooms",
+    },
+    {
+      icon: TableOfContents,
+      text: "Departments",
+      path: "/admin/departments",
+    },
+    {
+      icon: SquareLibrary,
+      text: "Records",
+      path: "/admin/records", //birth and death records
+    },
+    {
+      icon: Handshake,
+      text: "Staff",
+      path: "/admin/staff",
     },
     {
       icon: Settings,
@@ -72,12 +89,22 @@ export const AdminSidebar = ({
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link to="/">
-                <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <GalleryVerticalEnd className="size-4" />
-                </div>
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-medium">Lighthouse Hospital</span>
-                  <span className="text-xs text-muted-foreground">v1.0.0</span>
+                <div className="flex items-center space-x-3">
+                  <Avatar className="h-12 w-12 border-2 border-primary/10">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>SS</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="text-sm font-semibold">Sarah Smith</p>
+                    <div className="flex items-center">
+                      <Badge
+                        variant="outline"
+                        className="text-xs px-2 py-0 bg-primary/5 text-primary"
+                      >
+                        Surgeon
+                      </Badge>
+                    </div>
+                  </div>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -86,31 +113,14 @@ export const AdminSidebar = ({
       </SidebarHeader>
 
       <SidebarContent className="pt-4">
-        <div className="px-4 mb-6">
-          <div className="flex items-center space-x-3">
-            <Avatar className="h-12 w-12 border-2 border-primary/10">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>SS</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-sm font-semibold">Sarah Smith</p>
-              <div className="flex items-center">
-                <Badge
-                  variant="outline"
-                  className="text-xs px-2 py-0 bg-primary/5 text-primary"
-                >
-                  Surgeon
-                </Badge>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <SidebarGroup>
           <SidebarMenu className="px-2 space-y-1">
             {sidebarItems.map((item, index) => (
               <SidebarMenuItem key={index}>
-                <SidebarMenuButton asChild isActive={item.path === location.pathname}> 
+                <SidebarMenuButton
+                  asChild
+                  isActive={item.path === location.pathname}
+                >
                   <Link
                     to={item.path}
                     className="flex items-center space-x-3 font-medium"
