@@ -20,6 +20,7 @@ import EditProfile from "./features/profile/EditProfile";
 
 
 import Admin from "./Pages/admin/Admin";
+import Physicians from "./features/admin/physicians/Physicians";
 
 function App() {
   // In chat, there should be ai generated response or suggestions for physicians
@@ -57,7 +58,7 @@ function App() {
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Admin />} />
-        <Route path="doctors" element={<div>Doctors Management</div>} />
+        <Route path="doctors" element={<Physicians />} />
         <Route path="patients" element={<div>Patients Management</div>} />
         <Route
           path="appointments"
