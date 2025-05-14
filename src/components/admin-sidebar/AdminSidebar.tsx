@@ -95,13 +95,13 @@ export const AdminSidebar = ({
                     <AvatarFallback>SS</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="text-sm font-semibold">Sarah Smith</p>
+                    <p className="text-sm font-semibold">Sarah Johnson</p>
                     <div className="flex items-center">
                       <Badge
                         variant="outline"
                         className="text-xs px-2 py-0 bg-primary/5 text-primary"
                       >
-                        Surgeon
+                        Admin
                       </Badge>
                     </div>
                   </div>

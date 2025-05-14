@@ -15,18 +15,8 @@ import {
   Download
 } from 'lucide-react';
 import KPICards from '@/components/kpi-cards/KPICards';
-import { count } from 'console';
 
 const Admin = () => {
-  const [showQuickActions, setShowQuickActions] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
-
-  // Mock data - Replace with actual data from your backend
-  const adminInfo = {
-    name: "Dr. Sarah Johnson",
-    role: "Hospital Administrator",
-    photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-  };
 
   const kpis = {
     totalPatients: 156,
@@ -61,12 +51,7 @@ const Admin = () => {
     },
   ];
 
-  const recentActivities = [
-    { id: 1, type: "admission", message: "New patient admitted to Ward 3", time: "5 mins ago" },
-    { id: 2, type: "report", message: "Lab report uploaded for Patient #1234", time: "15 mins ago" },
-    { id: 3, type: "emergency", message: "Emergency case received in ER", time: "20 mins ago" },
-    { id: 4, type: "alert", message: "Low stock alert: Paracetamol", time: "1 hour ago" }
-  ];
+
 
   const departmentStatus = [
     { name: "Radiology", pending: 4, type: "scans" },
@@ -90,110 +75,6 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center">
-              <img
-                src="https://thumbs.dreamstime.com/b/hospital-logo-icon-hospital-logo-icon-135146804.jpg"
-                alt="Hospital Logo"
-                className="h-12 w-auto"
-              />
-              <div className="ml-4">
-                <h1 className="text-2xl font-bold text-gray-900">
-                  City General Hospital
-                </h1>
-                <p className="text-sm text-gray-500">
-                  Healthcare Management System
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              {/* Notifications */}
-              <div className="relative">
-                <button
-                  onClick={() => setShowNotifications(!showNotifications)}
-                  className="p-2 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none"
-                >
-                  <Bell className="h-6 w-6" />
-                  <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
-                </button>
-
-                {showNotifications && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg py-1 z-10">
-                    <div className="px-4 py-2 border-b border-gray-200">
-                      <h3 className="text-sm font-semibold text-gray-900">
-                        Notifications
-                      </h3>
-                    </div>
-                    <div className="max-h-96 overflow-y-auto">
-                      {recentActivities.map((activity) => (
-                        <div
-                          key={activity.id}
-                          className="px-4 py-3 hover:bg-gray-50"
-                        >
-                          <p className="text-sm text-gray-900">
-                            {activity.message}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            {activity.time}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Admin Profile */}
-              <div className="relative">
-                <button
-                  onClick={() => setShowQuickActions(!showQuickActions)}
-                  className="flex items-center space-x-3 focus:outline-none"
-                >
-                  <img
-                    src={adminInfo.photo}
-                    alt={adminInfo.name}
-                    className="h-10 w-10 rounded-full"
-                  />
-                  <div className="text-left">
-                    <p className="text-sm font-medium text-gray-900">
-                      {adminInfo.name}
-                    </p>
-                    <p className="text-xs text-gray-500">{adminInfo.role}</p>
-                  </div>
-                  <ChevronDown className="h-5 w-5 text-gray-400" />
-                </button>
-
-                {showQuickActions && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-10">
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Profile Settings
-                    </a>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Account Settings
-                    </a>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                    >
-                      Logout
-                    </a>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* KPI Cards */}
