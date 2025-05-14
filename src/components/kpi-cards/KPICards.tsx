@@ -44,11 +44,11 @@ const KPICards = ({ kpis }: { kpis: KPICardsProps }) => {
     <div
       className={cn(
         "bg-white rounded-lg shadow p-6 border-l-4",
-        cardBorderStyles[kpis.color]
+        cardBorderStyles[kpis.color as keyof typeof cardBorderStyles]
       )}
     >
       <div className="flex items-center">
-        <div className={cn("p-3 rounded-full text-blue-500", cardIconStyles[kpis.color], cardTextStyles[kpis.color])}>
+        <div className={cn("p-3 rounded-full text-blue-500", cardIconStyles[kpis.color as keyof typeof cardIconStyles], cardTextStyles[kpis.color as keyof typeof cardTextStyles])}>
           <kpis.icon className="h-6 w-6" />
         </div>
         <div className="ml-4">

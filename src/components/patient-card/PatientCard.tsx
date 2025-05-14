@@ -45,7 +45,7 @@ const PatientCard = ({ patient }: { patient: patientInfo }) => {
   };
 
   const handleViewPatient = () => {
-    navigate(`/doctor/patients/${patient.id}`);
+    navigate(`/admin/patients/${patient.id}`);
   };
 
   return (

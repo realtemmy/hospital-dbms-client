@@ -17,6 +17,7 @@ import ChatLayout from "./Layouts/chat-layout/ChatLayout";
 import Schedule from "./Pages/schedule/Schedule";
 import Diagnosis from "./Pages/diagnosis/Diagnosis";
 import EditProfile from "./features/profile/EditProfile";
+import AddPatient from "./components/add-patient/AddPatient";
 
 
 import Admin from "./Pages/admin/Admin";
@@ -44,7 +45,7 @@ function App() {
         <Route path="chat" element={<ChatLayout />}>
           <Route index element={<Chat />} />
         </Route>
-        
+
         <Route path="patients">
           <Route index element={<Patients />} />
           <Route path=":id" element={<PatientPage />} />
@@ -56,25 +57,22 @@ function App() {
       </Route>
 
       {/* Admin Routes */}
-      <Route path="/admin" element={<AdminLayout />}>
+      <Route path="admin" element={<AdminLayout />}>
         <Route index element={<Admin />} />
         <Route path="doctors" element={<Physicians />} />
-        <Route path="patients" element={<Patients/>} >
-          <Route path=":id" element={<PatientPage/>} />
-          <Route path=":id/edit" element={<EditProfile/>} />
-          <Route path=":id/appointments" element={<PatientTable/>} />
-        </Route>
+        <Route path="patients" element={<Patients />}/>
+          {/* <Route path=":id" element={<PatientPage />} />
+          <Route path=":id/edit" element={<EditProfile />} />
+        </Route> */}
+        <Route path="patients/:id" element={<PatientPage />}/>
+        <Route path="add-patient" element={<AddPatient />} />
         <Route path="appointments">
           <Route index element={<AppointmentList />} />
           <Route path=":id" element={<AppointmentPage />} />
         </Route>
-        <Route path="rooms" element={<Rooms/>} />
+        <Route path="rooms" element={<Rooms />} />
         <Route path="departments" element={<Departments />} />
         <Route path="records" element={<Records />} />
-        <Route
-          path="appointments"
-          element={<div>Appointments Management</div>}
-        />
       </Route>
 
       {/* Patient Routes */}
