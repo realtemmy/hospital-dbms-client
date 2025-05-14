@@ -21,22 +21,16 @@ import {
   FileText,
   Calendar,
   Clock,
-  Download,
-  Filter,
   Eye,
-  Edit,
   Printer,
   FileUp,
   Baby,
-  Heart,
   Skull,
-  Users,
   ArrowUp,
   ArrowDown,
   Link,
   AlertCircle,
   CheckCircle2,
-  XCircle,
 } from "lucide-react";
 import { Input } from "../../../components/ui/input";
 import {
@@ -62,7 +56,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "../../../components/ui/tooltip";
 
 const Records = () => {
   return (
@@ -386,21 +380,21 @@ const Records = () => {
 
                           <TooltipProvider>
                             <Tooltip>
-                              <TooltipTrigger><Button
-                            variant="ghost"
-                            size="icon"
-                            className="hover:bg-blue-50 hover:text-blue-600"
-                            title="Special Follow-up"
-                          >
-                            <AlertCircle className="h-4 w-4" />
-                          </Button></TooltipTrigger>
+                              <TooltipTrigger>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="hover:bg-blue-50 hover:text-blue-600"
+                                  title="Special Follow-up"
+                                >
+                                  <AlertCircle className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
                               <TooltipContent>
                                 <p>Special Follow-up</p>
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
-
-                          
                         </div>
                       </TableCell>
                     </TableRow>
@@ -446,7 +440,9 @@ const Records = () => {
                     <SelectContent>
                       <SelectItem value="all">All Status</SelectItem>
                       <SelectItem value="notified">Family Notified</SelectItem>
-                      <SelectItem value="pending">Pending Notification</SelectItem>
+                      <SelectItem value="pending">
+                        Pending Notification
+                      </SelectItem>
                       <SelectItem value="autopsy">Autopsy Required</SelectItem>
                     </SelectContent>
                   </Select>

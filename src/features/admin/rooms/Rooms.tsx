@@ -1,9 +1,8 @@
-import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table";
 import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
-import { Plus, Search, Filter, Eye, Edit, Home, Users, Wrench, CheckCircle, Calendar, Phone, DollarSign } from 'lucide-react';
+import { Plus, Search, Eye, Edit, Home, Users, Wrench, CheckCircle, Calendar, Phone, DollarSign } from 'lucide-react';
 import { Input } from "../../../components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar";
 import {
