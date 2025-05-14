@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,Fragment } from "react";
+import { Outlet } from "react-router";
 import { Search, Filter, UserRound, ChevronRight } from "lucide-react";
 import PatientCard from "../../../../components/patient-card/PatientCard";
 import { Button } from "../../../../components/ui/button";
@@ -145,7 +146,8 @@ const Patients = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <Fragment>
+      <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
           <UserRound className="h-8 w-8 text-primary" />
@@ -228,6 +230,9 @@ const Patients = () => {
         </TabsContent>
       </Tabs>
     </div>
+    <Outlet />
+    </Fragment>
+    
   );
 };
 

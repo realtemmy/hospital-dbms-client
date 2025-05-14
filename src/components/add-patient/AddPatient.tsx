@@ -42,7 +42,11 @@ const formSchema = z.object({
     required_error: "Please select a gender",
   }),
   email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
+  phone: z.string()
+    .min(11, "Phone number must be 11 digits")
+    .max(11, "Phone number must be 11 digits")
+    .regex(/^[0-9]+$/, "Phone number must contain only digits")
+    .refine((val) => val.startsWith('0'), "Phone number must start with 0"),
   address: z.string().min(5, "Address must be at least 5 characters"),
   bloodType: z.string({
     required_error: "Please select a blood type",
@@ -52,7 +56,11 @@ const formSchema = z.object({
   emergencyContact: z.object({
     name: z.string().min(2, "Emergency contact name must be at least 2 characters"),
     relationship: z.string().min(2, "Relationship must be at least 2 characters"),
-    phone: z.string().min(10, "Phone number must be at least 10 digits"),
+    phone: z.string()
+      .min(11, "Phone number must be 11 digits")
+      .max(11, "Phone number must be 11 digits")
+      .regex(/^[0-9]+$/, "Phone number must contain only digits")
+      .refine((val) => val.startsWith('0'), "Phone number must start with 0"),
   }),
 });
 
@@ -86,7 +94,8 @@ const AddPatient = () => {
         <CardHeader>
           <CardTitle>Add New Patient</CardTitle>
           <CardDescription>
-            Enter the patient's information below. All fields marked with * are required.
+            Enter the patient's information below. All fields marked with * are
+            required.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -95,8 +104,10 @@ const AddPatient = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Personal Information */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Personal Information</h3>
-                  
+                  <h3 className="text-lg font-semibold">
+                    Personal Information
+                  </h3>
+
                   <FormField
                     control={form.control}
                     name="firstName"
@@ -156,7 +167,8 @@ const AddPatient = () => {
                               selected={field.value}
                               onSelect={field.onChange}
                               disabled={(date) =>
-                                date > new Date() || date < new Date("1900-01-01")
+                                date > new Date() ||
+                                date < new Date("1900-01-01")
                               }
                               initialFocus
                             />
@@ -173,7 +185,10 @@ const AddPatient = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Gender *</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select gender" />
@@ -182,7 +197,6 @@ const AddPatient = () => {
                           <SelectContent>
                             <SelectItem value="male">Male</SelectItem>
                             <SelectItem value="female">Female</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -194,7 +208,7 @@ const AddPatient = () => {
                 {/* Contact Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold">Contact Information</h3>
-                  
+
                   <FormField
                     control={form.control}
                     name="email"
@@ -202,7 +216,11 @@ const AddPatient = () => {
                       <FormItem>
                         <FormLabel>Email *</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="john.doe@example.com" {...field} />
+                          <Input
+                            type="email"
+                            placeholder="john.doe@example.com"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -216,8 +234,21 @@ const AddPatient = () => {
                       <FormItem>
                         <FormLabel>Phone Number *</FormLabel>
                         <FormControl>
-                          <Input type="tel" placeholder="+1 (555) 000-0000" {...field} />
+                          <Input
+                            type="tel"
+                            placeholder="08012345678"
+                            {...field}
+                            pattern="^[0-9]{11}$"
+                            maxLength={11}
+                            onChange={(e) => {
+                              const value = e.target.value.replace(/[^0-9]/g, '');
+                              field.onChange(value);
+                            }}
+                          />
                         </FormControl>
+                        <FormDescription>
+                          Enter 11-digit phone number starting with 0
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -230,7 +261,10 @@ const AddPatient = () => {
                       <FormItem>
                         <FormLabel>Address *</FormLabel>
                         <FormControl>
-                          <Textarea placeholder="Enter full address" {...field} />
+                          <Textarea
+                            placeholder="Enter full address"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -243,7 +277,10 @@ const AddPatient = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Blood Type *</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select blood type" />
@@ -270,7 +307,7 @@ const AddPatient = () => {
               {/* Medical Information */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Medical Information</h3>
-                
+
                 <FormField
                   control={form.control}
                   name="medicalHistory"
@@ -278,7 +315,7 @@ const AddPatient = () => {
                     <FormItem>
                       <FormLabel>Medical History</FormLabel>
                       <FormControl>
-                        <Textarea 
+                        <Textarea
                           placeholder="Enter any relevant medical history"
                           className="min-h-[100px]"
                           {...field}
@@ -296,7 +333,7 @@ const AddPatient = () => {
                     <FormItem>
                       <FormLabel>Allergies</FormLabel>
                       <FormControl>
-                        <Textarea 
+                        <Textarea
                           placeholder="Enter any known allergies"
                           className="min-h-[100px]"
                           {...field}
@@ -311,7 +348,7 @@ const AddPatient = () => {
               {/* Emergency Contact */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Emergency Contact</h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <FormField
                     control={form.control}
@@ -320,7 +357,10 @@ const AddPatient = () => {
                       <FormItem>
                         <FormLabel>Name *</FormLabel>
                         <FormControl>
-                          <Input placeholder="Emergency contact name" {...field} />
+                          <Input
+                            placeholder="Emergency contact name"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -334,7 +374,10 @@ const AddPatient = () => {
                       <FormItem>
                         <FormLabel>Relationship *</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g., Spouse, Parent" {...field} />
+                          <Input
+                            placeholder="e.g., Spouse, Parent"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -348,8 +391,21 @@ const AddPatient = () => {
                       <FormItem>
                         <FormLabel>Phone Number *</FormLabel>
                         <FormControl>
-                          <Input type="tel" placeholder="+1 (555) 000-0000" {...field} />
+                          <Input
+                            type="tel"
+                            placeholder="08012345678"
+                            {...field}
+                            pattern="^[0-9]{11}$"
+                            maxLength={11}
+                            onChange={(e) => {
+                              const value = e.target.value.replace(/[^0-9]/g, '');
+                              field.onChange(value);
+                            }}
+                          />
                         </FormControl>
+                        <FormDescription>
+                          Enter 11-digit phone number starting with 0
+                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -361,9 +417,7 @@ const AddPatient = () => {
                 <Button variant="outline" type="button">
                   Cancel
                 </Button>
-                <Button type="submit">
-                  Add Patient
-                </Button>
+                <Button type="submit">Add Patient</Button>
               </div>
             </form>
           </Form>
