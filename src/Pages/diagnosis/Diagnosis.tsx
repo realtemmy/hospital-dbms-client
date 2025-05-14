@@ -1,41 +1,54 @@
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  User, 
-  Stethoscope, 
-  FileText, 
-  Pill, 
-  Clock, 
-  Calendar, 
-  Heart, 
-  Activity, 
-  Thermometer, 
-  Scale, 
+import React, { useState } from "react";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
+import { Textarea } from "../../components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
+import { Badge } from "../../components/ui/badge";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../../components/ui/tabs";
+import {
+  User,
+  Stethoscope,
+  FileText,
+  Pill,
+  Clock,
+  Heart,
+  Activity,
+  Thermometer,
+  Scale,
   AlertCircle,
   CheckCircle2,
-  XCircle,
-  Plus
-} from 'lucide-react';
+  Plus,
+} from "lucide-react";
 
 type VitalSign = {
   name: string;
   value: string;
   unit: string;
-  status: 'normal' | 'high' | 'low';
+  status: "normal" | "high" | "low";
   icon: React.ElementType;
 };
 
 type Symptom = {
   id: string;
   name: string;
-  severity: 'mild' | 'moderate' | 'severe';
+  severity: "mild" | "moderate" | "severe";
   duration: string;
   notes?: string;
 };
@@ -50,7 +63,7 @@ type Diagnosis = {
 
 type Treatment = {
   id: string;
-  type: 'medication' | 'procedure' | 'lifestyle';
+  type: "medication" | "procedure" | "lifestyle";
   name: string;
   dosage?: string;
   frequency?: string;
@@ -59,43 +72,73 @@ type Treatment = {
 };
 
 const Diagnosis = () => {
-  const [selectedTab, setSelectedTab] = useState('overview');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTab, setSelectedTab] = useState("overview");
 
   // Mock patient data
   const patient = {
-    id: 'P12345',
-    name: 'John Doe',
+    id: "P12345",
+    name: "John Doe",
     age: 45,
-    gender: 'Male',
-    bloodType: 'O+',
-    allergies: ['Penicillin', 'Peanuts'],
-    chronicConditions: ['Hypertension', 'Type 2 Diabetes'],
+    gender: "Male",
+    bloodType: "O+",
+    allergies: ["Penicillin", "Peanuts"],
+    chronicConditions: ["Hypertension", "Type 2 Diabetes"],
     lastVisit: new Date(2024, 2, 15),
   };
 
   // Mock vital signs
   const vitalSigns: VitalSign[] = [
-    { name: 'Blood Pressure', value: '120/80', unit: 'mmHg', status: 'normal', icon: Activity },
-    { name: 'Heart Rate', value: '72', unit: 'bpm', status: 'normal', icon: Heart },
-    { name: 'Temperature', value: '37.0', unit: '°C', status: 'normal', icon: Thermometer },
-    { name: 'Weight', value: '75', unit: 'kg', status: 'normal', icon: Scale },
+    {
+      name: "Blood Pressure",
+      value: "120/80",
+      unit: "mmHg",
+      status: "normal",
+      icon: Activity,
+    },
+    {
+      name: "Heart Rate",
+      value: "72",
+      unit: "bpm",
+      status: "normal",
+      icon: Heart,
+    },
+    {
+      name: "Temperature",
+      value: "37.0",
+      unit: "°C",
+      status: "normal",
+      icon: Thermometer,
+    },
+    { name: "Weight", value: "75", unit: "kg", status: "normal", icon: Scale },
   ];
 
   // Mock symptoms
   const symptoms: Symptom[] = [
-    { id: '1', name: 'Fever', severity: 'moderate', duration: '3 days', notes: 'Temperature ranging from 38-39°C' },
-    { id: '2', name: 'Cough', severity: 'mild', duration: '5 days', notes: 'Dry cough, worse at night' },
-    { id: '3', name: 'Fatigue', severity: 'moderate', duration: '4 days' },
+    {
+      id: "1",
+      name: "Fever",
+      severity: "moderate",
+      duration: "3 days",
+      notes: "Temperature ranging from 38-39°C",
+    },
+    {
+      id: "2",
+      name: "Cough",
+      severity: "mild",
+      duration: "5 days",
+      notes: "Dry cough, worse at night",
+    },
+    { id: "3", name: "Fatigue", severity: "moderate", duration: "4 days" },
   ];
 
   // Mock diagnoses
   const diagnoses: Diagnosis[] = [
     {
-      id: '1',
-      condition: 'Acute Bronchitis',
+      id: "1",
+      condition: "Acute Bronchitis",
       confidence: 85,
-      notes: 'Based on symptoms and examination. Recommend chest X-ray if symptoms persist.',
+      notes:
+        "Based on symptoms and examination. Recommend chest X-ray if symptoms persist.",
       date: new Date(2024, 2, 20),
     },
   ];
@@ -103,46 +146,46 @@ const Diagnosis = () => {
   // Mock treatments
   const treatments: Treatment[] = [
     {
-      id: '1',
-      type: 'medication',
-      name: 'Amoxicillin',
-      dosage: '500mg',
-      frequency: '3 times daily',
-      duration: '7 days',
-      notes: 'Take with food',
+      id: "1",
+      type: "medication",
+      name: "Amoxicillin",
+      dosage: "500mg",
+      frequency: "3 times daily",
+      duration: "7 days",
+      notes: "Take with food",
     },
     {
-      id: '2',
-      type: 'lifestyle',
-      name: 'Rest and Hydration',
-      duration: 'Until symptoms resolve',
-      notes: 'Increase fluid intake, get adequate rest',
+      id: "2",
+      type: "lifestyle",
+      name: "Rest and Hydration",
+      duration: "Until symptoms resolve",
+      notes: "Increase fluid intake, get adequate rest",
     },
   ];
 
-  const getVitalSignStatusColor = (status: VitalSign['status']) => {
+  const getVitalSignStatusColor = (status: VitalSign["status"]) => {
     switch (status) {
-      case 'normal':
-        return 'bg-green-100 text-green-800';
-      case 'high':
-        return 'bg-red-100 text-red-800';
-      case 'low':
-        return 'bg-yellow-100 text-yellow-800';
+      case "normal":
+        return "bg-green-100 text-green-800";
+      case "high":
+        return "bg-red-100 text-red-800";
+      case "low":
+        return "bg-yellow-100 text-yellow-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
-  const getSymptomSeverityColor = (severity: Symptom['severity']) => {
+  const getSymptomSeverityColor = (severity: Symptom["severity"]) => {
     switch (severity) {
-      case 'mild':
-        return 'bg-green-100 text-green-800';
-      case 'moderate':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'severe':
-        return 'bg-red-100 text-red-800';
+      case "mild":
+        return "bg-green-100 text-green-800";
+      case "moderate":
+        return "bg-yellow-100 text-yellow-800";
+      case "severe":
+        return "bg-red-100 text-red-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -171,7 +214,9 @@ const Diagnosis = () => {
                 <User className="h-6 w-6 text-blue-600" />
               </div>
               <div>
-                <h2 className="text-lg md:text-xl font-semibold">{patient.name}</h2>
+                <h2 className="text-lg md:text-xl font-semibold">
+                  {patient.name}
+                </h2>
                 <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500">
                   <span>ID: {patient.id}</span>
                   <span>•</span>
@@ -226,14 +271,19 @@ const Diagnosis = () => {
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
               {vitalSigns.map((vital, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                >
                   <div className="flex items-center gap-3">
                     <vital.icon className="h-5 w-5 text-gray-500" />
                     <div>
                       <p className="text-sm font-medium">{vital.name}</p>
                       <p className="text-xl md:text-2xl font-semibold">
                         {vital.value}
-                        <span className="text-sm text-gray-500 ml-1">{vital.unit}</span>
+                        <span className="text-sm text-gray-500 ml-1">
+                          {vital.unit}
+                        </span>
                       </p>
                     </div>
                   </div>
@@ -252,7 +302,11 @@ const Diagnosis = () => {
             <CardTitle>Diagnosis Details</CardTitle>
           </CardHeader>
           <CardContent>
-            <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
+            <Tabs
+              value={selectedTab}
+              onValueChange={setSelectedTab}
+              className="w-full"
+            >
               <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="symptoms">Symptoms</TabsTrigger>
@@ -265,12 +319,19 @@ const Diagnosis = () => {
                   <h3 className="font-medium">Current Symptoms</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {symptoms.map((symptom) => (
-                      <div key={symptom.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div
+                        key={symptom.id}
+                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                      >
                         <div>
                           <p className="font-medium">{symptom.name}</p>
-                          <p className="text-sm text-gray-500">{symptom.duration}</p>
+                          <p className="text-sm text-gray-500">
+                            {symptom.duration}
+                          </p>
                         </div>
-                        <Badge className={getSymptomSeverityColor(symptom.severity)}>
+                        <Badge
+                          className={getSymptomSeverityColor(symptom.severity)}
+                        >
                           {symptom.severity}
                         </Badge>
                       </div>
@@ -282,14 +343,19 @@ const Diagnosis = () => {
                   <h3 className="font-medium">Current Diagnosis</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {diagnoses.map((diagnosis) => (
-                      <div key={diagnosis.id} className="p-4 bg-gray-50 rounded-lg">
+                      <div
+                        key={diagnosis.id}
+                        className="p-4 bg-gray-50 rounded-lg"
+                      >
                         <div className="flex items-center justify-between mb-2">
                           <h4 className="font-medium">{diagnosis.condition}</h4>
                           <Badge className="bg-blue-100 text-blue-800">
                             {diagnosis.confidence}% Confidence
                           </Badge>
                         </div>
-                        <p className="text-sm text-gray-600">{diagnosis.notes}</p>
+                        <p className="text-sm text-gray-600">
+                          {diagnosis.notes}
+                        </p>
                         <p className="text-sm text-gray-500 mt-2">
                           Diagnosed on {diagnosis.date.toLocaleDateString()}
                         </p>
@@ -302,11 +368,14 @@ const Diagnosis = () => {
                   <h3 className="font-medium">Current Treatment</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {treatments.map((treatment) => (
-                      <div key={treatment.id} className="p-3 bg-gray-50 rounded-lg">
+                      <div
+                        key={treatment.id}
+                        className="p-3 bg-gray-50 rounded-lg"
+                      >
                         <div className="flex items-center gap-2 mb-1">
-                          {treatment.type === 'medication' ? (
+                          {treatment.type === "medication" ? (
                             <Pill className="h-4 w-4 text-blue-600" />
-                          ) : treatment.type === 'procedure' ? (
+                          ) : treatment.type === "procedure" ? (
                             <Stethoscope className="h-4 w-4 text-blue-600" />
                           ) : (
                             <Activity className="h-4 w-4 text-blue-600" />
@@ -322,7 +391,9 @@ const Diagnosis = () => {
                           )}
                           <p>Duration: {treatment.duration}</p>
                           {treatment.notes && (
-                            <p className="text-gray-500 mt-1">{treatment.notes}</p>
+                            <p className="text-gray-500 mt-1">
+                              {treatment.notes}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -387,8 +458,15 @@ const Diagnosis = () => {
                       <Input placeholder="Enter condition" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">Confidence Level</label>
-                      <Input type="number" min="0" max="100" placeholder="Enter confidence percentage" />
+                      <label className="text-sm font-medium">
+                        Confidence Level
+                      </label>
+                      <Input
+                        type="number"
+                        min="0"
+                        max="100"
+                        placeholder="Enter confidence percentage"
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Notes</label>
@@ -410,13 +488,17 @@ const Diagnosis = () => {
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-sm font-medium">Treatment Type</label>
+                        <label className="text-sm font-medium">
+                          Treatment Type
+                        </label>
                         <Select>
                           <SelectTrigger>
                             <SelectValue placeholder="Select type" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="medication">Medication</SelectItem>
+                            <SelectItem value="medication">
+                              Medication
+                            </SelectItem>
                             <SelectItem value="procedure">Procedure</SelectItem>
                             <SelectItem value="lifestyle">Lifestyle</SelectItem>
                           </SelectContent>

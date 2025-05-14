@@ -24,10 +24,10 @@ const StatusBadge = ({ status }: { status: string }) => {
       variant="outline"
       className={cn(
         "flex items-center gap-1 font-normal border px-2 py-1",
-        statusStyles[status] || ""
+        statusStyles[status as keyof typeof statusStyles] || ""
       )}
     >
-      {statusIcons[status]}
+      {statusIcons[status as keyof typeof statusIcons]}
       <span className="capitalize">{status}</span>
     </Badge>
   );

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { 
   CalendarDays, 
   Users, 
-  Activity, 
+   
   Clipboard, 
   Clock,
   ChevronRight,
@@ -19,13 +19,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/ta
 import { ScrollArea } from "../../components/ui/scroll-area";
 import PhysicianBanner from "../../components/physician-banner/PhysicianBanner";
 
-// Import doctor images - replace these with actual paths when available
-const maleDoctorImage = "https://cdn-icons-png.flaticon.com/512/3304/3304567.png";
-const femaleDoctorImage = "https://cdn-icons-png.flaticon.com/512/3304/3304633.png";
+
 
 const Physician = () => {
   const navigate = useNavigate();
-  const [timeFilter, setTimeFilter] = useState("today");
   
   // Doctor profile data
   const doctor = {

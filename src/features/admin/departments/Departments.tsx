@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table";
 import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
-import { Plus, Search, Users, Stethoscope, Clock, Building2, Phone, Mail, MapPin, Eye, Edit } from 'lucide-react';
+import { Plus, Search, Users, Stethoscope, Clock, Building2, Phone, Mail, Eye, Edit } from 'lucide-react';
 import { Input } from "../../../components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar";
 import {
