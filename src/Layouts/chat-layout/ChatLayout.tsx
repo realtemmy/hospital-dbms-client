@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Outlet } from "react-router";
 import {
   Phone,
@@ -6,19 +6,19 @@ import {
   MoreVertical,
   Menu,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   Drawer,
   DrawerTitle,
   DrawerHeader,
   DrawerContent,
   DrawerTrigger,
-} from "@/components/ui/drawer";
+} from "../../components/ui/drawer";
 import ChatSidebar from "../../components/chat-sidebar/ChatSidebar";
 
 const ChatLayout = () => {
   const [show, setShow] = useState(true);
-  const [selectedChat, setSelectedChat] = useState(null);
+  const [selectedChat, setSelectedChat] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleToggleShow = () => setShow(!show);
@@ -69,6 +69,7 @@ const ChatLayout = () => {
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             conversations={conversations}
+            onChatSelect={() => {}}
           />
         </div>
       )}
@@ -102,6 +103,7 @@ const ChatLayout = () => {
                       searchQuery={searchQuery}
                       setSearchQuery={setSearchQuery}
                       conversations={conversations}
+                      onChatSelect={() => {}}
                     />
                   </div>
                 </DrawerContent>

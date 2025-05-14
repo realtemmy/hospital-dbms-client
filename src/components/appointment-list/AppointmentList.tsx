@@ -1,27 +1,13 @@
 import { useState } from "react";
 
 import {
-  Calendar,
-  Search,
+  
   Filter,
   ChevronDown,
   Plus,
-  Eye,
-  Edit,
-  Trash2,
-  MoreHorizontal,
-  Calendar as CalendarIcon,
-  Phone,
-  Mail,
+
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Button } from "../ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+
 import {
   Select,
   SelectContent,
@@ -32,7 +18,8 @@ import {
 import { Input } from "../ui/input";
 import AppointmentTable from "../appointment-table/AppointmentTable";
 
-import StatusBadge from "../status-badge/StatusBadge";
+
+import { Button } from "../ui/button";
 
 // Expanded appointment data with more attributes
 const appointments = [
@@ -135,25 +122,6 @@ const AppointmentList = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterDate, setFilterDate] = useState("all");
 
-  // Filter appointments
-  const filteredAppointments = appointments.filter((appointment) => {
-    // Filter by search term
-    const matchesSearch =
-      searchTerm === "" ||
-      appointment.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      appointment.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      appointment.mobile.includes(searchTerm);
-
-    // Filter by status
-    const matchesStatus =
-      filterStatus === "all" || appointment.status === filterStatus;
-
-    // Logic for date filter would go here
-    // For now we'll return true for all dates
-    const matchesDate = true;
-
-    return matchesSearch && matchesStatus && matchesDate;
-  });
 
   return (
     <div className="bg-gray-50 rounded-lg pb-6">
@@ -174,7 +142,6 @@ const AppointmentList = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full"
-              icon={<Search className="h-4 w-4 text-gray-400" />}
             />
           </div>
           <div>

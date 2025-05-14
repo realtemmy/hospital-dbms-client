@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router";
 import { 
   CalendarDays, 
@@ -162,13 +161,6 @@ const Physician = () => {
     }
   ];
 
-  // Get current time of day for greeting
-  const getCurrentTimeOfDay = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "morning";
-    if (hour < 18) return "afternoon";
-    return "evening";
-  };
 
   return (
     <div className="pb-10">

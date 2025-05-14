@@ -38,7 +38,6 @@ const PhysicianLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   
   const toggleNotification = () => setNotificationOpen(!notificationOpen);
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
     <SidebarProvider

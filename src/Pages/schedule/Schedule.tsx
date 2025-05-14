@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Calendar } from '@/components/ui/calendar';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Calendar as CalendarIcon, Clock, User, Stethoscope, Search, Plus, Building2, Microscope, Activity, Heart, Brain, Bone } from 'lucide-react';
+import { Calendar } from '../../components/ui/calendar';
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
+import { ScrollArea } from '../../components/ui/scroll-area';
+import { Tabs, TabsList, TabsTrigger } from '../../components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
+import { Badge } from '../../components/ui/badge';
+import { Clock, Stethoscope, Search, Plus, Building2, Microscope, Activity, Heart, Brain, Bone } from 'lucide-react';
 
 type Appointment = {
   id: string;
