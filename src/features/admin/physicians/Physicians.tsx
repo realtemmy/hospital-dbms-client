@@ -116,17 +116,17 @@ const getInitials = (name: string) => {
 
 const Physicians = () => {
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
             Physicians Directory
           </h1>
           <p className="text-sm text-gray-500 mt-1">
             Manage and view all physicians in the hospital
           </p>
         </div>
-        <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
+        <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
           <Plus className="h-4 w-4" />
           Add New Physician
         </Button>
@@ -134,17 +134,17 @@ const Physicians = () => {
 
       <Card className="border-none shadow-lg">
         <CardHeader className="bg-gray-50/50 border-b">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <CardTitle className="text-lg font-semibold">Physicians List</CardTitle>
-            <div className="flex gap-4">
-              <div className="relative">
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+              <div className="relative w-full sm:w-[300px]">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   placeholder="Search physicians..."
-                  className="pl-10 w-[300px] bg-white"
+                  className="pl-10 w-full bg-white"
                 />
               </div>
-              <Button variant="outline" className="flex items-center gap-2 border-gray-200">
+              <Button variant="outline" className="flex items-center gap-2 border-gray-200 w-full sm:w-auto">
                 <Filter className="h-4 w-4" />
                 Filter
               </Button>
@@ -152,109 +152,111 @@ const Physicians = () => {
           </div>
         </CardHeader>
         <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-50/50 hover:bg-gray-50/50">
-                <TableHead className="font-semibold">Name</TableHead>
-                <TableHead className="font-semibold">Department</TableHead>
-                <TableHead className="font-semibold">Specialization</TableHead>
-                <TableHead className="font-semibold">Status</TableHead>
-                <TableHead className="font-semibold">Experience</TableHead>
-                <TableHead className="font-semibold">Contact</TableHead>
-                <TableHead className="font-semibold text-center">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {physicians.map((physician) => (
-                <TableRow key={physician.id} className="hover:bg-gray-50/50">
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10 ring-2 ring-gray-100">
-                        <AvatarImage
-                          src={physician.avatar}
-                          alt={physician.name}
-                        />
-                        <AvatarFallback>
-                          {getInitials(physician.name)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div
-                        className="font-medium truncate max-w-[200px]"
-                        title={physician.name}
-                      >
-                        {physician.name}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>{physician.department}</TableCell>
-                  <TableCell>{physician.specialization}</TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={
-                        physician.status === "Available"
-                          ? "default"
-                          : physician.status === "In Surgery"
-                          ? "destructive"
-                          : "secondary"
-                      }
-                      className="font-medium"
-                    >
-                      {physician.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{physician.experience}</TableCell>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <p
-                        className="text-sm text-gray-600 truncate max-w-[200px]"
-                        title={physician.email}
-                      >
-                        {physician.email}
-                      </p>
-                      <p className="text-sm text-gray-600">{physician.phone}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center justify-center gap-3">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 hover:bg-gray-100"
-                            >
-                              <Eye className="h-4 w-4 text-gray-500" />
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>View Physician</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 hover:bg-gray-100"
-                            >
-                              <Pencil className="h-4 w-4 text-gray-500" />
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Edit Physician</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                  </TableCell>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gray-50/50 hover:bg-gray-50/50">
+                  <TableHead className="font-semibold">Name</TableHead>
+                  <TableHead className="font-semibold">Department</TableHead>
+                  <TableHead className="font-semibold">Specialization</TableHead>
+                  <TableHead className="font-semibold">Status</TableHead>
+                  <TableHead className="font-semibold">Experience</TableHead>
+                  <TableHead className="font-semibold">Contact</TableHead>
+                  <TableHead className="font-semibold text-center">Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {physicians.map((physician) => (
+                  <TableRow key={physician.id} className="hover:bg-gray-50/50">
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10 ring-2 ring-gray-100">
+                          <AvatarImage
+                            src={physician.avatar}
+                            alt={physician.name}
+                          />
+                          <AvatarFallback>
+                            {getInitials(physician.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div
+                          className="font-medium truncate max-w-[150px] sm:max-w-[200px]"
+                          title={physician.name}
+                        >
+                          {physician.name}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">{physician.department}</TableCell>
+                    <TableCell className="whitespace-nowrap">{physician.specialization}</TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          physician.status === "Available"
+                            ? "default"
+                            : physician.status === "In Surgery"
+                            ? "destructive"
+                            : "secondary"
+                        }
+                        className="font-medium"
+                      >
+                        {physician.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">{physician.experience}</TableCell>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <p
+                          className="text-sm text-gray-600 truncate max-w-[150px] sm:max-w-[200px]"
+                          title={physician.email}
+                        >
+                          {physician.email}
+                        </p>
+                        <p className="text-sm text-gray-600">{physician.phone}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center justify-center gap-3">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 hover:bg-gray-100"
+                              >
+                                <Eye className="h-4 w-4 text-gray-500" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>View Physician</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 hover:bg-gray-100"
+                              >
+                                <Pencil className="h-4 w-4 text-gray-500" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Edit Physician</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>
