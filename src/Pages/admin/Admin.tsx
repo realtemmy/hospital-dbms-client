@@ -14,6 +14,8 @@ import {
   FileText,
   Download
 } from 'lucide-react';
+import KPICards from '@/components/kpi-cards/KPICards';
+import { count } from 'console';
 
 const Admin = () => {
   const [showQuickActions, setShowQuickActions] = useState(false);
@@ -196,101 +198,18 @@ const Admin = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* KPI Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4 mb-8">
-          <div className="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
-            <div className="flex items-center">
-              <div className="p-3 rounded-full bg-blue-100 text-blue-500">
-                <Users className="h-6 w-6" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">
-                  Total Patients Today
-                </p>
-                <p className="text-2xl font-semibold text-gray-900">
-                  {kpis.totalPatients}
-                </p>
-              </div>
-            </div>
-          </div>
 
-          <div className="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
-            <div className="flex items-center">
-              <div className="p-3 rounded-full bg-green-100 text-green-500">
-                <User className="h-6 w-6" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">
-                  Doctors On Duty
-                </p>
-                <p className="text-2xl font-semibold text-gray-900">
-                  {kpis.doctorsOnDuty}
-                </p>
-              </div>
-            </div>
-          </div>
+          <KPICards kpis={{color: "blue", icon: Users, count: kpis.totalPatients, title: "Total Patients Today"}} />
 
-          <div className="bg-white rounded-lg shadow p-6 border-l-4 border-yellow-500">
-            <div className="flex items-center">
-              <div className="p-3 rounded-full bg-yellow-100 text-yellow-500">
-                <Bed className="h-6 w-6" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">
-                  Available Beds
-                </p>
-                <p className="text-2xl font-semibold text-gray-900">
-                  {kpis.availableBeds}
-                </p>
-              </div>
-            </div>
-          </div>
+          <KPICards kpis={{color: "green", icon: User, count: kpis.doctorsOnDuty, title: "Doctors On Duty"}} />
 
-          <div className="bg-white rounded-lg shadow p-6 border-l-4 border-purple-500">
-            <div className="flex items-center">
-              <div className="p-3 rounded-full bg-purple-100 text-purple-500">
-                <DollarSign className="h-6 w-6" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">
-                  Total Revenue Today
-                </p>
-                <p className="text-2xl font-semibold text-gray-900">
-                  {kpis.totalRevenue}
-                </p>
-              </div>
-            </div>
-          </div>
+          <KPICards kpis={{color: "yellow", icon: Bed, count: kpis.availableBeds, title: "Available Beds"}} />
 
-          <div className="bg-white rounded-lg shadow p-6 border-l-4 border-indigo-500">
-            <div className="flex items-center">
-              <div className="p-3 rounded-full bg-indigo-100 text-indigo-500">
-                <Calendar className="h-6 w-6" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">
-                  Appointments
-                </p>
-                <p className="text-2xl font-semibold text-gray-900">
-                  {kpis.appointmentsScheduled}
-                </p>
-              </div>
-            </div>
-          </div>
+          <KPICards kpis={{color: "purple", icon: DollarSign, count: kpis.totalRevenue, title: "Total Revenue today"}} />
 
-          <div className="bg-white rounded-lg shadow p-6 border-l-4 border-red-500">
-            <div className="flex items-center">
-              <div className="p-3 rounded-full bg-red-100 text-red-500">
-                <AlertCircle className="h-6 w-6" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">
-                  Pending Reports
-                </p>
-                <p className="text-2xl font-semibold text-gray-900">
-                  {kpis.pendingReports}
-                </p>
-              </div>
-            </div>
-          </div>
+          <KPICards kpis={{color: "indigo", icon: Calendar, count: kpis.appointmentsScheduled, title: "Appointments"}} />
+
+          <KPICards kpis={{color: "red", icon: AlertCircle, count: kpis.pendingReports, title: "Pending Reports"}} />
         </div>
 
         {/* Main Content Grid */}
