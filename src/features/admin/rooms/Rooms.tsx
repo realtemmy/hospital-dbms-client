@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
+import KPICards from '../../../components/kpi-cards/KPICards';
 
 const Rooms = () => {
   return (
@@ -33,58 +34,10 @@ const Rooms = () => {
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-gradient-to-br from-blue-50 to-white border-none shadow-md hover:shadow-lg transition-all duration-200">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-blue-600">Total Rooms</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">24</p>
-              </div>
-              <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                <Home className="h-6 w-6 text-blue-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-gradient-to-br from-green-50 to-white border-none shadow-md hover:shadow-lg transition-all duration-200">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-green-600">Occupied Rooms</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">18</p>
-              </div>
-              <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
-                <Users className="h-6 w-6 text-green-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-gradient-to-br from-purple-50 to-white border-none shadow-md hover:shadow-lg transition-all duration-200">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-purple-600">Available Rooms</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">4</p>
-              </div>
-              <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center">
-                <CheckCircle className="h-6 w-6 text-purple-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-gradient-to-br from-orange-50 to-white border-none shadow-md hover:shadow-lg transition-all duration-200">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-orange-600">Under Maintenance</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">2</p>
-              </div>
-              <div className="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center">
-                <Wrench className="h-6 w-6 text-orange-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <KPICards kpis={{color: "blue", icon: Home, count: 24, title: "Total rooms"}} />
+        <KPICards kpis={{color: "green", icon: Users, count: 18, title: "Occupied rooms"}} />
+        <KPICards kpis={{color: "purple", icon: CheckCircle, count: 4, title: "Available rooms"}} />
+        <KPICards kpis={{color: "orange", icon: Wrench, count: 2, title: "Under maintenance"}} />
       </div>
 
       {/* Filters and Search */}

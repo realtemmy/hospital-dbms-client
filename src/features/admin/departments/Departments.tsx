@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
+import KPICards from "../../../components/kpi-cards/KPICards";
 
 const Departments = () => {
   return (
@@ -32,58 +33,14 @@ const Departments = () => {
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-gradient-to-br from-blue-50 to-white border-none shadow-md hover:shadow-lg transition-all duration-200">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-blue-600">Total Departments</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">12</p>
-              </div>
-              <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                <Building2 className="h-6 w-6 text-blue-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-gradient-to-br from-green-50 to-white border-none shadow-md hover:shadow-lg transition-all duration-200">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-green-600">Total Staff</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">156</p>
-              </div>
-              <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
-                <Users className="h-6 w-6 text-green-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-gradient-to-br from-purple-50 to-white border-none shadow-md hover:shadow-lg transition-all duration-200">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-purple-600">Active Doctors</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">48</p>
-              </div>
-              <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center">
-                <Stethoscope className="h-6 w-6 text-purple-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-gradient-to-br from-orange-50 to-white border-none shadow-md hover:shadow-lg transition-all duration-200">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-orange-600">Avg. Wait Time</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">15m</p>
-              </div>
-              <div className="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center">
-                <Clock className="h-6 w-6 text-orange-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+
+        <KPICards kpis={{color: "blue", icon: Building2, count: 12, title: "Total Departments"}} />
+
+        <KPICards kpis={{color: "green", icon: Users, count: 156, title: "Total staff"}} />
+
+        <KPICards kpis={{color: "purple", icon: Stethoscope, count: 48, title: "Active Doctors"}} />
+
+        <KPICards kpis={{color: "orange", icon: Clock, count: 15, title: "Avg. Wait Time (mins)"}} />
       </div>
 
       {/* Filters and Search */}
