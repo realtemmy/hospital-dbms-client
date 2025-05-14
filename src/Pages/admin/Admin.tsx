@@ -1,28 +1,24 @@
-import React, { useState } from 'react';
 import { 
-  Bell,
-  UserCircle,
-  ChevronDown,
   Users,
   User,
   Bed,
   DollarSign,
   Calendar,
   AlertCircle,
-  BarChart,
   Plus,
   FileText,
   Download
 } from 'lucide-react';
-import KPICards from '@/components/kpi-cards/KPICards';
+import KPICards from '../../components/kpi-cards/KPICards';
 
 const Admin = () => {
+
 
   const kpis = {
     totalPatients: 156,
     doctorsOnDuty: 12,
     availableBeds: 45,
-    totalRevenue: "$45,678",
+    totalRevenue: 45678,
     appointmentsScheduled: 24,
     pendingReports: 8
   };
@@ -75,22 +71,67 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* KPI Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4 mb-8">
+          <KPICards
 
-          <KPICards kpis={{color: "blue", icon: Users, count: kpis.totalPatients, title: "Total Patients Today"}} />
+            kpis={{
+              color: "blue",
+              icon: Users,
+              count: kpis.totalPatients,
+              title: "Total Patients Today",
+            }}
+          />
 
-          <KPICards kpis={{color: "green", icon: User, count: kpis.doctorsOnDuty, title: "Doctors On Duty"}} />
+          <KPICards
 
-          <KPICards kpis={{color: "yellow", icon: Bed, count: kpis.availableBeds, title: "Available Beds"}} />
+            kpis={{
+              color: "green",
+              icon: User,
+              count: kpis.doctorsOnDuty,
+              title: "Doctors On Duty",
+            }}
+          />
 
-          <KPICards kpis={{color: "purple", icon: DollarSign, count: kpis.totalRevenue, title: "Total Revenue today"}} />
+          <KPICards
 
-          <KPICards kpis={{color: "indigo", icon: Calendar, count: kpis.appointmentsScheduled, title: "Appointments"}} />
+            kpis={{
+              color: "yellow",
+              icon: Bed,
+              count: kpis.availableBeds,
+              title: "Available Beds",
+            }}
+          />
 
-          <KPICards kpis={{color: "red", icon: AlertCircle, count: kpis.pendingReports, title: "Pending Reports"}} />
+          <KPICards
+            kpis={{
+              color: "purple",
+              type: "revenue",
+              icon: DollarSign,
+              count: kpis.totalRevenue,
+              title: "Total Revenue today",
+            }}
+          />
+
+          <KPICards
+
+            kpis={{
+              color: "indigo",
+              icon: Calendar,
+              count: kpis.appointmentsScheduled,
+              title: "Appointments",
+            }}
+          />
+
+          <KPICards
+            kpis={{
+              color: "red",
+              icon: AlertCircle,
+              count: kpis.pendingReports,
+              title: "Pending Reports",
+            }}
+          />
         </div>
 
         {/* Main Content Grid */}
@@ -104,10 +145,10 @@ const Admin = () => {
                   Today's Appointments
                 </h2>
               </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Patient
                       </th>
@@ -120,27 +161,27 @@ const Admin = () => {
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Status
                       </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
                     {todayAppointments.map((appointment) => (
-                  <tr key={appointment.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
+                      <tr key={appointment.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900">
                             {appointment.patient}
                           </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">
                             {appointment.doctor}
                           </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">
                             {appointment.time}
                           </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <span
                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                             ${
@@ -151,13 +192,13 @@ const Admin = () => {
                                 : "bg-yellow-100 text-yellow-800"
                             }`}
                           >
-                        {appointment.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                            {appointment.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
 
@@ -178,9 +219,9 @@ const Admin = () => {
                       </p>
                     </div>
                   ))}
-          </div>
-        </div>
-      </div>
+                </div>
+              </div>
+            </div>
 
             {/* Staff Availability */}
             <div className="bg-white rounded-lg shadow">
@@ -189,10 +230,10 @@ const Admin = () => {
                   Staff Availability
                 </h2>
               </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Doctor
                       </th>
@@ -202,22 +243,22 @@ const Admin = () => {
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Status
                       </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
                     {staffAvailability.map((staff) => (
                       <tr key={staff.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900">
                             {staff.name}
                           </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">
                             {staff.specialty}
                           </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <span
                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                             ${
@@ -229,15 +270,15 @@ const Admin = () => {
                             }`}
                           >
                             {staff.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
           {/* Right Column */}
           <div className="space-y-8">
@@ -266,9 +307,9 @@ const Admin = () => {
                     <User className="h-5 w-5 mr-2" />
                     Add Staff
                   </button>
-          </div>
-        </div>
-      </div>
+                </div>
+              </div>
+            </div>
 
             {/* Bed Status */}
             <div className="bg-white rounded-lg shadow">
@@ -343,12 +384,12 @@ const Admin = () => {
                             bedStatus.emergency.occupied -
                             bedStatus.emergency.cleaning}{" "}
                           Available
-                      </span>
+                        </span>
                       </div>
                       <div className="flex-1 bg-yellow-100 rounded-lg p-2 text-center">
                         <span className="text-sm font-medium text-yellow-800">
                           {bedStatus.emergency.cleaning} Cleaning
-                      </span>
+                        </span>
                       </div>
                     </div>
                   </div>

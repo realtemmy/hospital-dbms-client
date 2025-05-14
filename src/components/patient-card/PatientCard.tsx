@@ -3,7 +3,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../../components/ui/avatar";
-import { Calendar, File, MapPin, Phone, Mail, Activity } from "lucide-react";
+import { Calendar, MapPin, Phone, Mail, Activity } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
 import { useNavigate } from "react-router";
