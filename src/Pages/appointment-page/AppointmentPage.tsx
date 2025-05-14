@@ -6,6 +6,8 @@ import {
   CircleCheck,
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
+
+
 import {
   Sheet,
   SheetClose,
@@ -15,7 +17,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from "../../components/ui/sheet";
+
 
 import { ScrollArea } from "../../components/ui/scroll-area";
 

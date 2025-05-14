@@ -20,14 +20,8 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "../../components/ui/avatar";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
+import { Dialog, DialogContent, DialogTrigger } from "../../components/ui/dialog";
 
 
 import PatientOverview from "../../features/Patients/patients-overview/PatientOverview";
@@ -105,7 +99,7 @@ const PatientPage = () => {
                 </div>
               </div>
               <div className="flex flex-wrap justify-center sm:justify-end gap-2 w-full sm:w-auto">
-                <Dialog className="">
+                <Dialog>
                   <DialogTrigger>
                     <Button
                       variant="outline"

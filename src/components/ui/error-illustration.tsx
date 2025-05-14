@@ -1,5 +1,3 @@
-import React from "react";
-
 export function ErrorIllustration({ className }: { className?: string }) {
   return (
     <div className={className}>

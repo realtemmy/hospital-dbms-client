@@ -15,7 +15,6 @@ import { Link } from "react-router";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
-import { Separator } from "../ui/separator";
 
 import {
   Sidebar,
@@ -25,9 +24,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarFooter,
 } from "../ui/sidebar";
 

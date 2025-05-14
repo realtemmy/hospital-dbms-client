@@ -1,6 +1,6 @@
 import type { Appointment } from "../appointment-table/AppointmentTable";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar,AvatarFallback,AvatarImage } from "../ui/avatar";
 import StatusBadge from "../status-badge/StatusBadge";
 import { CalendarIcon, Edit, Eye, Mail, Phone } from "lucide-react";
 import { Button } from "../ui/button";

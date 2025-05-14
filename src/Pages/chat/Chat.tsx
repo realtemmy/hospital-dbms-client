@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Avatar } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "../../components/ui/button";
+import { ScrollArea } from "../../components/ui/scroll-area";
+import { Textarea } from "../../components/ui/textarea";
 import { Send, Paperclip, Smile } from "lucide-react";
 
 const Chat = () => {
