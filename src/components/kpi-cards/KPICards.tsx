@@ -1,15 +1,15 @@
-import React from "react";
 import { LucideIcon } from "lucide-react";
 import { cn } from "../../lib/utils";
 
 type KPICardsProps = {
   color: string;
+  type?: "revenue" | "other";
   icon: LucideIcon;
   count: number;
   title: string;
 };
 
-const KPICards = ({ kpis }: { kpis: KPICardsProps }) => {
+const KPICards = ({ kpis}: { kpis: KPICardsProps }) => {
   const cardBorderStyles = {
     blue: "border-blue-500",
     green: "border-green-500",
@@ -53,7 +53,9 @@ const KPICards = ({ kpis }: { kpis: KPICardsProps }) => {
         </div>
         <div className="ml-4">
           <p className="text-sm font-medium text-gray-500">{kpis.title}</p>
-          <p className="text-2xl font-semibold text-gray-900">{kpis.count}</p>
+          <p className="text-2xl font-semibold text-gray-900">
+            {kpis.type === "revenue" ? `$${kpis.count.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 2})}` : kpis.count}
+          </p>
         </div>
       </div>
     </div>

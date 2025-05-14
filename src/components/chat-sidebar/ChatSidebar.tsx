@@ -1,9 +1,9 @@
-import { Calendar, MessageSquare, Search,LogOut } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Calendar, MessageSquare, Search } from "lucide-react";
+import { Input } from "../ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { ScrollArea } from "../ui/scroll-area";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 
 
 const ChatSidebar = ({
@@ -13,11 +13,20 @@ const ChatSidebar = ({
   setSearchQuery,
   conversations,
   onChatSelect,
+}: {
+  selectedChat: string;
+  setSelectedChat: (chatId: string) => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  conversations: any[];
+  onChatSelect: () => void;
 }) => {
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b border-gray-200">
-        <h1 className="font-bold text-xl text-blue-600 mb-4 hidden ld:block">Patient Portal</h1>
+        <h1 className="font-bold text-xl text-blue-600 mb-4 hidden ld:block">
+          Patient Portal
+        </h1>
         <div className="relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <Input
@@ -63,9 +72,9 @@ const ChatSidebar = ({
                 <div className="flex items-start gap-3">
                   <div className="relative">
                     <Avatar className="h-12 w-12 bg-blue-100">
-                      <span className="text-base font-medium text-blue-600">
-                        {conv.avatar}
-                      </span>
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      {conv.avatar}
+                      <AvatarFallback></AvatarFallback>
                     </Avatar>
                     <span
                       className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${
@@ -130,8 +139,6 @@ const ChatSidebar = ({
           </ScrollArea>
         </TabsContent>
       </Tabs>
-
-
     </div>
   );
 };
