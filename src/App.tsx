@@ -21,6 +21,9 @@ import EditProfile from "./features/profile/EditProfile";
 
 import Admin from "./Pages/admin/Admin";
 import Physicians from "./features/admin/physicians/Physicians";
+import Rooms from "./features/admin/rooms/Rooms";
+import Departments from "./features/admin/departments/Departments";
+import Records from "./features/admin/records/Records";
 
 function App() {
   // In chat, there should be ai generated response or suggestions for physicians
@@ -41,10 +44,7 @@ function App() {
         <Route path="chat" element={<ChatLayout />}>
           <Route index element={<Chat />} />
         </Route>
-        <Route path="appointments">
-          <Route index element={<AppointmentList />} />
-          <Route path=":id" element={<AppointmentPage />} />
-        </Route>
+        
         <Route path="patients">
           <Route index element={<Patients />} />
           <Route path=":id" element={<PatientPage />} />
@@ -59,7 +59,18 @@ function App() {
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Admin />} />
         <Route path="doctors" element={<Physicians />} />
-        <Route path="patients" element={<div>Patients Management</div>} />
+        <Route path="patients" element={<Patients/>} >
+          <Route path=":id" element={<PatientPage/>} />
+          <Route path=":id/edit" element={<EditProfile/>} />
+          <Route path=":id/appointments" element={<PatientTable/>} />
+        </Route>
+        <Route path="appointments">
+          <Route index element={<AppointmentList />} />
+          <Route path=":id" element={<AppointmentPage />} />
+        </Route>
+        <Route path="rooms" element={<Rooms/>} />
+        <Route path="departments" element={<Departments />} />
+        <Route path="records" element={<Records />} />
         <Route
           path="appointments"
           element={<div>Appointments Management</div>}
