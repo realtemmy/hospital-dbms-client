@@ -1,3 +1,4 @@
+import { Fragment } from "react/jsx-runtime";
 import { Routes, Route } from "react-router";
 
 import PhysicianLayout from "./Layouts/physician-layout/PhysicianLayout";
@@ -19,76 +20,82 @@ import Diagnosis from "./Pages/diagnosis/Diagnosis";
 import EditProfile from "./features/profile/EditProfile";
 import AddPatient from "./components/add-patient/AddPatient";
 
-
 import Admin from "./Pages/admin/Admin";
 import Physicians from "./features/admin/physicians/Physicians";
 import Rooms from "./features/admin/rooms/Rooms";
 import Departments from "./features/admin/departments/Departments";
 import Records from "./features/admin/records/Records";
 
+import { Toaster } from "./components/ui/sonner";
+import AddStaff from "./components/add-staff/AddStaff";
+
 function App() {
   // In chat, there should be ai generated response or suggestions for physicians
   // Plus the way whatsapp used to have the ability to search for stuff from the web
   return (
-    <Routes>
-      {/* Auth Routes */}
-      <Route path="/" element={<Login />} />
+    <Fragment>
+      <Routes>
+        {/* Auth Routes */}
+        <Route path="/" element={<Login />} />
 
-      {/* Chat (General Chat) */}
-      <Route path="/chat" element={<ChatLayout />}>
-        <Route path=":id" element={<Chat />} />
-      </Route>
-
-      {/* Doctor/Physician Routes */}
-      <Route path="/doctor" element={<PhysicianLayout />}>
-        <Route index element={<Physician />} />
-        <Route path="chat" element={<ChatLayout />}>
-          <Route index element={<Chat />} />
+        {/* Chat (General Chat) */}
+        <Route path="/chat" element={<ChatLayout />}>
+          <Route path=":id" element={<Chat />} />
         </Route>
 
-        <Route path="patients">
-          <Route index element={<Patients />} />
-          <Route path=":id" element={<PatientPage />} />
-          <Route path=":id/edit" element={<EditProfile />} />
-          <Route path=":id/appointments" element={<PatientTable />} />
-        </Route>
-        <Route path="schedule" element={<Schedule />} />
-        <Route path="diagnosis" element={<Diagnosis />} />
-      </Route>
+        {/* Doctor/Physician Routes */}
+        <Route path="/doctor" element={<PhysicianLayout />}>
+          <Route index element={<Physician />} />
+          <Route path="chat" element={<ChatLayout />}>
+            <Route index element={<Chat />} />
+          </Route>
 
-      {/* Admin Routes */}
-      <Route path="admin" element={<AdminLayout />}>
-        <Route index element={<Admin />} />
-        <Route path="doctors" element={<Physicians />} />
-        <Route path="patients" element={<Patients />}/>
+          <Route path="patients">
+            <Route index element={<Patients />} />
+            <Route path=":id" element={<PatientPage />} />
+            <Route path=":id/edit" element={<EditProfile />} />
+            <Route path=":id/appointments" element={<PatientTable />} />
+          </Route>
+          <Route path="schedule" element={<Schedule />} />
+          <Route path="diagnosis" element={<Diagnosis />} />
+        </Route>
+
+        {/* Admin Routes */}
+        <Route path="admin" element={<AdminLayout />}>
+          <Route index element={<Admin />} />
+          <Route path="doctors" element={<Physicians />} />
+          <Route path="patients" element={<Patients />} />
           {/* <Route path=":id" element={<PatientPage />} />
           <Route path=":id/edit" element={<EditProfile />} />
         </Route> */}
-        <Route path="patients/:id" element={<PatientPage />}/>
-        <Route path="add-patient" element={<AddPatient />} />
-        <Route path="appointments">
-          <Route index element={<AppointmentList />} />
-          <Route path=":id" element={<AppointmentPage />} />
+          <Route path="patients/:id" element={<PatientPage />} />
+          <Route path="add-patient" element={<AddPatient />} />
+          <Route path="add-staff" element={<AddStaff />} />
+          <Route path="appointments">
+            <Route index element={<AppointmentList />} />
+            <Route path=":id" element={<AppointmentPage />} />
+          </Route>
+          <Route path="rooms" element={<Rooms />} />
+          <Route path="departments" element={<Departments />} />
+          <Route path="records" element={<Records />} />
         </Route>
-        <Route path="rooms" element={<Rooms />} />
-        <Route path="departments" element={<Departments />} />
-        <Route path="records" element={<Records />} />
-      </Route>
 
-      {/* Patient Routes */}
-      <Route path="/patient" element={<PatientLayout />}>
-        <Route index element={<div>Patient Dashboard</div>} />
-        <Route path="appointments">
-          <Route index element={<div>My Appointments</div>} />
-          <Route path=":id" element={<div>Appointment Details</div>} />
+        {/* Patient Routes */}
+        <Route path="/patient" element={<PatientLayout />}>
+          <Route index element={<div>Patient Dashboard</div>} />
+          <Route path="appointments">
+            <Route index element={<div>My Appointments</div>} />
+            <Route path=":id" element={<div>Appointment Details</div>} />
+          </Route>
+          <Route path="profile" element={<div>My Profile</div>} />
+          <Route path="medical-records" element={<div>Medical Records</div>} />
         </Route>
-        <Route path="profile" element={<div>My Profile</div>} />
-        <Route path="medical-records" element={<div>Medical Records</div>} />
-      </Route>
 
-      {/* 404 Page - Catch-all Route */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        {/* 404 Page - Catch-all Route */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Toaster richColors position="top-right" />
+    </Fragment>
   );
 }
 

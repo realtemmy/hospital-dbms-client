@@ -1,4 +1,6 @@
-import { 
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router";
+import {
   Users,
   User,
   Bed,
@@ -7,12 +9,31 @@ import {
   AlertCircle,
   Plus,
   FileText,
-  Download
-} from 'lucide-react';
-import KPICards from '../../components/kpi-cards/KPICards';
+  Download,
+} from "lucide-react";
+import KPICards from "../../components/kpi-cards/KPICards";
+import { Button } from "../../components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "../../components/ui/dialog";
+import { ScrollArea } from "../../components/ui/scroll-area";
+
+import ScheduleAppointment, {
+  ScheduleAppointmentRef,
+  AppointmentFormValues,
+} from "../../components/schedule-appointment/ScheduleAppointment";
+import { toast } from "sonner";
 
 const Admin = () => {
-
+  const navigate = useNavigate();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const appointmentFormRef = useRef<ScheduleAppointmentRef>(null);
 
   const kpis = {
     totalPatients: 156,
@@ -20,53 +41,88 @@ const Admin = () => {
     availableBeds: 45,
     totalRevenue: 45678,
     appointmentsScheduled: 24,
-    pendingReports: 8
+    pendingReports: 8,
   };
 
   const todayAppointments = [
-    { 
-      id: 1, 
-      patient: "John Doe", 
-      doctor: "Dr. Smith", 
-      time: "09:00 AM", 
-      status: "Confirmed"
+    {
+      id: 1,
+      patient: "John Doe",
+      doctor: "Dr. Smith",
+      time: "09:00 AM",
+      status: "Confirmed",
     },
-    { 
-      id: 2, 
-      patient: "Jane Smith", 
-      doctor: "Dr. Johnson", 
-      time: "10:30 AM", 
-      status: "In Progress"
+    {
+      id: 2,
+      patient: "Jane Smith",
+      doctor: "Dr. Johnson",
+      time: "10:30 AM",
+      status: "In Progress",
     },
-    { 
-      id: 3, 
-      patient: "Mike Brown", 
-      doctor: "Dr. Williams", 
-      time: "02:00 PM", 
-      status: "Pending"
+    {
+      id: 3,
+      patient: "Mike Brown",
+      doctor: "Dr. Williams",
+      time: "02:00 PM",
+      status: "Pending",
     },
   ];
-
-
 
   const departmentStatus = [
     { name: "Radiology", pending: 4, type: "scans" },
     { name: "Pharmacy", pending: 12, type: "low-stock items" },
     { name: "Emergency", pending: 2, type: "patients waiting" },
-    { name: "Surgery", pending: 1, type: "ongoing operations" }
+    { name: "Surgery", pending: 1, type: "ongoing operations" },
   ];
 
   const staffAvailability = [
     { id: 1, name: "Dr. Smith", specialty: "Cardiology", status: "Available" },
-    { id: 2, name: "Dr. Johnson", specialty: "Neurology", status: "In Surgery" },
-    { id: 3, name: "Dr. Williams", specialty: "Pediatrics", status: "Available" },
-    { id: 4, name: "Dr. Brown", specialty: "Orthopedics", status: "On Leave" }
+    {
+      id: 2,
+      name: "Dr. Johnson",
+      specialty: "Neurology",
+      status: "In Surgery",
+    },
+    {
+      id: 3,
+      name: "Dr. Williams",
+      specialty: "Pediatrics",
+      status: "Available",
+    },
+    { id: 4, name: "Dr. Brown", specialty: "Orthopedics", status: "On Leave" },
   ];
 
   const bedStatus = {
     icu: { total: 10, occupied: 7, cleaning: 1 },
     general: { total: 50, occupied: 35, cleaning: 3 },
-    emergency: { total: 15, occupied: 12, cleaning: 0 }
+    emergency: { total: 15, occupied: 12, cleaning: 0 },
+  };
+
+  const handleAppointmentSubmit = async (values: AppointmentFormValues) => {
+    try {
+      // TODO: Implement your API call here
+      console.log("Appointment values:", values);
+
+      // Show success message
+      toast.success("Appointment scheduled successfully");
+
+      // Close the dialog
+      setIsDialogOpen(false);
+
+      // Reset the form
+      appointmentFormRef.current?.reset();
+    } catch (error) {
+      console.error("Error scheduling appointment:", error);
+      toast.error("Failed to schedule appointment");
+    }
+  };
+
+  const handleScheduleClick = async () => {
+    try {
+      await appointmentFormRef.current?.submit();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
@@ -75,7 +131,6 @@ const Admin = () => {
         {/* KPI Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4 mb-8">
           <KPICards
-
             kpis={{
               color: "blue",
               icon: Users,
@@ -85,7 +140,6 @@ const Admin = () => {
           />
 
           <KPICards
-
             kpis={{
               color: "green",
               icon: User,
@@ -95,7 +149,6 @@ const Admin = () => {
           />
 
           <KPICards
-
             kpis={{
               color: "yellow",
               icon: Bed,
@@ -115,7 +168,6 @@ const Admin = () => {
           />
 
           <KPICards
-
             kpis={{
               color: "indigo",
               icon: Calendar,
@@ -291,22 +343,65 @@ const Admin = () => {
               </div>
               <div className="p-6">
                 <div className="grid grid-cols-2 gap-4">
-                  <button className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
-                    <Plus className="h-5 w-5 mr-2" />
+                  <Button
+                    className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700"
+                    onClick={() => navigate("/admin/add-patient")}
+                  >
+                    <Plus className="h-5 w-5" />
                     New Patient
-                  </button>
-                  <button className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">
-                    <Calendar className="h-5 w-5 mr-2" />
-                    Schedule
-                  </button>
-                  <button className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700">
-                    <FileText className="h-5 w-5 mr-2" />
-                    Generate Invoice
-                  </button>
-                  <button className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">
-                    <User className="h-5 w-5 mr-2" />
+                  </Button>
+
+                  <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700">
+                        <Calendar className="h-5 w-5" />
+                        Schedule
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-3xl">
+                      <DialogHeader>
+                        <DialogTitle className="text-2xl font-bold text-gray-900">
+                          Schedule Appointment
+                        </DialogTitle>
+                        <DialogDescription>
+                          Create a new appointment for a patient
+                        </DialogDescription>
+                      </DialogHeader>
+                      <ScrollArea className="h-[calc(100vh-20rem)]">
+                        <ScheduleAppointment
+                          ref={appointmentFormRef}
+                          onSubmit={handleAppointmentSubmit}
+                        />
+                      </ScrollArea>
+                      <DialogFooter>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            appointmentFormRef.current?.reset();
+                            setIsDialogOpen(false);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button type="button" onClick={handleScheduleClick}>
+                          Schedule Appointment
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
+                  <Button className="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700">
+                    <FileText className="h-5 w-5" />
+                    Gen. Invoice
+                  </Button>
+                  <Button
+                    className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700"
+                    onClick={() => navigate("/admin/add-staff")}
+                  >
+                    <User className="h-5 w-5" />
                     Add Staff
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -406,18 +501,27 @@ const Admin = () => {
               </div>
               <div className="p-6">
                 <div className="space-y-4">
-                  <button className="w-full flex items-center justify-between px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                  <Button
+                    variant="outline"
+                    className="w-full flex items-center justify-between"
+                  >
                     <span>Daily Activity Log</span>
                     <Download className="h-5 w-5 text-gray-400" />
-                  </button>
-                  <button className="w-full flex items-center justify-between px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full flex items-center justify-between"
+                  >
                     <span>Financial Report</span>
                     <Download className="h-5 w-5 text-gray-400" />
-                  </button>
-                  <button className="w-full flex items-center justify-between px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full flex items-center justify-between"
+                  >
                     <span>Admission Report</span>
                     <Download className="h-5 w-5 text-gray-400" />
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
