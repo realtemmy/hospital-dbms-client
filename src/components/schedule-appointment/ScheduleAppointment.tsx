@@ -105,7 +105,7 @@ interface ScheduleAppointmentProps {
 
 const ScheduleAppointment = forwardRef<ScheduleAppointmentRef, ScheduleAppointmentProps>(
   ({ onSubmit }, ref) => {
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [, setIsSubmitting] = useState(false);
     const [open, setOpen] = useState(false);
     const [dateOpen, setDateOpen] = useState(false);
 

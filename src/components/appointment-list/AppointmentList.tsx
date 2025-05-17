@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Filter, ChevronDown, Plus, Calendar } from "lucide-react";
+import { Filter, ChevronDown, Calendar } from "lucide-react";
 import {
   Select,
   SelectContent,

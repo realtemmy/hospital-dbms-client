@@ -31,7 +31,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -177,9 +176,6 @@ const Physicians = () => {
                 </ScrollArea>
               </DialogDescription>
             </DialogHeader>
-            {/* <DialogFooter>
-              <Button type="submit">Save changes</Button>
-            </DialogFooter> */}
           </DialogContent>
         </Dialog>
       </div>

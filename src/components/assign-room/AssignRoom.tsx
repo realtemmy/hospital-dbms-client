@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -18,13 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardHeader } from "../ui/card";
 import { Check, ChevronsUpDown } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -37,9 +33,24 @@ import { cn } from "../../lib/utils";
 
 // Mock data - Replace with actual API calls
 const patients = [
-  { id: "1", name: "John Doe", email: "john@example.com", avatar: "https://github.com/shadcn.png" },
-  { id: "2", name: "Jane Smith", email: "jane@example.com", avatar: "https://github.com/shadcn.png" },
-  { id: "3", name: "Mike Johnson", email: "mike@example.com", avatar: "https://github.com/shadcn.png" },
+  {
+    id: "1",
+    name: "John Doe",
+    email: "john@example.com",
+    avatar: "https://github.com/shadcn.png",
+  },
+  {
+    id: "2",
+    name: "Jane Smith",
+    email: "jane@example.com",
+    avatar: "https://github.com/shadcn.png",
+  },
+  {
+    id: "3",
+    name: "Mike Johnson",
+    email: "mike@example.com",
+    avatar: "https://github.com/shadcn.png",
+  },
 ];
 
 const rooms = [
@@ -67,7 +78,7 @@ interface AssignRoomProps {
 
 const AssignRoom: React.FC<AssignRoomProps> = ({ onSubmit }) => {
   const [open, setOpen] = useState(false);
-  
+
   const form = useForm<AssignRoomFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -83,7 +94,7 @@ const AssignRoom: React.FC<AssignRoomProps> = ({ onSubmit }) => {
   };
 
   return (
-    <Card className='border-none shadow-none p-0'>
+    <Card className="border-none shadow-none p-0">
       <CardHeader>
         {/* <CardTitle>Assign Patient to Room</CardTitle>
         <CardDescription>
@@ -92,7 +103,10 @@ const AssignRoom: React.FC<AssignRoomProps> = ({ onSubmit }) => {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-6"
+          >
             <FormField
               control={form.control}
               name="patientId"
@@ -111,7 +125,9 @@ const AssignRoom: React.FC<AssignRoomProps> = ({ onSubmit }) => {
                         )}
                       >
                         {field.value
-                          ? patients.find((patient) => patient.id === field.value)?.name
+                          ? patients.find(
+                              (patient) => patient.id === field.value
+                            )?.name
                           : "Select patient..."}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
@@ -134,7 +150,10 @@ const AssignRoom: React.FC<AssignRoomProps> = ({ onSubmit }) => {
                               className="flex items-center gap-2"
                             >
                               <Avatar className="h-8 w-8">
-                                <AvatarImage src={patient.avatar} alt={patient.name} />
+                                <AvatarImage
+                                  src={patient.avatar}
+                                  alt={patient.name}
+                                />
                                 <AvatarFallback>
                                   {patient.name
                                     .split(" ")
@@ -145,12 +164,16 @@ const AssignRoom: React.FC<AssignRoomProps> = ({ onSubmit }) => {
                               </Avatar>
                               <div className="flex flex-col">
                                 <span>{patient.name}</span>
-                                <span className="text-sm text-muted-foreground">{patient.email}</span>
+                                <span className="text-sm text-muted-foreground">
+                                  {patient.email}
+                                </span>
                               </div>
                               <Check
                                 className={cn(
                                   "ml-auto h-4 w-4",
-                                  field.value === patient.id ? "opacity-100" : "opacity-0"
+                                  field.value === patient.id
+                                    ? "opacity-100"
+                                    : "opacity-0"
                                 )}
                               />
                             </CommandItem>
@@ -181,7 +204,7 @@ const AssignRoom: React.FC<AssignRoomProps> = ({ onSubmit }) => {
                     </FormControl>
                     <SelectContent>
                       {rooms
-                        .filter(room => room.status === "Available")
+                        .filter((room) => room.status === "Available")
                         .map((room) => (
                           <SelectItem key={room.id} value={room.id}>
                             Room {room.number} - {room.type}
