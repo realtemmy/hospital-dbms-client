@@ -177,9 +177,9 @@ const Physicians = () => {
                 </ScrollArea>
               </DialogDescription>
             </DialogHeader>
-            <DialogFooter>
+            {/* <DialogFooter>
               <Button type="submit">Save changes</Button>
-            </DialogFooter>
+            </DialogFooter> */}
           </DialogContent>
         </Dialog>
       </div>

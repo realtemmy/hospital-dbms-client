@@ -1,13 +1,5 @@
-import { useState } from "react";
-
-import {
-  
-  Filter,
-  ChevronDown,
-  Plus,
-
-} from "lucide-react";
-
+import { useRef, useState } from "react";
+import { Filter, ChevronDown, Plus, Calendar } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -16,11 +8,24 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Input } from "../ui/input";
-import AppointmentTable from "../appointment-table/AppointmentTable";
-
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "../../components/ui/dialog";
 import { Button } from "../ui/button";
+import { ScrollArea } from "../ui/scroll-area";
+import { toast } from "sonner";
 
+import AppointmentTable from "../appointment-table/AppointmentTable";
+import ScheduleAppointment, {
+  AppointmentFormValues,
+  ScheduleAppointmentRef,
+} from "../schedule-appointment/ScheduleAppointment";
 // Expanded appointment data with more attributes
 const appointments = [
   {
@@ -121,17 +126,81 @@ const AppointmentList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterDate, setFilterDate] = useState("all");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const appointmentFormRef = useRef<ScheduleAppointmentRef>(null);
 
+  const handleAppointmentSubmit = async (values: AppointmentFormValues) => {
+    try {
+      // TODO: Implement your API call here
+      console.log("Appointment values:", values);
+
+      // Show success message
+      toast.success("Appointment scheduled successfully");
+
+      // Close the dialog
+      setIsDialogOpen(false);
+
+      // Reset the form
+      appointmentFormRef.current?.reset();
+    } catch (error) {
+      console.error("Error scheduling appointment:", error);
+      toast.error("Failed to schedule appointment");
+    }
+  };
+
+  const handleScheduleClick = async () => {
+    try {
+      await appointmentFormRef.current?.submit();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
 
   return (
     <div className="bg-gray-50 rounded-lg pb-6">
       <div className="bg-white p-4 sm:p-6 rounded-t-lg shadow-sm border-b">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            <Plus className="h-4 w-4 mr-2" />
-            New Appointment
-          </Button>
+
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white">
+                <Calendar className="h-5 w-5" />
+                New Appointment
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-3xl">
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-bold text-gray-900">
+                  Schedule Appointment
+                </DialogTitle>
+                <DialogDescription>
+                  Create a new appointment for a patient
+                </DialogDescription>
+              </DialogHeader>
+              <ScrollArea className="h-[calc(100vh-20rem)]">
+                <ScheduleAppointment
+                  ref={appointmentFormRef}
+                  onSubmit={handleAppointmentSubmit}
+                />
+              </ScrollArea>
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    appointmentFormRef.current?.reset();
+                    setIsDialogOpen(false);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button type="button" onClick={handleScheduleClick}>
+                  Schedule Appointment
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Filters and search */}

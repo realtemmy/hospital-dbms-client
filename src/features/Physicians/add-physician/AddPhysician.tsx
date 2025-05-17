@@ -28,7 +28,7 @@ import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
 
-// Mock data - Replace with actual API data
+
 const existingPhysicians = [
   {
     id: "1",
@@ -129,7 +129,7 @@ const AddPhysician = ({ onSubmit, onCancel }: AddPhysicianProps) => {
           <FormField
             control={form.control}
             name="physicianId"
-            render={({ field }) => (
+            render={() => (
               <FormItem className="flex flex-col">
                 <FormLabel>Search Physician</FormLabel>
                 <Popover open={open} onOpenChange={setOpen}>
