@@ -1,10 +1,38 @@
-import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table";
+import { useRef, useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../../components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../../components/ui/table";
 import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
-import { Plus, Search, Users, Stethoscope, Clock, Building2, Phone, Mail, Eye, Edit } from 'lucide-react';
+import {
+  Plus,
+  Search,
+  Users,
+  Stethoscope,
+  Clock,
+  Building2,
+  Phone,
+  Mail,
+  Eye,
+  Edit,
+} from "lucide-react";
 import { Input } from "../../../components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../components/ui/avatar";
 import {
   Select,
   SelectContent,
@@ -12,9 +40,54 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../../components/ui/dialog";
+import { ScrollArea } from "../../../components/ui/scroll-area";
+import { toast } from "sonner";
+
 import KPICards from "../../../components/kpi-cards/KPICards";
+import CreateDepartment, {
+  DepartmentFormValues,
+  createDeptRef
+} from "../../../components/create-department/CreateDepartment";
 
 const Departments = () => {
+const ref = useRef<createDeptRef>(null)
+const [open, setOpen] = useState(false);
+
+
+   const handleSubmit = async (values: DepartmentFormValues) => {
+     try {
+       // TODO: Implement your API call here
+       console.log("Appointment values:", values);
+
+       // Show success message
+       toast.success("Appointment scheduled successfully");
+
+      //  // Close the dialog
+       setOpen(false);
+
+       // Reset the form
+       ref.current?.reset();
+     } catch (error) {
+       console.error("Error scheduling appointment:", error);
+       toast.error("Failed to schedule appointment");
+     }
+   };
+
+   const handleClick = async () => {
+     try {
+       await ref.current?.submit();
+     } catch (error) {
+       console.error("Error submitting form:", error);
+     }
+   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6 space-y-6">
       {/* Header */}
@@ -23,31 +96,92 @@ const Departments = () => {
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
             Hospital Departments
           </h1>
-          <p className="text-sm text-gray-500 mt-1">Manage and monitor hospital departments</p>
+          <p className="text-sm text-gray-500 mt-1">
+            Manage and monitor hospital departments
+          </p>
         </div>
-        <Button className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-md hover:shadow-lg transition-all duration-200">
-          <Plus className="h-4 w-4" />
-          Add New Department
-        </Button>
+
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger>
+            <Button className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-md hover:shadow-lg transition-all duration-200">
+              <Plus className="h-4 w-4" />
+              Add New Department
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create new department</DialogTitle>
+              <ScrollArea className="h-[calc(100vh-10rem)]">
+                <CreateDepartment
+                  ref={ref}
+                  onSubmit={handleSubmit}
+                />
+              </ScrollArea>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  ref.current?.reset();
+                }}
+              >
+                Cancel
+              </Button>
+              <Button type="button" onClick={handleClick}>
+                Create Department
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <KPICards
+          kpis={{
+            color: "blue",
+            icon: Building2,
+            count: 12,
+            title: "Total Departments",
+          }}
+        />
 
-        <KPICards kpis={{color: "blue", icon: Building2, count: 12, title: "Total Departments"}} />
+        <KPICards
+          kpis={{
+            color: "green",
+            icon: Users,
+            count: 156,
+            title: "Total staff",
+          }}
+        />
 
-        <KPICards kpis={{color: "green", icon: Users, count: 156, title: "Total staff"}} />
+        <KPICards
+          kpis={{
+            color: "purple",
+            icon: Stethoscope,
+            count: 48,
+            title: "Active Doctors",
+          }}
+        />
 
-        <KPICards kpis={{color: "purple", icon: Stethoscope, count: 48, title: "Active Doctors"}} />
-
-        <KPICards kpis={{color: "orange", icon: Clock, count: 15, title: "Avg. Wait Time (mins)"}} />
+        <KPICards
+          kpis={{
+            color: "orange",
+            icon: Clock,
+            count: 15,
+            title: "Avg. Wait Time (mins)",
+          }}
+        />
       </div>
 
       {/* Filters and Search */}
       <Card className="border-none shadow-lg">
         <CardHeader className="bg-white border-b border-gray-100">
           <div className="flex flex-col gap-4">
-            <CardTitle className="text-xl font-semibold text-gray-900">Department List</CardTitle>
+            <CardTitle className="text-xl font-semibold text-gray-900">
+              Department List
+            </CardTitle>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -75,13 +209,27 @@ const Departments = () => {
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50 hover:bg-gray-50">
-                  <TableHead className="font-semibold text-gray-900">Department</TableHead>
-                  <TableHead className="font-semibold text-gray-900">Head of Department</TableHead>
-                  <TableHead className="font-semibold text-gray-900">Staff Count</TableHead>
-                  <TableHead className="font-semibold text-gray-900">Description</TableHead>
-                  <TableHead className="font-semibold text-gray-900">Contact</TableHead>
-                  <TableHead className="font-semibold text-gray-900">Status</TableHead>
-                  <TableHead className="font-semibold text-gray-900">Actions</TableHead>
+                  <TableHead className="font-semibold text-gray-900">
+                    Department
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-900">
+                    Head of Department
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-900">
+                    Staff Count
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-900">
+                    Description
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-900">
+                    Contact
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-900">
+                    Status
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-900">
+                    Actions
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -101,19 +249,25 @@ const Departments = () => {
                     <div className="flex items-center gap-2">
                       <Avatar className="h-8 w-8 border-2 border-blue-100">
                         <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback className="bg-blue-50 text-blue-600">JD</AvatarFallback>
+                        <AvatarFallback className="bg-blue-50 text-blue-600">
+                          JD
+                        </AvatarFallback>
                       </Avatar>
                       <span className="font-medium">Dr. John Smith</span>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                    <Badge
+                      variant="outline"
+                      className="bg-blue-50 text-blue-700 border-blue-200"
+                    >
                       24 Staff
                     </Badge>
                   </TableCell>
                   <TableCell>
                     <p className="text-sm text-gray-600 max-w-[200px] truncate">
-                      Specialized in heart conditions, offering advanced cardiac care and treatment.
+                      Specialized in heart conditions, offering advanced cardiac
+                      care and treatment.
                     </p>
                   </TableCell>
                   <TableCell>
@@ -135,10 +289,18 @@ const Departments = () => {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Button variant="ghost" size="icon" className="hover:bg-blue-50 hover:text-blue-600">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="hover:bg-blue-50 hover:text-blue-600"
+                      >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="hover:bg-blue-50 hover:text-blue-600">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="hover:bg-blue-50 hover:text-blue-600"
+                      >
                         <Edit className="h-4 w-4" />
                       </Button>
                     </div>
@@ -160,19 +322,25 @@ const Departments = () => {
                     <div className="flex items-center gap-2">
                       <Avatar className="h-8 w-8 border-2 border-purple-100">
                         <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback className="bg-purple-50 text-purple-600">MJ</AvatarFallback>
+                        <AvatarFallback className="bg-purple-50 text-purple-600">
+                          MJ
+                        </AvatarFallback>
                       </Avatar>
                       <span className="font-medium">Dr. Mary Johnson</span>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
+                    <Badge
+                      variant="outline"
+                      className="bg-purple-50 text-purple-700 border-purple-200"
+                    >
                       18 Staff
                     </Badge>
                   </TableCell>
                   <TableCell>
                     <p className="text-sm text-gray-600 max-w-[200px] truncate">
-                      Expert care for neurological disorders, brain and spinal cord conditions.
+                      Expert care for neurological disorders, brain and spinal
+                      cord conditions.
                     </p>
                   </TableCell>
                   <TableCell>
@@ -194,10 +362,18 @@ const Departments = () => {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Button variant="ghost" size="icon" className="hover:bg-blue-50 hover:text-blue-600">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="hover:bg-blue-50 hover:text-blue-600"
+                      >
                         <Eye className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="hover:bg-blue-50 hover:text-blue-600">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="hover:bg-blue-50 hover:text-blue-600"
+                      >
                         <Edit className="h-4 w-4" />
                       </Button>
                     </div>

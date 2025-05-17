@@ -48,6 +48,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../../components/ui/dialog";
+import { toast } from "sonner";
 
 import KPICards from "../../../components/kpi-cards/KPICards";
 import AssignRoom,{AssignRoomFormValues} from "../../../components/assign-room/AssignRoom";
@@ -59,6 +60,7 @@ const Rooms = () => {
     // Handle the room assignment
     console.log("Assigned room:", values);
     setOpen(false);
+    toast.success("Room has been assigned to patient successfully")
   };
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6 space-y-6">

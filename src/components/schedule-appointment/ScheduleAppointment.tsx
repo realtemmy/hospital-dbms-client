@@ -105,7 +105,7 @@ interface ScheduleAppointmentProps {
 
 const ScheduleAppointment = forwardRef<ScheduleAppointmentRef, ScheduleAppointmentProps>(
   ({ onSubmit }, ref) => {
-    const [, setIsSubmitting] = useState(false);
+    // const [, setIsSubmitting] = useState(false);
     const [open, setOpen] = useState(false);
     const [dateOpen, setDateOpen] = useState(false);
 
@@ -118,7 +118,7 @@ const ScheduleAppointment = forwardRef<ScheduleAppointmentRef, ScheduleAppointme
     });
 
     const handleSubmit = async (values: AppointmentFormValues) => {
-      setIsSubmitting(true);
+      // setIsSubmitting(true);
       try {
         if (onSubmit) {
           await onSubmit(values);
@@ -127,7 +127,7 @@ const ScheduleAppointment = forwardRef<ScheduleAppointmentRef, ScheduleAppointme
       } catch (error) {
         console.error("Error scheduling appointment:", error);
       } finally {
-        setIsSubmitting(false);
+        // setIsSubmitting(false);
       }
     };
 
