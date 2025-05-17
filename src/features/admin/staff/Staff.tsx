@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   Search,
-  Plus,
   X,
   Filter,
   UserPlus,
@@ -38,10 +37,35 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../../components/ui/dialog";
-import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../components/ui/avatar";
 import { Label } from "../../../components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../../../components/ui/tabs";
 
+type Staff = {
+  id: string;
+  name: string;
+  category: string;
+  department: string;
+  specialty: string;
+  qualification: string;
+  contactNumber: string;
+  email: string;
+  status: string;
+  joinDate: string;
+  schedule: string;
+  address: string;
+  emergencyContact: string;
+  image: string | null;
+};
 
 const Staff = () => {
   // Define staff categories
@@ -243,17 +267,17 @@ const Staff = () => {
   const [departmentFilter, setDepartmentFilter] = useState("all");
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showStaffDetails, setShowStaffDetails] = useState(false);
-  const [selectedStaff, setSelectedStaff] = useState(null);
+  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
   const [successMessage, setSuccessMessage] = useState("");
 
   // Handle form input changes
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewStaff((prev) => ({ ...prev, [name]: value }));
   };
 
   // Handle select changes
-  const handleSelectChange = (value, field) => {
+  const handleSelectChange = (value: string, field: string) => {
     setNewStaff((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -323,13 +347,13 @@ const Staff = () => {
   });
 
   // Show staff details
-  const viewStaffDetails = (staff) => {
+  const viewStaffDetails = (staff: Staff) => {
     setSelectedStaff(staff);
     setShowStaffDetails(true);
   };
 
   // Get category name and color
-  const getCategoryInfo = (categoryId) => {
+  const getCategoryInfo = (categoryId: string) => {
     const category = staffCategories.find((cat) => cat.id === categoryId);
     return category || { name: "Unknown", color: "bg-gray-100 text-gray-800" };
   };
@@ -773,7 +797,6 @@ const Staff = () => {
       </Dialog>
     </div>
   );
-}
-
+};
 
 export default Staff;
