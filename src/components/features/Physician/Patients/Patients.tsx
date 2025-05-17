@@ -1,7 +1,6 @@
-import { useState, useEffect,Fragment } from "react";
-import { Outlet } from "react-router";
+import { useState, useEffect } from "react";
 import { Search, Filter, UserRound, ChevronRight } from "lucide-react";
-import PatientCard from "../../../../components/patient-card/PatientCard";
+import { useNavigate } from "react-router";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import {
@@ -12,6 +11,9 @@ import {
   DropdownMenuTrigger,
 } from "../../../../components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../components/ui/tabs";
+
+import PatientCard from "../../../../components/patient-card/PatientCard";
+
 
 // Define type for patient information
 type PatientInfo = {
@@ -26,6 +28,7 @@ type PatientInfo = {
 };
 
 const Patients = () => {
+  const navigate = useNavigate()
   // Mock patient data - would normally come from an API
   const patientsData = [
     {
@@ -146,7 +149,7 @@ const Patients = () => {
   };
 
   return (
-    <Fragment>
+
       <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
@@ -193,7 +196,7 @@ const Patients = () => {
             </DropdownMenuContent>
           </DropdownMenu>
           
-          <Button className="gap-1">
+          <Button className="gap-1" onClick={()=> navigate("/admin/add-patient")}>
             <span>Add Patient</span>
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -230,8 +233,6 @@ const Patients = () => {
         </TabsContent>
       </Tabs>
     </div>
-    <Outlet />
-    </Fragment>
     
   );
 };
