@@ -96,10 +96,6 @@ const AssignRoom: React.FC<AssignRoomProps> = ({ onSubmit }) => {
   return (
     <Card className="border-none shadow-none p-0">
       <CardHeader>
-        {/* <CardTitle>Assign Patient to Room</CardTitle>
-        <CardDescription>
-          Select a patient and assign them to an available room
-        </CardDescription> */}
       </CardHeader>
       <CardContent>
         <Form {...form}>
