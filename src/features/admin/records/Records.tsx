@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import {
   Card,
   CardContent,
@@ -58,6 +59,7 @@ import {
 } from "../../../components/ui/tooltip";
 
 const Records = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6 space-y-6">
       {/* Header */}
@@ -75,7 +77,10 @@ const Records = () => {
             <FileUp className="h-4 w-4" />
             Import Records
           </Button>
-          <Button className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-md hover:shadow-lg transition-all duration-200">
+          <Button
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-md hover:shadow-lg transition-all duration-200"
+            onClick={() => navigate("/admin/records/add")}
+          >
             <Plus className="h-4 w-4" />
             New Record
           </Button>
