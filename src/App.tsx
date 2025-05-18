@@ -30,6 +30,7 @@ import { Toaster } from "./components/ui/sonner";
 import AddStaff from "./components/add-staff/AddStaff";
 import AddRecord from "./components/add-record/AddRecord";
 import Staff from "./features/admin/staff/Staff";
+import Settings from "./features/admin/settings/Settings";
 
 function App() {
   // In chat, there should be ai generated response or suggestions for physicians
@@ -82,6 +83,7 @@ function App() {
           <Route path="records" element={<Records />} />
           <Route path="records/add" element={<AddRecord />} />
           <Route path="staff" element={<Staff />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
 
         {/* Patient Routes */}
