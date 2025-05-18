@@ -1,14 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import {
   Search,
   X,
   Filter,
   UserPlus,
-  Edit,
   Phone,
   Mail,
   Building,
-  Check,
 } from "lucide-react";
 import {
   Card,
@@ -31,10 +30,6 @@ import { Badge } from "../../../components/ui/badge";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "../../../components/ui/dialog";
 import {
@@ -42,15 +37,10 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../../../components/ui/avatar";
-import { Label } from "../../../components/ui/label";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../../../components/ui/tabs";
 
-type Staff = {
+import PreviewStaffProfile from "../../../components/staff-profile-preview/PreviewStaffProfile";
+
+export type Staff = {
   id: string;
   name: string;
   category: string;
@@ -68,6 +58,7 @@ type Staff = {
 };
 
 const Staff = () => {
+  const navigate = useNavigate();
   // Define staff categories
   const staffCategories = [
     { id: "doctor", name: "Doctors", color: "bg-blue-100 text-blue-800" },
@@ -112,7 +103,7 @@ const Staff = () => {
   ];
 
   // Staff data with example entries
-  const [staffMembers, setStaffMembers] = useState([
+  const staffMembers = [
     {
       id: "S1001",
       name: "Dr. Sarah Johnson",
@@ -241,95 +232,12 @@ const Staff = () => {
       emergencyContact: "+1987654328",
       image: null,
     },
-  ]);
-
-  // State for the new staff member form
-  const [newStaff, setNewStaff] = useState({
-    id: "",
-    name: "",
-    category: "",
-    department: "",
-    specialty: "",
-    qualification: "",
-    contactNumber: "",
-    email: "",
-    status: "active",
-    joinDate: "",
-    schedule: "",
-    address: "",
-    emergencyContact: "",
-    image: null,
-  });
+  ];
 
   // State for search and filtering
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [departmentFilter, setDepartmentFilter] = useState("all");
-  const [showAddDialog, setShowAddDialog] = useState(false);
-  const [showStaffDetails, setShowStaffDetails] = useState(false);
-  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
-  const [successMessage, setSuccessMessage] = useState("");
-
-  // Handle form input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewStaff((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Handle select changes
-  const handleSelectChange = (value: string, field: string) => {
-    setNewStaff((prev) => ({ ...prev, [field]: value }));
-  };
-
-  // Generate a unique ID for new staff members
-  const generateStaffId = () => {
-    const lastId =
-      staffMembers.length > 0
-        ? parseInt(staffMembers[staffMembers.length - 1].id.substring(1))
-        : 1000;
-    return `S${lastId + 1}`;
-  };
-
-  // Add new staff member
-  const addStaffMember = () => {
-    // Basic validation
-    if (!newStaff.name || !newStaff.category || !newStaff.department) {
-      // Show error (you could add a proper error state here)
-      alert("Please fill all required fields");
-      return;
-    }
-
-    // Generate ID if not provided
-    const staffToAdd = {
-      ...newStaff,
-      id: newStaff.id || generateStaffId(),
-    };
-
-    setStaffMembers((prev) => [...prev, staffToAdd]);
-    setShowAddDialog(false);
-
-    // Show success message
-    setSuccessMessage("Staff member added successfully");
-    setTimeout(() => setSuccessMessage(""), 3000);
-
-    // Reset form
-    setNewStaff({
-      id: "",
-      name: "",
-      category: "",
-      department: "",
-      specialty: "",
-      qualification: "",
-      contactNumber: "",
-      email: "",
-      status: "active",
-      joinDate: "",
-      schedule: "",
-      address: "",
-      emergencyContact: "",
-      image: null,
-    });
-  };
 
   // Filter staff based on search and filter criteria
   const filteredStaff = staffMembers.filter((staff) => {
@@ -347,10 +255,6 @@ const Staff = () => {
   });
 
   // Show staff details
-  const viewStaffDetails = (staff: Staff) => {
-    setSelectedStaff(staff);
-    setShowStaffDetails(true);
-  };
 
   // Get category name and color
   const getCategoryInfo = (categoryId: string) => {
@@ -364,185 +268,13 @@ const Staff = () => {
         {/* Header with title and add button */}
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Hospital Staff Management</h1>
-          <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-            <DialogTrigger asChild>
-              <Button className="flex items-center">
-                <UserPlus className="mr-2 h-4 w-4" /> Add Staff Member
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>Add New Staff Member</DialogTitle>
-                <DialogDescription>
-                  Enter the details of the new staff member to add them to the
-                  system.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="name">Full Name*</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={newStaff.name}
-                      onChange={handleInputChange}
-                      placeholder="John Doe"
-                    />
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="category">Category*</Label>
-                    <Select
-                      onValueChange={(value) =>
-                        handleSelectChange(value, "category")
-                      }
-                      value={newStaff.category}
-                    >
-                      <SelectTrigger id="category">
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {staffCategories.map((category) => (
-                          <SelectItem key={category.id} value={category.id}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="department">Department*</Label>
-                    <Select
-                      onValueChange={(value) =>
-                        handleSelectChange(value, "department")
-                      }
-                      value={newStaff.department}
-                    >
-                      <SelectTrigger id="department">
-                        <SelectValue placeholder="Select department" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {departments.map((department) => (
-                          <SelectItem key={department} value={department}>
-                            {department}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="specialty">Specialty</Label>
-                    <Input
-                      id="specialty"
-                      name="specialty"
-                      value={newStaff.specialty}
-                      onChange={handleInputChange}
-                      placeholder="e.g. Cardiac Surgery"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="qualification">Qualification</Label>
-                    <Input
-                      id="qualification"
-                      name="qualification"
-                      value={newStaff.qualification}
-                      onChange={handleInputChange}
-                      placeholder="e.g. MD, PhD"
-                    />
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="joinDate">Join Date</Label>
-                    <Input
-                      id="joinDate"
-                      name="joinDate"
-                      type="date"
-                      value={newStaff.joinDate}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="contactNumber">Contact Number</Label>
-                    <Input
-                      id="contactNumber"
-                      name="contactNumber"
-                      value={newStaff.contactNumber}
-                      onChange={handleInputChange}
-                      placeholder="+1234567890"
-                    />
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={newStaff.email}
-                      onChange={handleInputChange}
-                      placeholder="john.doe@hospital.org"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="schedule">Schedule</Label>
-                  <Select
-                    onValueChange={(value) =>
-                      handleSelectChange(value, "schedule")
-                    }
-                    value={newStaff.schedule}
-                  >
-                    <SelectTrigger id="schedule">
-                      <SelectValue placeholder="Select schedule" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Morning Shift">
-                        Morning Shift
-                      </SelectItem>
-                      <SelectItem value="Day Shift">Day Shift</SelectItem>
-                      <SelectItem value="Evening Shift">
-                        Evening Shift
-                      </SelectItem>
-                      <SelectItem value="Night Shift">Night Shift</SelectItem>
-                      <SelectItem value="Rotating Shifts">
-                        Rotating Shifts
-                      </SelectItem>
-                      <SelectItem value="Regular Hours">
-                        Regular Hours
-                      </SelectItem>
-                      <SelectItem value="On-Call">On-Call</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setShowAddDialog(false)}
-                >
-                  Cancel
-                </Button>
-                <Button onClick={addStaffMember}>Add Staff Member</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <Button
+            className="flex items-center"
+            onClick={() => navigate("/admin/add-staff")}
+          >
+            <UserPlus className="mr-2 h-4 w-4" /> Add Staff Member
+          </Button>
         </div>
-
-        {/* Success message */}
-        {successMessage && (
-          <div className="bg-green-100 border border-green-200 text-green-800 p-3 rounded-md flex items-center">
-            <Check className="h-5 w-5 mr-2" />
-            {successMessage}
-          </div>
-        )}
 
         {/* Search and Filters */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -649,13 +381,16 @@ const Staff = () => {
                   </div>
                 </CardContent>
                 <CardFooter className="bg-gray-50 p-4 flex justify-end">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => viewStaffDetails(staff)}
-                  >
-                    View Profile
-                  </Button>
+                  <Dialog>
+                    <DialogTrigger>
+                      <Button variant="outline" size="sm">
+                        View Profile
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-xl">
+                      {staff && <PreviewStaffProfile staff={staff} />}
+                    </DialogContent>
+                  </Dialog>
                 </CardFooter>
               </Card>
             );
@@ -678,123 +413,6 @@ const Staff = () => {
       </div>
 
       {/* Staff Details Dialog */}
-      <Dialog open={showStaffDetails} onOpenChange={setShowStaffDetails}>
-        <DialogContent className="sm:max-w-xl">
-          {selectedStaff && (
-            <>
-              <DialogHeader>
-                <DialogTitle className="text-xl">Staff Profile</DialogTitle>
-              </DialogHeader>
-
-              <div className="flex flex-col md:flex-row gap-6">
-                <div className="flex flex-col items-center">
-                  <Avatar className="h-24 w-24 mb-2">
-                    <AvatarImage
-                      src={selectedStaff.image || ""}
-                      alt={selectedStaff.name}
-                    />
-                    <AvatarFallback className="text-xl">
-                      {selectedStaff.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")
-                        .toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <Badge
-                    className={getCategoryInfo(selectedStaff.category).color}
-                  >
-                    {getCategoryInfo(selectedStaff.category).name}
-                  </Badge>
-                </div>
-
-                <div className="flex-1">
-                  <h2 className="text-2xl font-bold">{selectedStaff.name}</h2>
-                  <p className="text-gray-500">{selectedStaff.specialty}</p>
-
-                  <Tabs defaultValue="info" className="mt-4">
-                    <TabsList className="w-full grid grid-cols-3">
-                      <TabsTrigger value="info">Basic Info</TabsTrigger>
-                      <TabsTrigger value="contact">Contact</TabsTrigger>
-                      <TabsTrigger value="work">Work Details</TabsTrigger>
-                    </TabsList>
-
-                    <TabsContent value="info" className="space-y-3 mt-3">
-                      <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div className="font-medium">Staff ID:</div>
-                        <div>{selectedStaff.id}</div>
-
-                        <div className="font-medium">Department:</div>
-                        <div>{selectedStaff.department}</div>
-
-                        <div className="font-medium">Qualification:</div>
-                        <div>
-                          {selectedStaff.qualification || "Not specified"}
-                        </div>
-
-                        <div className="font-medium">Join Date:</div>
-                        <div>{selectedStaff.joinDate || "Not specified"}</div>
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="contact" className="space-y-3 mt-3">
-                      <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div className="font-medium">Email:</div>
-                        <div>{selectedStaff.email}</div>
-
-                        <div className="font-medium">Contact Number:</div>
-                        <div>{selectedStaff.contactNumber}</div>
-
-                        <div className="font-medium">Address:</div>
-                        <div>{selectedStaff.address || "Not specified"}</div>
-
-                        <div className="font-medium">Emergency Contact:</div>
-                        <div>
-                          {selectedStaff.emergencyContact || "Not specified"}
-                        </div>
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="work" className="space-y-3 mt-3">
-                      <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div className="font-medium">Status:</div>
-                        <div>
-                          <Badge
-                            variant={
-                              selectedStaff.status === "active"
-                                ? "default"
-                                : "secondary"
-                            }
-                          >
-                            {selectedStaff.status === "active"
-                              ? "Active"
-                              : "Inactive"}
-                          </Badge>
-                        </div>
-
-                        <div className="font-medium">Schedule:</div>
-                        <div>{selectedStaff.schedule || "Not specified"}</div>
-
-                        <div className="font-medium">Specialty:</div>
-                        <div>{selectedStaff.specialty || "Not specified"}</div>
-                      </div>
-                    </TabsContent>
-                  </Tabs>
-                </div>
-              </div>
-
-              <DialogFooter>
-                <Button variant="outline">
-                  <Edit className="h-4 w-4 mr-2" /> Edit Profile
-                </Button>
-                <Button onClick={() => setShowStaffDetails(false)}>
-                  Close
-                </Button>
-              </DialogFooter>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
