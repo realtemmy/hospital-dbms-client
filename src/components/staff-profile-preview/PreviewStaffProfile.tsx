@@ -6,6 +6,8 @@ import { Button } from "../ui/button";
 import { Edit } from "lucide-react";
 
 import type { Staff } from "../../features/admin/staff/Staff";
+import { staffCardStyles } from "../staff-card/StaffCard";
+import { cn } from "../../lib/utils";
 
 const PreviewStaffProfile = ({ staff }: { staff: Staff }) => {
   return (
@@ -26,9 +28,13 @@ const PreviewStaffProfile = ({ staff }: { staff: Staff }) => {
                 .toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          {/* <Badge className={getCategoryInfo(selectedStaff.category).color}>
-            {getCategoryInfo(selectedStaff.category).name}
-          </Badge> */}
+          <Badge
+            className={cn(
+              staffCardStyles[staff.category as keyof typeof staffCardStyles]
+            )}
+          >
+            {staff.name}
+          </Badge>
         </div>
 
         <div className="flex-1">
@@ -98,7 +104,7 @@ const PreviewStaffProfile = ({ staff }: { staff: Staff }) => {
         </div>
       </div>
 
-      <DialogFooter>
+      <DialogFooter className="mt-2">
         <Button variant="outline">
           <Edit className="h-4 w-4 mr-2" /> Edit Profile
         </Button>

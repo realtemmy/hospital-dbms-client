@@ -1,12 +1,16 @@
 import { Button } from "../ui/button";
-import { Avatar,AvatarFallback,AvatarImage } from "../ui/avatar";
-import { DropdownMenu, DropdownMenuContent,DropdownMenuItem,DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Edit, Eye, MoreHorizontal } from "lucide-react";
 import { Key } from "react";
 import StatusBadge from "../status-badge/StatusBadge";
 import AppointmentCard from "../appointment-card/AppointmentCard";
-
 
 export type Appointment = {
   id: number;
@@ -42,13 +46,12 @@ const AppointmentTable = ({
             {tab}
           </TabsTrigger>
         ))}
-
       </TabsList>
 
       {tabsStatus.map((tab: string, index: Key | null | undefined) => (
         <TabsContent value={tab} className="space-y-6" key={index}>
           {/* Desktop view */}
-          <div className="hidden md:block rounded-lg border overflow-x-scroll bg-white ">
+          <div className="hidden md:block rounded-lg border overflow-x-scroll bg-white">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -221,7 +224,6 @@ const AppointmentTable = ({
           </div>
 
           {/* Pagination */}
-
         </TabsContent>
       ))}
     </Tabs>

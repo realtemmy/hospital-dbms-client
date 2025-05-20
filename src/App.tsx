@@ -32,6 +32,7 @@ import AddRecord from "./components/add-record/AddRecord";
 import Staff from "./features/admin/staff/Staff";
 import Settings from "./features/admin/settings/Settings";
 import HospitalRegistration from "./Pages/hospital-registration/HospitalRegistration";
+import Help from "./Pages/help/Help";
 
 function App() {
   // In chat, there should be ai generated response or suggestions for physicians
@@ -42,6 +43,7 @@ function App() {
         {/* Auth Routes */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<HospitalRegistration />} />
+        <Route path="/help" element={<Help />} />
 
         {/* Chat (General Chat) */}
         <Route path="/chat" element={<ChatLayout />}>

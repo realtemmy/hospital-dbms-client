@@ -5,18 +5,10 @@ import {
   X,
   Filter,
   UserPlus,
-  Phone,
-  Mail,
   Building,
+  Pencil,
+  Eye,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../../../components/ui/card";
 import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
 import {
@@ -26,19 +18,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
-import { Badge } from "../../../components/ui/badge";
 import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "../../../components/ui/dialog";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "../../../components/ui/avatar";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../../../components/ui/table";
 
-import PreviewStaffProfile from "../../../components/staff-profile-preview/PreviewStaffProfile";
+
+import StaffCard from "../../../components/staff-card/StaffCard";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../components/ui/tooltip";
+import { Badge } from "../../../components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar";
 
 export type Staff = {
   id: string;
@@ -83,7 +76,7 @@ const Staff = () => {
     { id: "other", name: "Other", color: "bg-gray-100 text-gray-800" },
   ];
 
-  // Define departments
+  // // Define departments
   const departments = [
     "Emergency",
     "Surgery",
@@ -102,7 +95,7 @@ const Staff = () => {
     "Pharmacy",
   ];
 
-  // Staff data with example entries
+  // // Staff data with example entries
   const staffMembers = [
     {
       id: "S1001",
@@ -234,39 +227,24 @@ const Staff = () => {
     },
   ];
 
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
+      .toUpperCase();
+  };
+
   // State for search and filtering
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [departmentFilter, setDepartmentFilter] = useState("all");
 
-  // Filter staff based on search and filter criteria
-  const filteredStaff = staffMembers.filter((staff) => {
-    const matchesSearch =
-      staff.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      staff.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      staff.department.toLowerCase().includes(searchTerm.toLowerCase());
-
-    const matchesCategory =
-      categoryFilter === "all" || staff.category === categoryFilter;
-    const matchesDepartment =
-      departmentFilter === "all" || staff.department === departmentFilter;
-
-    return matchesSearch && matchesCategory && matchesDepartment;
-  });
-
-  // Show staff details
-
-  // Get category name and color
-  const getCategoryInfo = (categoryId: string) => {
-    const category = staffCategories.find((cat) => cat.id === categoryId);
-    return category || { name: "Unknown", color: "bg-gray-100 text-gray-800" };
-  };
-
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col space-y-4">
         {/* Header with title and add button */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center flex-wrap">
           <h1 className="text-3xl font-bold">Hospital Staff Management</h1>
           <Button
             className="flex items-center"
@@ -330,73 +308,130 @@ const Staff = () => {
         </div>
 
         {/* Staff Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filteredStaff.map((staff) => {
-            const categoryInfo = getCategoryInfo(staff.category);
-            return (
-              <Card
-                key={staff.id}
-                className="overflow-hidden hover:shadow-md transition-shadow"
-              >
-                <CardHeader className="p-4 pb-0">
-                  <div className="flex justify-between items-start">
-                    <Badge className={categoryInfo.color}>
-                      {categoryInfo.name}
-                    </Badge>
-                    <Badge variant="outline">{staff.department}</Badge>
-                  </div>
-                  <div className="flex items-center mt-2">
-                    <Avatar className="h-12 w-12 mr-3">
-                      <AvatarImage src={staff.image || ""} alt={staff.name} />
-                      <AvatarFallback>
-                        {staff.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")
-                          .toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <CardTitle className="text-lg">{staff.name}</CardTitle>
-                      <CardDescription>
-                        {staff.specialty || staff.qualification}
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-4 pt-3">
-                  <div className="text-sm space-y-1">
-                    <div className="flex items-center">
-                      <Phone className="h-3.5 w-3.5 mr-2 text-gray-400" />
-                      <span className="text-gray-600">
-                        {staff.contactNumber || "Not provided"}
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <Mail className="h-3.5 w-3.5 mr-2 text-gray-400" />
-                      <span className="text-gray-600">
-                        {staff.email || "Not provided"}
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="bg-gray-50 p-4 flex justify-end">
-                  <Dialog>
-                    <DialogTrigger>
-                      <Button variant="outline" size="sm">
-                        View Profile
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-xl">
-                      {staff && <PreviewStaffProfile staff={staff} />}
-                    </DialogContent>
-                  </Dialog>
-                </CardFooter>
-              </Card>
-            );
-          })}
+        <div>
+          <div className="hidden md:block rounded-lg border overflow-x-scroll bg-white">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gray-50/50 hover:bg-gray-50/50">
+                  <TableHead className="font-semibold">Name</TableHead>
+                  <TableHead className="font-semibold">Department</TableHead>
+                  <TableHead className="font-semibold">
+                    Specialization
+                  </TableHead>
+                  <TableHead className="font-semibold">Status</TableHead>
+                  <TableHead className="font-semibold">Qualification</TableHead>
+                  <TableHead className="font-semibold">Contact</TableHead>
+                  <TableHead className="font-semibold text-center">
+                    Actions
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {staffMembers.map((staff) => (
+                  <TableRow key={staff.id} className="hover:bg-gray-50/50">
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10 ring-2 ring-gray-100">
+                          <AvatarImage
+                            src={staff.image || ""}
+                            alt={staff.name}
+                          />
+                          <AvatarFallback>
+                            {getInitials(staff.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div
+                          className="font-medium truncate max-w-[150px] sm:max-w-[200px]"
+                          title={staff.name}
+                        >
+                          {staff.name}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      {staff.department}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      {staff.specialty}
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          staff.status === "active" ? "default" : "secondary"
+                        }
+                        className={`${
+                          staff.status === "active" && "bg-green-800"
+                        } font-medium`}
+                      >
+                        {staff.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      {staff.qualification}
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <p
+                          className="text-sm text-gray-600 truncate max-w-[150px] sm:max-w-[200px]"
+                          title={staff.email}
+                        >
+                          {staff.email}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {staff.contactNumber}
+                        </p>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center justify-center gap-3">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 hover:bg-gray-100"
+                              >
+                                <Eye className="h-4 w-4 text-gray-500" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>View Staff</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
 
-          {filteredStaff.length === 0 && (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 hover:bg-gray-100"
+                              >
+                                <Pencil className="h-4 w-4 text-gray-500" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Edit Staff</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+          {/* Mobile */}
+          <div className="md:hidden space-y-4">
+            {staffMembers.map((staff) => (
+              <StaffCard staff={staff} />
+            ))}
+          </div>
+
+          {staffMembers.length === 0 && (
             <div className="col-span-full bg-gray-100 p-6 rounded-md flex flex-col items-center justify-center text-center">
               <div className="text-gray-400 mb-3">
                 <X className="h-10 w-10 mx-auto" />
@@ -411,8 +446,6 @@ const Staff = () => {
           )}
         </div>
       </div>
-
-      {/* Staff Details Dialog */}
     </div>
   );
 };
