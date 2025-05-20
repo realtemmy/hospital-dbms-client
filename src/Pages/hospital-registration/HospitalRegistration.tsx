@@ -34,98 +34,6 @@ import {
 import { Separator } from "../../components/ui/separator";
 import { toast } from "sonner";
 
-// Define the schema for hospital registration form
-const hospitalFormSchema = z.object({
-  // Basic Information
-  name: z.string().min(3, {
-    message: "Hospital name must be at least 3 characters.",
-  }),
-  type: z.enum(
-    ["public", "private", "nonprofit", "teaching", "specialized", "other"],
-    {
-      required_error: "Please select a hospital type.",
-    }
-  ),
-  specializations: z.array(z.string()).nonempty({
-    message: "Select at least one specialization.",
-  }),
-
-  // Contact Information
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  phone: z.string().min(10, {
-    message: "Phone number must be at least 10 digits.",
-  }),
-  website: z
-    .string()
-    .url({
-      message: "Please enter a valid URL.",
-    })
-    .optional()
-    .or(z.literal("")),
-
-  // Address
-  address: z.object({
-    street: z.string().min(5, {
-      message: "Street address must be at least 5 characters.",
-    }),
-    city: z.string().min(2, {
-      message: "City name must be at least 2 characters.",
-    }),
-    state: z.string().min(2, {
-      message: "State name must be at least 2 characters.",
-    }),
-    zip: z.string().min(5, {
-      message: "Zip code must be at least 5 characters.",
-    }),
-    country: z.string().min(2, {
-      message: "Country name must be at least 2 characters.",
-    }),
-  }),
-
-  // Capacity & Services
-  bedCount: z.coerce.number().min(1, {
-    message: "Bed count must be at least 1.",
-  }),
-  emergencyServices: z.boolean().default(false),
-  operatingRooms: z.coerce.number().min(0, {
-    message: "Operating rooms cannot be negative.",
-  }),
-
-  // Administrative
-  licenseNumber: z.string().min(5, {
-    message: "License number must be at least 5 characters.",
-  }),
-  taxId: z.string().min(5, {
-    message: "Tax ID must be at least 5 characters.",
-  }),
-  accreditations: z.array(z.string()).optional(),
-
-  // Additional Information
-  description: z
-    .string()
-    .max(500, {
-      message: "Description cannot exceed 500 characters.",
-    })
-    .optional(),
-  yearEstablished: z.coerce
-    .number()
-    .min(1800, {
-      message: "Year established must be 1800 or later.",
-    })
-    .max(new Date().getFullYear(), {
-      message: `Year cannot be in the future.`,
-    }),
-
-  // Terms and Privacy
-  termsAccepted: z.literal(true, {
-    errorMap: () => ({ message: "You must accept the terms and conditions." }),
-  }),
-});
-
-// Extract the type from the schema
-type HospitalFormValues = z.infer<typeof hospitalFormSchema>;
 
 // Specialization options for the form
 const specializationOptions = [
@@ -152,6 +60,85 @@ const accreditationOptions = [
   },
   { id: "chap", label: "Community Health Accreditation Program" },
 ];
+
+// 1. First define your form values type
+export type HospitalFormValues = {
+  name: string;
+  type:
+    | "public"
+    | "private"
+    | "nonprofit"
+    | "teaching"
+    | "specialized"
+    | "other";
+  specializations: string[];
+  email: string;
+  phone: string;
+  website: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+    country: string;
+  };
+  bedCount: number;
+  emergencyServices: boolean;
+  operatingRooms: number;
+  licenseNumber: string;
+  taxId: string;
+  accreditations: string[];
+  description: string;
+  yearEstablished: number;
+  termsAccepted: boolean;
+};
+
+export const hospitalFormSchema: z.ZodType<HospitalFormValues> = z.object({
+  name: z.string().min(3, {
+    message: "Hospital name must be at least 3 characters.",
+  }),
+  type: z.enum(
+    ["public", "private", "nonprofit", "teaching", "specialized", "other"],
+    {
+      required_error: "Please select a hospital type.",
+    }
+  ),
+  specializations: z.array(z.string()).nonempty({
+    message: "Select at least one specialization.",
+  }),
+
+  email: z.string().email({ message: "Invalid email address" }),
+  phone: z.string().min(6, { message: "Phone number is too short" }),
+  website: z.string().url().or(z.literal("")),
+  address: z.object({
+    street: z.string().min(5, {
+      message: "Street address must be at least 5 characters.",
+    }),
+    city: z.string().min(2, {
+      message: "City name must be at least 2 characters.",
+    }),
+    state: z.string().min(2, {
+      message: "State name must be at least 2 characters.",
+    }),
+    zip: z.string().min(5, {
+      message: "Zip code must be at least 5 characters.",
+    }),
+    country: z.string().min(2, {
+      message: "Country name must be at least 2 characters.",
+    }),
+  }),
+  bedCount: z.number().min(0, { message: "Bed count cannot be negative" }),
+  emergencyServices: z.boolean(),
+  operatingRooms: z.number().min(0),
+  licenseNumber: z.string().min(1, { message: "License number is required" }),
+  taxId: z.string().min(1, { message: "Tax ID is required" }),
+  accreditations: z.array(z.string()),
+  description: z.string(),
+  yearEstablished: z.number().min(1800).max(new Date().getFullYear()),
+  termsAccepted: z.literal(true, {
+    errorMap: () => ({ message: "You must accept the terms" }),
+  }),
+});
 
 const HospitalRegistration = () => {
   // Initialize the form with default values
@@ -712,6 +699,6 @@ const HospitalRegistration = () => {
       </CardContent>
     </Card>
   );
-}
+};
 
 export default HospitalRegistration;
