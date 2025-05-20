@@ -9,7 +9,7 @@ type KPICardsProps = {
   title: string;
 };
 
-const KPICards = ({ kpis}: { kpis: KPICardsProps }) => {
+const KPICards = ({ kpis }: { kpis: KPICardsProps }) => {
   const cardBorderStyles = {
     blue: "border-blue-500",
     green: "border-green-500",
@@ -48,13 +48,24 @@ const KPICards = ({ kpis}: { kpis: KPICardsProps }) => {
       )}
     >
       <div className="flex items-center">
-        <div className={cn("p-3 rounded-full text-blue-500", cardIconStyles[kpis.color as keyof typeof cardIconStyles], cardTextStyles[kpis.color as keyof typeof cardTextStyles])}>
+        <div
+          className={cn(
+            "p-3 rounded-full text-blue-500",
+            cardIconStyles[kpis.color as keyof typeof cardIconStyles],
+            cardTextStyles[kpis.color as keyof typeof cardTextStyles]
+          )}
+        >
           <kpis.icon className="h-6 w-6" />
         </div>
         <div className="ml-4">
           <p className="text-sm font-medium text-gray-500">{kpis.title}</p>
           <p className="text-2xl font-semibold text-gray-900">
-            {kpis.type === "revenue" ? `$${kpis.count.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 2})}` : kpis.count}
+            {kpis.type === "revenue"
+              ? `$${kpis.count.toLocaleString("en-US", {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 2,
+                })}`
+              : kpis.count}
           </p>
         </div>
       </div>
