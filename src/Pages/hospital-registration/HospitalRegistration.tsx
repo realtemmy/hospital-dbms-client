@@ -34,7 +34,6 @@ import {
 import { Separator } from "../../components/ui/separator";
 import { toast } from "sonner";
 
-
 // Specialization options for the form
 const specializationOptions = [
   { id: "general", label: "General Medicine" },
@@ -67,10 +66,11 @@ export type HospitalFormValues = {
   type:
     | "public"
     | "private"
-    | "nonprofit"
+    | "general"
     | "teaching"
     | "specialized"
-    | "other";
+    | "research"
+    | "community";
   specializations: string[];
   email: string;
   phone: string;
@@ -98,7 +98,15 @@ export const hospitalFormSchema: z.ZodType<HospitalFormValues> = z.object({
     message: "Hospital name must be at least 3 characters.",
   }),
   type: z.enum(
-    ["public", "private", "nonprofit", "teaching", "specialized", "other"],
+    [
+      "public",
+      "private",
+      "general",
+      "teaching",
+      "specialized",
+      "research",
+      "community",
+    ],
     {
       required_error: "Please select a hospital type.",
     }
@@ -120,7 +128,7 @@ export const hospitalFormSchema: z.ZodType<HospitalFormValues> = z.object({
     state: z.string().min(2, {
       message: "State name must be at least 2 characters.",
     }),
-    zip: z.string().min(5, {
+    zip: z.string().min(6, {
       message: "Zip code must be at least 5 characters.",
     }),
     country: z.string().min(2, {
@@ -129,7 +137,7 @@ export const hospitalFormSchema: z.ZodType<HospitalFormValues> = z.object({
   }),
   bedCount: z.number().min(0, { message: "Bed count cannot be negative" }),
   emergencyServices: z.boolean(),
-  operatingRooms: z.number().min(0),
+  operatingRooms: z.number().min(0, {message: "Number of operating rooms is required"}),
   licenseNumber: z.string().min(1, { message: "License number is required" }),
   taxId: z.string().min(1, { message: "Tax ID is required" }),
   accreditations: z.array(z.string()),
