@@ -1,3 +1,5 @@
+import { ChangeEvent, useState } from "react";
+import { CalendarIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -12,6 +14,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import {
   Select,
   SelectContent,
@@ -20,14 +23,15 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "../ui/calendar";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../ui/popover";
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Calendar } from "../ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "../../lib/utils";
 import { format } from "date-fns";
 
@@ -41,29 +45,48 @@ const formSchema = z.object({
     required_error: "Please select a gender",
   }),
   email: z.string().email("Invalid email address"),
-  phone: z.string()
+  phone: z
+    .string()
     .min(11, "Phone number must be 11 digits")
     .max(11, "Phone number must be 11 digits")
     .regex(/^[0-9]+$/, "Phone number must contain only digits")
-    .refine((val) => val.startsWith('0'), "Phone number must start with 0"),
+    .refine((val) => val.startsWith("0"), "Phone number must start with 0"),
   address: z.string().min(5, "Address must be at least 5 characters"),
-  bloodType: z.string({
-    required_error: "Please select a blood type",
-  }),
-  medicalHistory: z.string().optional(),
-  allergies: z.string().optional(),
-  emergencyContact: z.object({
-    name: z.string().min(2, "Emergency contact name must be at least 2 characters"),
-    relationship: z.string().min(2, "Relationship must be at least 2 characters"),
-    phone: z.string()
-      .min(11, "Phone number must be 11 digits")
-      .max(11, "Phone number must be 11 digits")
-      .regex(/^[0-9]+$/, "Phone number must contain only digits")
-      .refine((val) => val.startsWith('0'), "Phone number must start with 0"),
-  }),
+  socials: z.array(
+    z.object({
+      title: z.string(),
+      value: z.string(),
+    })
+  ),
+  emergencyContacts: z.array(
+    z.object({
+      name: z
+        .string()
+        .min(2, "Emergency contact name must be at least 2 characters"),
+      relationship: z
+        .string()
+        .min(2, "Relationship must be at least 2 characters"),
+      phone: z
+        .string()
+        .min(11, "Phone number must be 11 digits")
+        .max(11, "Phone number must be 11 digits")
+        .regex(/^[0-9]+$/, "Phone number must contain only digits")
+        .refine((val) => val.startsWith("0"), "Phone number must start with 0"),
+      email: z.string().email({ message: "Invalid email address" }),
+    })
+  ),
 });
 
 const AddPatient = () => {
+  const [emergencyValues, setEmergencyValues] = useState([
+    {
+      name: "",
+      relationship: "",
+      email: "",
+      phone: "",
+    },
+  ]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -72,13 +95,14 @@ const AddPatient = () => {
       email: "",
       phone: "",
       address: "",
-      medicalHistory: "",
-      allergies: "",
-      emergencyContact: {
-        name: "",
-        relationship: "",
-        phone: "",
-      },
+      emergencyContacts: [
+        {
+          name: "",
+          relationship: "",
+          phone: "",
+          email: "",
+        },
+      ],
     },
   });
 
@@ -87,11 +111,29 @@ const AddPatient = () => {
     // TODO: Add API call to save patient data
   }
 
+  const handleAddEmergencyUser = () => {
+    setEmergencyValues([
+      ...emergencyValues,
+      {
+        name: "",
+        relationship: "",
+        email: "",
+        phone: "",
+      },
+    ]);
+  };
+
+  const handleChange = (event:ChangeEvent, index: number) => {
+    // const newField
+  };
+
   return (
-    <div className="container mx-auto py-6">
+    <div className="container mx-auto py-6 px-4">
       <Card>
         <CardHeader>
-          <CardTitle>Add New Patient</CardTitle>
+          <CardTitle className="text-center text-3xl">
+            Create New User
+          </CardTitle>
           <CardDescription>
             Enter the patient's information below. All fields marked with * are
             required.
@@ -240,7 +282,10 @@ const AddPatient = () => {
                             pattern="^[0-9]{11}$"
                             maxLength={11}
                             onChange={(e) => {
-                              const value = e.target.value.replace(/[^0-9]/g, '');
+                              const value = e.target.value.replace(
+                                /[^0-9]/g,
+                                ""
+                              );
                               field.onChange(value);
                             }}
                           />
@@ -269,146 +314,56 @@ const AddPatient = () => {
                       </FormItem>
                     )}
                   />
-
-                  <FormField
-                    control={form.control}
-                    name="bloodType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Blood Type *</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select blood type" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="A+">A+</SelectItem>
-                            <SelectItem value="A-">A-</SelectItem>
-                            <SelectItem value="B+">B+</SelectItem>
-                            <SelectItem value="B-">B-</SelectItem>
-                            <SelectItem value="AB+">AB+</SelectItem>
-                            <SelectItem value="AB-">AB-</SelectItem>
-                            <SelectItem value="O+">O+</SelectItem>
-                            <SelectItem value="O-">O-</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                 </div>
-              </div>
-
-              {/* Medical Information */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Medical Information</h3>
-
-                <FormField
-                  control={form.control}
-                  name="medicalHistory"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Medical History</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Enter any relevant medical history"
-                          className="min-h-[100px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="allergies"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Allergies</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Enter any known allergies"
-                          className="min-h-[100px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </div>
 
               {/* Emergency Contact */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">Emergency Contact</h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="emergencyContact.name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name *</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Emergency contact name"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="emergencyContact.relationship"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Relationship *</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="e.g., Spouse, Parent"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="emergencyContact.phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone Number *</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="tel"
-                            placeholder="08012345678"
-                            {...field}
-                            pattern="^[0-9]{11}$"
-                            maxLength={11}
-                            onChange={(e) => {
-                              const value = e.target.value.replace(/[^0-9]/g, '');
-                              field.onChange(value);
-                            }}
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          Enter 11-digit phone number starting with 0
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <div>
+                  {emergencyValues.map((value, index) => (
+                    <div
+                      key={index}
+                      className="flex w-full justify-between flex-wrap"
+                    >
+                      <div className="mb-4">
+                        <Label htmlFor="name">Name: </Label>
+                        <Input
+                          type="text"
+                          name="name"
+                          id="name"
+                          value={value.name}
+                          onChange={(event) => handleChange(event, index)}
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <Label htmlFor="relationship">Relationship</Label>
+                        <Input
+                          type="text"
+                          id="relationship"
+                          value={value.relationship}
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <Label htmlFor="email">Email</Label>
+                        <Input type="email" id="email" />
+                      </div>
+                      <div>
+                        <Label htmlFor="phone">Mobile number</Label>
+                        <Input type="tel" id="phone" value={value.phone} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-end">
+                  <Button
+                    variant="outline"
+                    type="button"
+                    onClick={handleAddEmergencyUser}
+                  >
+                    Add contact
+                  </Button>
                 </div>
               </div>
 
@@ -416,7 +371,7 @@ const AddPatient = () => {
                 <Button variant="outline" type="button">
                   Cancel
                 </Button>
-                <Button type="submit">Add Patient</Button>
+                <Button type="submit">Create User</Button>
               </div>
             </form>
           </Form>
