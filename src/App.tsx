@@ -42,6 +42,7 @@ function App() {
       <Routes>
         {/* Auth Routes */}
         <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<AddPatient />} />
         <Route path="/register" element={<HospitalRegistration />} />
         <Route path="/help" element={<Help />} />
 

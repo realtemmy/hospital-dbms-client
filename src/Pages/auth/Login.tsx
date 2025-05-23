@@ -27,6 +27,9 @@ import {
 } from "../../components/ui/command";
 import { cn } from "../../lib/utils";
 
+import axiosService from "../../axios";
+import { useMutation } from "@tanstack/react-query";
+
 const roles = [
   {
     value: "doctor",
@@ -57,11 +60,22 @@ export default function Login() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // In a real app, you would authenticate with a backend here
-    
-    // Redirect based on role
-    navigate(selectedRole.path);
+    const {isPending} = useMutation({
+      mutationFn: () => axiosService.post("/user/auth/login", {
+        email,
+        password,
+      }),
+      onSuccess: (data) => {
+        localStorage.setItem("token", data.token);
+        if(data.role === "Patient") {
+          navigate("/patient");
+        }else if(data.role === "Doctor") {
+          navigate("/doctor")
+        }else if(data.role === "Admin") {
+          navigate("/admin")
+        }
+      },
+    })
   };
 
   return (
