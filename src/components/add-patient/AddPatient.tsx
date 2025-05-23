@@ -1,3 +1,5 @@
+import { Trash } from "lucide-react";
+import axios from "axios";
 import { ChangeEvent, useState } from "react";
 import { CalendarIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -52,32 +54,33 @@ const formSchema = z.object({
     .regex(/^[0-9]+$/, "Phone number must contain only digits")
     .refine((val) => val.startsWith("0"), "Phone number must start with 0"),
   address: z.string().min(5, "Address must be at least 5 characters"),
-  socials: z.array(
-    z.object({
-      title: z.string(),
-      value: z.string(),
-    })
-  ),
-  emergencyContacts: z.array(
-    z.object({
-      name: z
-        .string()
-        .min(2, "Emergency contact name must be at least 2 characters"),
-      relationship: z
-        .string()
-        .min(2, "Relationship must be at least 2 characters"),
-      phone: z
-        .string()
-        .min(11, "Phone number must be 11 digits")
-        .max(11, "Phone number must be 11 digits")
-        .regex(/^[0-9]+$/, "Phone number must contain only digits")
-        .refine((val) => val.startsWith("0"), "Phone number must start with 0"),
-      email: z.string().email({ message: "Invalid email address" }),
-    })
-  ),
+  // socials: z.array(
+  //   z.object({
+  //     title: z.string(),
+  //     value: z.string(),
+  //   })
+  // ),
+  // emergencyContacts: z.array(
+  //   z.object({
+  //     name: z
+  //       .string()
+  //       .min(2, "Emergency contact name must be at least 2 characters"),
+  //     relationship: z
+  //       .string()
+  //       .min(2, "Relationship must be at least 2 characters"),
+  //     phone: z
+  //       .string()
+  //       .min(11, "Phone number must be 11 digits")
+  //       .max(11, "Phone number must be 11 digits")
+  //       .regex(/^[0-9]+$/, "Phone number must contain only digits")
+  //       .refine((val) => val.startsWith("0"), "Phone number must start with 0"),
+  //     email: z.string().email({ message: "Invalid email address" }),
+  //   })
+  // ),
 });
 
 const AddPatient = () => {
+  const [open, setOpen] = useState(false);
   const [emergencyValues, setEmergencyValues] = useState([
     {
       name: "",
@@ -95,21 +98,16 @@ const AddPatient = () => {
       email: "",
       phone: "",
       address: "",
-      emergencyContacts: [
-        {
-          name: "",
-          relationship: "",
-          phone: "",
-          email: "",
-        },
-      ],
+      // emergencyContacts: [
+      //   {
+      //     name: "",
+      //     relationship: "",
+      //     phone: "",
+      //     email: "",
+      //   },
+      // ],
     },
   });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // TODO: Add API call to save patient data
-  }
 
   const handleAddEmergencyUser = () => {
     setEmergencyValues([
@@ -122,9 +120,33 @@ const AddPatient = () => {
       },
     ]);
   };
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const { name, value } = event.target;
 
-  const handleChange = (event:ChangeEvent, index: number) => {
-    // const newField
+    setEmergencyValues((values) => {
+      const newValues = [...values];
+      newValues[index] = {
+        ...newValues[index],
+        [name]: value,
+      };
+      return newValues;
+    });
+  };
+
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    const res = await axios.post(
+      "http://localhost:3001/api/v1/user/auth/signup",
+      {
+        ...values,
+        emergencyContacts: emergencyValues,
+        role: "Patient",
+      }
+    );
+
+    console.log("Response: ", res);
   };
 
   return (
@@ -141,7 +163,10 @@ const AddPatient = () => {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-6"
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Personal Information */}
                 <div className="space-y-4">
@@ -183,30 +208,33 @@ const AddPatient = () => {
                     render={({ field }) => (
                       <FormItem className="flex flex-col">
                         <FormLabel>Date of Birth *</FormLabel>
-                        <Popover>
+                        <Popover open={open} onOpenChange={setOpen}>
                           <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant={"outline"}
-                                className={cn(
-                                  "w-full pl-3 text-left font-normal",
-                                  !field.value && "text-muted-foreground"
-                                )}
-                              >
-                                {field.value ? (
-                                  format(field.value, "PPP")
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                              </Button>
-                            </FormControl>
+                            <Button
+                              variant="outline"
+                              className={cn(
+                                "w-full pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
                           </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
+                          <PopoverContent
+                            className="z-[9999] w-auto p-0"
+                            align="start"
+                          >
                             <Calendar
                               mode="single"
                               selected={field.value}
-                              onSelect={field.onChange}
+                              onSelect={(selectedDate) => {
+                                field.onChange(selectedDate), setOpen(false);
+                              }}
                               disabled={(date) =>
                                 date > new Date() ||
                                 date < new Date("1900-01-01")
@@ -341,17 +369,31 @@ const AddPatient = () => {
                         <Label htmlFor="relationship">Relationship</Label>
                         <Input
                           type="text"
+                          name="relationship"
                           id="relationship"
                           value={value.relationship}
+                          onChange={(event) => handleChange(event, index)}
                         />
                       </div>
                       <div className="mb-4">
                         <Label htmlFor="email">Email</Label>
-                        <Input type="email" id="email" />
+                        <Input
+                          type="email"
+                          name="email"
+                          id="email"
+                          value={value.email}
+                          onChange={(event) => handleChange(event, index)}
+                        />
                       </div>
                       <div>
                         <Label htmlFor="phone">Mobile number</Label>
-                        <Input type="tel" id="phone" value={value.phone} />
+                        <Input
+                          type="tel"
+                          id="phone"
+                          name="phone"
+                          value={value.phone}
+                          onChange={(event) => handleChange(event, index)}
+                        />
                       </div>
                     </div>
                   ))}
