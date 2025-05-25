@@ -83,9 +83,7 @@ export type HospitalFormValues = {
     zip: string;
     country: string;
   };
-  bedCount: number;
   emergencyServices: boolean;
-  operatingRooms: number;
   licenseNumber: string;
   taxId: string;
   accreditations: string[];
@@ -137,34 +135,19 @@ export const hospitalFormSchema: z.ZodType<HospitalFormValues> = z.object({
       message: "Country name must be at least 2 characters.",
     }),
   }),
-  bedCount: z.preprocess(
-    (val) => Number(val),
-    z.number().min(0, {
-      message: "Bed count cannot be negative",
-    })
-  ),
   emergencyServices: z.boolean(),
-  operatingRooms: z.preprocess(
-    (val) => Number(val),
-    z.number().min(0, {
-      message: "Number of operating rooms is required",
-    })
-  ),
-  licenseNumber: z.preprocess(
-    (val) => Number(val),
-    z.number().min(0, {
-      message: "license number is required",
-    })
-  ),
-  taxId: z.preprocess(
-    (val) => Number(val),
-    z.number().min(0, {
-      message: "Tax ID is required",
-    })
-  ),
+  licenseNumber: z.string().min(10, {
+    message: "license number is required",
+  }),
+  taxId: z.string().min(4, {
+    message: "Tax ID is required",
+  }),
   accreditations: z.array(z.string()),
   description: z.string(),
-  yearEstablished: z.number().min(1800).max(new Date().getFullYear()),
+  yearEstablished: z.preprocess(
+    (val) => Number(val),
+    z.number().min(1800).max(new Date().getFullYear())
+  ), //fix the date issue
   termsAccepted: z.literal(true, {
     errorMap: () => ({ message: "You must accept the terms" }),
   }),
@@ -188,9 +171,7 @@ const HospitalRegistration = () => {
         zip: "",
         country: "",
       },
-      bedCount: 0,
       emergencyServices: false,
-      operatingRooms: 0,
       licenseNumber: "",
       taxId: "",
       accreditations: [],
@@ -283,9 +264,7 @@ const HospitalRegistration = () => {
                           <SelectItem value="public">
                             Public hospital
                           </SelectItem>
-                          <SelectItem value="other">
-                            Other
-                          </SelectItem>
+                          <SelectItem value="other">Other</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormDescription>
@@ -507,40 +486,6 @@ const HospitalRegistration = () => {
               <h3 className="text-lg font-medium">Capacity & Services</h3>
               <Separator className="my-4" />
               <div className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="bedCount"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Bed Count</FormLabel>
-                      <FormControl>
-                        <Input type="number" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        Total number of beds available
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="operatingRooms"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Operating Rooms</FormLabel>
-                      <FormControl>
-                        <Input type="number" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        Number of operating rooms
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
                 <FormField
                   control={form.control}
                   name="emergencyServices"
