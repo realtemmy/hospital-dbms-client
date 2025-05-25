@@ -1,9 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
 import * as z from "zod";
-
 import { Button } from "../../components/ui/button";
-
 import {
   Form,
   FormControl,
@@ -33,6 +32,7 @@ import {
 } from "../../components/ui/card";
 import { Separator } from "../../components/ui/separator";
 import { toast } from "sonner";
+import axios from "axios";
 
 // Specialization options for the form
 const specializationOptions = [
@@ -70,7 +70,8 @@ export type HospitalFormValues = {
     | "teaching"
     | "specialized"
     | "research"
-    | "community";
+    | "community"
+    | "other";
   specializations: string[];
   email: string;
   phone: string;
@@ -106,6 +107,7 @@ export const hospitalFormSchema: z.ZodType<HospitalFormValues> = z.object({
       "specialized",
       "research",
       "community",
+      "other",
     ],
     {
       required_error: "Please select a hospital type.",
@@ -135,11 +137,31 @@ export const hospitalFormSchema: z.ZodType<HospitalFormValues> = z.object({
       message: "Country name must be at least 2 characters.",
     }),
   }),
-  bedCount: z.number().min(0, { message: "Bed count cannot be negative" }),
+  bedCount: z.preprocess(
+    (val) => Number(val),
+    z.number().min(0, {
+      message: "Bed count cannot be negative",
+    })
+  ),
   emergencyServices: z.boolean(),
-  operatingRooms: z.number().min(0, {message: "Number of operating rooms is required"}),
-  licenseNumber: z.string().min(1, { message: "License number is required" }),
-  taxId: z.string().min(1, { message: "Tax ID is required" }),
+  operatingRooms: z.preprocess(
+    (val) => Number(val),
+    z.number().min(0, {
+      message: "Number of operating rooms is required",
+    })
+  ),
+  licenseNumber: z.preprocess(
+    (val) => Number(val),
+    z.number().min(0, {
+      message: "license number is required",
+    })
+  ),
+  taxId: z.preprocess(
+    (val) => Number(val),
+    z.number().min(0, {
+      message: "Tax ID is required",
+    })
+  ),
   accreditations: z.array(z.string()),
   description: z.string(),
   yearEstablished: z.number().min(1800).max(new Date().getFullYear()),
@@ -179,11 +201,15 @@ const HospitalRegistration = () => {
   });
 
   // Form submission handler
-  function onSubmit(values: HospitalFormValues) {
+  async function onSubmit(values: HospitalFormValues) {
     console.log(values);
-    // Here you would typically send the data to your backend API
-    // For now, we'll just show a success toast
-    toast.success(`Successfully registered ${values.name}`);
+    const response = await axios.post(
+      "http://localhost:3001/api/v1/hospital",
+      values
+    );
+
+    // toast.success(`Successfully registered ${values.name}`);
+    console.log(response.data);
   }
 
   return (
@@ -236,22 +262,30 @@ const HospitalRegistration = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="public">
-                            Public Hospital
+                          <SelectItem value="general">
+                            General Hospital
                           </SelectItem>
-                          <SelectItem value="private">
-                            Private Hospital
-                          </SelectItem>
-                          <SelectItem value="nonprofit">
-                            Non-profit Hospital
+                          <SelectItem value="specialized">
+                            Spacialized Hospital
                           </SelectItem>
                           <SelectItem value="teaching">
                             Teaching Hospital
                           </SelectItem>
-                          <SelectItem value="specialized">
-                            Specialized Hospital
+                          <SelectItem value="research">
+                            Research Hospital
                           </SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
+                          <SelectItem value="community">
+                            SpeciaCOmmunitylized Hospital
+                          </SelectItem>
+                          <SelectItem value="private">
+                            Private Hospital
+                          </SelectItem>
+                          <SelectItem value="public">
+                            Public hospital
+                          </SelectItem>
+                          <SelectItem value="other">
+                            Other
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormDescription>
