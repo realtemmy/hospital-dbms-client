@@ -1,4 +1,5 @@
 import { useState, forwardRef, useImperativeHandle } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Calendar } from "../../components/ui/calendar";
 import { Button } from "../../components/ui/button";
 import {
@@ -35,6 +36,7 @@ import {
   CommandItem,
 } from "../../components/ui/command";
 import { cn } from "../../lib/utils";
+import axiosService from "../../axios";
 
 // Mock data - Replace with actual API calls
 const patients = [
@@ -72,6 +74,8 @@ const timeSlots = [
   "04:30 PM",
 ];
 
+
+
 const formSchema = z.object({
   patientId: z.string({
     required_error: "Please select a patient",
@@ -103,101 +107,234 @@ interface ScheduleAppointmentProps {
   onSubmit?: (values: AppointmentFormValues) => Promise<void>;
 }
 
-const ScheduleAppointment = forwardRef<ScheduleAppointmentRef, ScheduleAppointmentProps>(
-  ({ onSubmit }, ref) => {
-    // const [, setIsSubmitting] = useState(false);
-    const [open, setOpen] = useState(false);
-    const [dateOpen, setDateOpen] = useState(false);
+const ScheduleAppointment = forwardRef<
+  ScheduleAppointmentRef,
+  ScheduleAppointmentProps
+>(({ onSubmit }, ref) => {
+  // const [, setIsSubmitting] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [dateOpen, setDateOpen] = useState(false);
 
-    const form = useForm<AppointmentFormValues>({
-      resolver: zodResolver(formSchema),
-      defaultValues: {
-        notes: "",
-      },
-      mode: "onChange", // Enable real-time validation
-    });
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const response = await axiosService.get("/user/patients");
+      return response.data;
+    },
+  });
 
-    const handleSubmit = async (values: AppointmentFormValues) => {
-      // setIsSubmitting(true);
-      try {
-        if (onSubmit) {
-          await onSubmit(values);
-        }
-        form.reset();
-      } catch (error) {
-        console.error("Error scheduling appointment:", error);
-      } finally {
-        // setIsSubmitting(false);
+  console.log(data);
+
+  const form = useForm<AppointmentFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      notes: "",
+    },
+    mode: "onChange", // Enable real-time validation
+  });
+
+  const handleSubmit = async (values: AppointmentFormValues) => {
+    // setIsSubmitting(true);
+    try {
+      if (onSubmit) {
+        const data = await onSubmit(values);
+        console.log("Data from schedule: ", data);
       }
-    };
+      form.reset();
+    } catch (error) {
+      console.error("Error scheduling appointment:", error);
+    } finally {
+      // setIsSubmitting(false);
+    }
+  };
 
-    useImperativeHandle(ref, () => ({
-      reset: () => form.reset(),
-      submit: async () => {
-        const isValid = await form.trigger();
-        if (isValid) {
-          const values = form.getValues();
-          await handleSubmit(values);
-        }
-      },
-      getValues: () => form.getValues(),
-    }));
+  useImperativeHandle(ref, () => ({
+    reset: () => form.reset(),
+    submit: async () => {
+      const isValid = await form.trigger();
+      if (isValid) {
+        const values = form.getValues();
+        await handleSubmit(values);
+      }
+    },
+    getValues: () => form.getValues(),
+  }));
 
-    return (
-      <div className="max-w-2xl mx-auto p-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+  return (
+    <div className="max-w-2xl mx-auto p-6">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="patientId"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Patient</FormLabel>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className={cn(
+                        "w-full justify-between",
+                        !field.value && "text-muted-foreground",
+                        form.formState.errors.patientId &&
+                          "border-red-500 focus-visible:ring-red-500"
+                      )}
+                    >
+                      {field.value
+                        ? patients.find(
+                            (patient) => patient.id.toString() === field.value
+                          )?.name
+                        : "Select patient..."}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search patient..." />
+                      <CommandEmpty>No patient found.</CommandEmpty>
+                      <CommandGroup>
+                        {patients.map((patient) => (
+                          <CommandItem
+                            key={patient.id}
+                            value={patient.name}
+                            onSelect={() => {
+                              form.setValue(
+                                "patientId",
+                                patient.id.toString(),
+                                {
+                                  shouldValidate: true,
+                                }
+                              );
+                              setOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                field.value === patient.id.toString()
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {patient.name} ({patient.email})
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="doctorId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Doctor</FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    form.trigger("doctorId");
+                  }}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a doctor" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {doctors.map((doctor) => (
+                      <SelectItem key={doctor.id} value={doctor.id.toString()}>
+                        {doctor.name} - {doctor.specialty}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="appointmentType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Appointment Type</FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    form.trigger("appointmentType");
+                  }}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select appointment type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {appointmentTypes.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField
               control={form.control}
-              name="patientId"
+              name="date"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Patient</FormLabel>
-                  <Popover open={open} onOpenChange={setOpen}>
+                  <FormLabel>Date</FormLabel>
+                  <Popover open={dateOpen} onOpenChange={setDateOpen}>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
-                        role="combobox"
-                        aria-expanded={open}
                         className={cn(
-                          "w-full justify-between",
+                          "w-full pl-3 text-left font-normal",
                           !field.value && "text-muted-foreground",
-                          form.formState.errors.patientId && "border-red-500 focus-visible:ring-red-500"
+                          form.formState.errors.date &&
+                            "border-red-500 focus-visible:ring-red-500"
                         )}
                       >
-                        {field.value
-                          ? patients.find((patient) => patient.id.toString() === field.value)?.name
-                          : "Select patient..."}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                      <Command>
-                        <CommandInput placeholder="Search patient..." />
-                        <CommandEmpty>No patient found.</CommandEmpty>
-                        <CommandGroup>
-                          {patients.map((patient) => (
-                            <CommandItem
-                              key={patient.id}
-                              value={patient.name}
-                              onSelect={() => {
-                                form.setValue("patientId", patient.id.toString(), {
-                                  shouldValidate: true,
-                                });
-                                setOpen(false);
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  field.value === patient.id.toString() ? "opacity-100" : "opacity-0"
-                                )}
-                              />
-                              {patient.name} ({patient.email})
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </Command>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={(date) => {
+                          if (date) {
+                            field.onChange(date);
+                            form.trigger("date");
+                            setDateOpen(false);
+                          }
+                        }}
+                        disabled={(date) =>
+                          date < new Date() || date < new Date("1900-01-01")
+                        }
+                        initialFocus
+                      />
                     </PopoverContent>
                   </Popover>
                   <FormMessage />
@@ -207,26 +344,26 @@ const ScheduleAppointment = forwardRef<ScheduleAppointmentRef, ScheduleAppointme
 
             <FormField
               control={form.control}
-              name="doctorId"
+              name="time"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Doctor</FormLabel>
+                  <FormLabel>Time</FormLabel>
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value);
-                      form.trigger("doctorId");
+                      form.trigger("time");
                     }}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a doctor" />
+                        <SelectValue placeholder="Select time" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {doctors.map((doctor) => (
-                        <SelectItem key={doctor.id} value={doctor.id.toString()}>
-                          {doctor.name} - {doctor.specialty}
+                      {timeSlots.map((time) => (
+                        <SelectItem key={time} value={time}>
+                          {time}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -235,144 +372,33 @@ const ScheduleAppointment = forwardRef<ScheduleAppointmentRef, ScheduleAppointme
                 </FormItem>
               )}
             />
+          </div>
 
-            <FormField
-              control={form.control}
-              name="appointmentType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Appointment Type</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      form.trigger("appointmentType");
-                    }}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select appointment type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {appointmentTypes.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Date</FormLabel>
-                    <Popover open={dateOpen} onOpenChange={setDateOpen}>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground",
-                            form.formState.errors.date && "border-red-500 focus-visible:ring-red-500"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={(date) => {
-                            if (date) {
-                              field.onChange(date);
-                              form.trigger("date");
-                              setDateOpen(false);
-                            }
-                          }}
-                          disabled={(date) =>
-                            date < new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="time"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Time</FormLabel>
-                    <Select
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                        form.trigger("time");
-                      }}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select time" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {timeSlots.map((time) => (
-                          <SelectItem key={time} value={time}>
-                            {time}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Notes</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Textarea
-                        placeholder="Add any additional notes or instructions..."
-                        className="resize-none"
-                        {...field}
-                        ref={field.ref}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-      </div>
-    );
-  }
-);
+          <FormField
+            control={form.control}
+            name="notes"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Notes</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Textarea
+                      placeholder="Add any additional notes or instructions..."
+                      className="resize-none"
+                      {...field}
+                      ref={field.ref}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
+    </div>
+  );
+});
 
 ScheduleAppointment.displayName = "ScheduleAppointment";
 
