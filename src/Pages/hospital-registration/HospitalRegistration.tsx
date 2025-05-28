@@ -92,66 +92,69 @@ export type HospitalFormValues = {
   termsAccepted: boolean;
 };
 
-export const hospitalFormSchema: z.ZodType<HospitalFormValues> = z.object({
-  name: z.string().min(3, {
-    message: "Hospital name must be at least 3 characters.",
-  }),
-  type: z.enum(
-    [
-      "public",
-      "private",
-      "general",
-      "teaching",
-      "specialized",
-      "research",
-      "community",
-      "other",
-    ],
-    {
-      required_error: "Please select a hospital type.",
-    }
-  ),
-  specializations: z.array(z.string()).nonempty({
-    message: "Select at least one specialization.",
-  }),
+export const hospitalFormSchema: z.ZodType<HospitalFormValues> = z
+  .object({
+    name: z.string().min(3, {
+      message: "Hospital name must be at least 3 characters.",
+    }),
+    type: z.enum(
+      [
+        "public",
+        "private",
+        "general",
+        "teaching",
+        "specialized",
+        "research",
+        "community",
+        "other",
+      ],
+      {
+        required_error: "Please select a hospital type.",
+      }
+    ),
+    specializations: z.array(z.string()).nonempty({
+      message: "Select at least one specialization.",
+    }),
 
-  email: z.string().email({ message: "Invalid email address" }),
-  phone: z.string().min(6, { message: "Phone number is too short" }),
-  website: z.string().url().or(z.literal("")),
-  address: z.object({
-    street: z.string().min(5, {
-      message: "Street address must be at least 5 characters.",
+    email: z.string().email({ message: "Invalid email address" }),
+    phone: z.string().min(6, { message: "Phone number is too short" }),
+    website: z.string().url().or(z.literal("")),
+    address: z.object({
+      street: z.string().min(5, {
+        message: "Street address must be at least 5 characters.",
+      }),
+      city: z.string().min(2, {
+        message: "City name must be at least 2 characters.",
+      }),
+      state: z.string().min(2, {
+        message: "State name must be at least 2 characters.",
+      }),
+      zip: z.string().min(6, {
+        message: "Zip code must be at least 5 characters.",
+      }),
+      country: z.string().min(2, {
+        message: "Country name must be at least 2 characters.",
+      }),
     }),
-    city: z.string().min(2, {
-      message: "City name must be at least 2 characters.",
+    emergencyServices: z.boolean(),
+    licenseNumber: z.string().min(10, {
+      message: "license number is required",
     }),
-    state: z.string().min(2, {
-      message: "State name must be at least 2 characters.",
+    taxId: z.string().min(4, {
+      message: "Tax ID is required",
     }),
-    zip: z.string().min(6, {
-      message: "Zip code must be at least 5 characters.",
+    accreditations: z.array(z.string()),
+    description: z.string(),
+    yearEstablished: z.coerce
+      .number()
+      .int("Year must be an integer")
+      .min(1800, "Year must be after 1800")
+      .max(new Date().getFullYear(), "Year cannot be in the future"),
+    termsAccepted: z.literal(true, {
+      errorMap: () => ({ message: "You must accept the terms" }),
     }),
-    country: z.string().min(2, {
-      message: "Country name must be at least 2 characters.",
-    }),
-  }),
-  emergencyServices: z.boolean(),
-  licenseNumber: z.string().min(10, {
-    message: "license number is required",
-  }),
-  taxId: z.string().min(4, {
-    message: "Tax ID is required",
-  }),
-  accreditations: z.array(z.string()),
-  description: z.string(),
-  yearEstablished: z.preprocess(
-    (val) => Number(val),
-    z.number().min(1800).max(new Date().getFullYear())
-  ), //fix the date issue
-  termsAccepted: z.literal(true, {
-    errorMap: () => ({ message: "You must accept the terms" }),
-  }),
-});
+  })
+  .strict();
 
 const HospitalRegistration = () => {
   // Initialize the form with default values

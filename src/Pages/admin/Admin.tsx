@@ -29,6 +29,7 @@ import ScheduleAppointment, {
   AppointmentFormValues,
 } from "../../components/schedule-appointment/ScheduleAppointment";
 import { toast } from "sonner";
+import axiosService from "../../axios";
 
 const Admin = () => {
   const navigate = useNavigate();
