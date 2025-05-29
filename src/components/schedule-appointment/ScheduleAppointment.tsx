@@ -22,12 +22,18 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { format } from "date-fns";
-import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "../../components/ui/popover";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../components/ui/avatar";
+
 import {
   Command,
   CommandEmpty,
@@ -37,19 +43,6 @@ import {
 } from "../../components/ui/command";
 import { cn } from "../../lib/utils";
 import axiosService from "../../axios";
-
-// Mock data - Replace with actual API calls
-const patients = [
-  { id: 1, name: "John Doe", email: "john@example.com" },
-  { id: 2, name: "Jane Smith", email: "jane@example.com" },
-  { id: 3, name: "Mike Johnson", email: "mike@example.com" },
-];
-
-const doctors = [
-  { id: 1, name: "Dr. Sarah Wilson", specialty: "Cardiology" },
-  { id: 2, name: "Dr. Michael Brown", specialty: "Neurology" },
-  { id: 3, name: "Dr. Emily Davis", specialty: "Pediatrics" },
-];
 
 const appointmentTypes = [
   "General Checkup",
@@ -74,14 +67,12 @@ const timeSlots = [
   "04:30 PM",
 ];
 
-
-
 const formSchema = z.object({
   patientId: z.string({
     required_error: "Please select a patient",
   }),
-  doctorId: z.string({
-    required_error: "Please select a doctor",
+  physicianId: z.string({
+    required_error: "Please select a physician",
   }),
   appointmentType: z.string({
     required_error: "Please select appointment type",
@@ -113,17 +104,32 @@ const ScheduleAppointment = forwardRef<
 >(({ onSubmit }, ref) => {
   // const [, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
+  const [physicianOpen, setPhysicianOpen] = useState(false);
   const [dateOpen, setDateOpen] = useState(false);
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["users"],
+  // =========== Data fetching ============ //
+  const {
+    data: patients,
+    isLoading: patientLoading,
+    // error,
+    isError,
+  } = useQuery({
+    queryKey: ["users patients"],
     queryFn: async () => {
       const response = await axiosService.get("/user/patients");
       return response.data;
     },
   });
 
-  console.log(data);
+  const { data: physicians } = useQuery({
+    queryKey: ["users physicians"],
+    queryFn: async () => {
+      const response = await axiosService.get("/physician");
+      return response.data;
+    },
+  });
+
+  // console.log(physicians)
 
   const form = useForm<AppointmentFormValues>({
     resolver: zodResolver(formSchema),
@@ -137,8 +143,7 @@ const ScheduleAppointment = forwardRef<
     // setIsSubmitting(true);
     try {
       if (onSubmit) {
-        const data = await onSubmit(values);
-        console.log("Data from schedule: ", data);
+        await onSubmit(values);
       }
       form.reset();
     } catch (error) {
@@ -185,8 +190,9 @@ const ScheduleAppointment = forwardRef<
                     >
                       {field.value
                         ? patients.find(
-                            (patient) => patient.id.toString() === field.value
-                          )?.name
+                            (patient: User) =>
+                              patient.id.toString() === field.value
+                          )?.fullName
                         : "Select patient..."}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -196,32 +202,44 @@ const ScheduleAppointment = forwardRef<
                       <CommandInput placeholder="Search patient..." />
                       <CommandEmpty>No patient found.</CommandEmpty>
                       <CommandGroup>
-                        {patients.map((patient) => (
-                          <CommandItem
-                            key={patient.id}
-                            value={patient.name}
-                            onSelect={() => {
-                              form.setValue(
-                                "patientId",
-                                patient.id.toString(),
-                                {
-                                  shouldValidate: true,
-                                }
-                              );
-                              setOpen(false);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                field.value === patient.id.toString()
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            {patient.name} ({patient.email})
-                          </CommandItem>
-                        ))}
+                        {patientLoading ? (
+                          <Loader2 className="animate-spin text-green-500" />
+                        ) : isError ? (
+                          <div>There was an error fetching users.</div>
+                        ) : (
+                          patients.map((patient: User) => (
+                            <CommandItem
+                              key={patient.id}
+                              value={patient.fullName}
+                              onSelect={() => {
+                                form.setValue(
+                                  "patientId",
+                                  patient.id.toString(),
+                                  {
+                                    shouldValidate: true,
+                                  }
+                                );
+                                setOpen(false);
+                              }}
+                            >
+                              <Avatar>
+                                <AvatarImage src="https://github.com/shadcn.png" />
+                                <AvatarFallback>CN</AvatarFallback>
+                              </Avatar>
+                              <div className="truncate max-w-[calc(100vw-8rem)]">
+                                {patient.fullName} ({patient.email})
+                              </div>
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  field.value === patient.id.toString()
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))
+                        )}
                       </CommandGroup>
                     </Command>
                   </PopoverContent>
@@ -231,32 +249,95 @@ const ScheduleAppointment = forwardRef<
             )}
           />
 
+          {/* Physicians */}
           <FormField
             control={form.control}
-            name="doctorId"
+            name="physicianId"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Doctor</FormLabel>
-                <Select
-                  onValueChange={(value) => {
-                    field.onChange(value);
-                    form.trigger("doctorId");
-                  }}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a doctor" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {doctors.map((doctor) => (
-                      <SelectItem key={doctor.id} value={doctor.id.toString()}>
-                        {doctor.name} - {doctor.specialty}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <FormItem className="flex flex-col">
+                <FormLabel>Physician</FormLabel>
+                <Popover open={physicianOpen} onOpenChange={setPhysicianOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={physicianOpen}
+                      className={cn(
+                        "w-full justify-between",
+                        !field.value && "text-muted-foreground",
+                        form.formState.errors.physicianId &&
+                          "border-red-500 focus-visible:ring-red-500"
+                      )}
+                    >
+                      {field.value
+                        ? physicians.find(
+                            (physician: Physician) =>
+                              physician.user.id.toString() === field.value
+                          )?.user.fullName
+                        : "Select physician..."}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                    <Command>
+                      <CommandInput placeholder="Search physician..." />
+                      <CommandEmpty>No physician found.</CommandEmpty>
+                      <CommandGroup>
+                        {patientLoading ? (
+                          <div className="flex justify-center p-4">
+                            <Loader2 className="animate-spin text-green-500" />
+                          </div>
+                        ) : isError ? (
+                          <div className="text-red-500 p-4">
+                            There was an error fetching physicians.
+                          </div>
+                        ) : (
+                          physicians.map((physician: Physician) => (
+                            <CommandItem
+                              key={physician.user.id}
+                              value={physician.user.id.toString()}
+                              onSelect={(currentValue) => {
+                                form.setValue("physicianId", currentValue, {
+                                  shouldValidate: true,
+                                });
+                                setPhysicianOpen(false);
+                              }}
+                            >
+                              <Avatar className="mr-2 h-6 w-6">
+                                <AvatarImage
+                                  src={
+                                    physician.user.photo ||
+                                    "https://github.com/shadcn.png"
+                                  }
+                                  alt={physician.user.fullName}
+                                />
+                                <AvatarFallback>
+                                  {physician.user.fullName
+                                    .split(" ")
+                                    .map((n) => n[0])
+                                    .join("")
+                                    .toUpperCase()}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div className="truncate max-w-[calc(100vw-8rem)]">
+                                {physician.user.fullName} (
+                                {physician.specialization})
+                              </div>
+                              <Check
+                                className={cn(
+                                  "ml-auto h-4 w-4",
+                                  field.value === physician.user.id.toString()
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))
+                        )}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
                 <FormMessage />
               </FormItem>
             )}
@@ -282,7 +363,10 @@ const ScheduleAppointment = forwardRef<
                   </FormControl>
                   <SelectContent>
                     {appointmentTypes.map((type) => (
-                      <SelectItem key={type} value={type}>
+                      <SelectItem
+                        key={type}
+                        value={type.split(" ")[0].toLocaleLowerCase()}
+                      >
                         {type}
                       </SelectItem>
                     ))}

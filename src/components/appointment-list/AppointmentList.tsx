@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { Filter, ChevronDown, Calendar } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import {
   Select,
   SelectContent,
@@ -26,99 +27,100 @@ import ScheduleAppointment, {
   AppointmentFormValues,
   ScheduleAppointmentRef,
 } from "../schedule-appointment/ScheduleAppointment";
+import axiosService from "../../axios";
 // Expanded appointment data with more attributes
-const appointments = [
-  {
-    id: 1,
-    name: "Temiloluwa Oreoluwa",
-    gender: "male",
-    age: 26,
-    date: "Apr 8, 2025",
-    time: "09:00 AM",
-    status: "scheduled",
-    mobile: "8066771553",
-    email: "temiloluwaogunti8@gmail.com",
-    visitType: "New patient",
-    avatar: "https://github.com/shadcn.png",
-    address: "3, road 103, teachers estate, Ibafo, Ogun state.",
-    lastVisit: "Feb 4, 2025",
-    doctor: "Dr. Smith",
-    department: "Cardiology",
-    notes: "Patient has a history of high blood pressure",
-  },
-  {
-    id: 2,
-    name: "Realtemmy Oreoluwa",
-    gender: "female",
-    age: 24,
-    date: "Apr 8, 2025",
-    time: "09:30 AM",
-    status: "confirmed",
-    mobile: "7068401238",
-    email: "temmy4jamb@gmail.com",
-    visitType: "Follow-up",
-    avatar: "https://github.com/shadcn.png",
-    address: "Teachers estate, torotoro, Ibafo, Ogun state.",
-    lastVisit: "Jan 2, 2024",
-    doctor: "Dr. Johnson",
-    department: "Neurology",
-    notes: "Follow-up on medication effectiveness",
-  },
-  {
-    id: 3,
-    name: "Michael Chen",
-    gender: "male",
-    age: 45,
-    date: "Apr 9, 2025",
-    time: "10:15 AM",
-    status: "completed",
-    mobile: "5556667777",
-    email: "michael.chen@example.com",
-    visitType: "Check-up",
-    avatar: "",
-    address: "15 Oak Street, Riverside",
-    lastVisit: "Mar 10, 2025",
-    doctor: "Dr. Williams",
-    department: "General Medicine",
-    notes: "Annual physical examination",
-  },
-  {
-    id: 4,
-    name: "Sarah Miller",
-    gender: "female",
-    age: 35,
-    date: "Apr 10, 2025",
-    time: "01:45 PM",
-    status: "cancelled",
-    mobile: "8889990000",
-    email: "sarah.miller@example.com",
-    visitType: "Consultation",
-    avatar: "",
-    address: "78 Pine Avenue, Oakville",
-    lastVisit: "Dec 15, 2024",
-    doctor: "Dr. Davis",
-    department: "Dermatology",
-    notes: "Skin rash examination",
-  },
-  {
-    id: 5,
-    name: "James Wilson",
-    gender: "male",
-    age: 52,
-    date: "Apr 11, 2025",
-    time: "11:00 AM",
-    status: "scheduled",
-    mobile: "7773331111",
-    email: "james.wilson@example.com",
-    visitType: "Follow-up",
-    avatar: "",
-    address: "42 Maple Drive, Springfield",
-    lastVisit: "Jan 30, 2025",
-    doctor: "Dr. Brown",
-    department: "Orthopedics",
-    notes: "Post-surgery follow-up",
-  },
-];
+// const appointments = [
+//   {
+//     id: 1,
+//     name: "Temiloluwa Oreoluwa",
+//     gender: "male",
+//     age: 26,
+//     date: "Apr 8, 2025",
+//     time: "09:00 AM",
+//     status: "scheduled",
+//     mobile: "8066771553",
+//     email: "temiloluwaogunti8@gmail.com",
+//     visitType: "New patient",
+//     avatar: "https://github.com/shadcn.png",
+//     address: "3, road 103, teachers estate, Ibafo, Ogun state.",
+//     lastVisit: "Feb 4, 2025",
+//     doctor: "Dr. Smith",
+//     department: "Cardiology",
+//     notes: "Patient has a history of high blood pressure",
+//   },
+//   {
+//     id: 2,
+//     name: "Realtemmy Oreoluwa",
+//     gender: "female",
+//     age: 24,
+//     date: "Apr 8, 2025",
+//     time: "09:30 AM",
+//     status: "confirmed",
+//     mobile: "7068401238",
+//     email: "temmy4jamb@gmail.com",
+//     visitType: "Follow-up",
+//     avatar: "https://github.com/shadcn.png",
+//     address: "Teachers estate, torotoro, Ibafo, Ogun state.",
+//     lastVisit: "Jan 2, 2024",
+//     doctor: "Dr. Johnson",
+//     department: "Neurology",
+//     notes: "Follow-up on medication effectiveness",
+//   },
+//   {
+//     id: 3,
+//     name: "Michael Chen",
+//     gender: "male",
+//     age: 45,
+//     date: "Apr 9, 2025",
+//     time: "10:15 AM",
+//     status: "completed",
+//     mobile: "5556667777",
+//     email: "michael.chen@example.com",
+//     visitType: "Check-up",
+//     avatar: "",
+//     address: "15 Oak Street, Riverside",
+//     lastVisit: "Mar 10, 2025",
+//     doctor: "Dr. Williams",
+//     department: "General Medicine",
+//     notes: "Annual physical examination",
+//   },
+//   {
+//     id: 4,
+//     name: "Sarah Miller",
+//     gender: "female",
+//     age: 35,
+//     date: "Apr 10, 2025",
+//     time: "01:45 PM",
+//     status: "cancelled",
+//     mobile: "8889990000",
+//     email: "sarah.miller@example.com",
+//     visitType: "Consultation",
+//     avatar: "",
+//     address: "78 Pine Avenue, Oakville",
+//     lastVisit: "Dec 15, 2024",
+//     doctor: "Dr. Davis",
+//     department: "Dermatology",
+//     notes: "Skin rash examination",
+//   },
+//   {
+//     id: 5,
+//     name: "James Wilson",
+//     gender: "male",
+//     age: 52,
+//     date: "Apr 11, 2025",
+//     time: "11:00 AM",
+//     status: "scheduled",
+//     mobile: "7773331111",
+//     email: "james.wilson@example.com",
+//     visitType: "Follow-up",
+//     avatar: "",
+//     address: "42 Maple Drive, Springfield",
+//     lastVisit: "Jan 30, 2025",
+//     doctor: "Dr. Brown",
+//     department: "Orthopedics",
+//     notes: "Post-surgery follow-up",
+//   },
+// ];
 
 // Appointment card component for mobile view
 
@@ -128,6 +130,19 @@ const AppointmentList = () => {
   const [filterDate, setFilterDate] = useState("all");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const appointmentFormRef = useRef<ScheduleAppointmentRef>(null);
+
+  const {
+    data: appointments,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["appointments"],
+    queryFn: async () => {
+      const response = await axiosService.get("/appointment");
+      return response.data;
+    },
+  });
 
   const handleAppointmentSubmit = async (values: AppointmentFormValues) => {
     try {
@@ -258,6 +273,8 @@ const AppointmentList = () => {
       <div className="p-4 sm:p-6">
         <AppointmentTable
           appointments={appointments}
+          loading={isLoading}
+          isError={isError}
           tabsStatus={["all", "upcoming", "completed", "cancelled"]}
         />
       </div>
