@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { useQuery } from "@tanstack/react-query";
 import {
   Users,
   User,
@@ -45,29 +46,29 @@ const Admin = () => {
     pendingReports: 8,
   };
 
-  const todayAppointments = [
-    {
-      id: 1,
-      patient: "John Doe",
-      doctor: "Dr. Smith",
-      time: "09:00 AM",
-      status: "Confirmed",
-    },
-    {
-      id: 2,
-      patient: "Jane Smith",
-      doctor: "Dr. Johnson",
-      time: "10:30 AM",
-      status: "In Progress",
-    },
-    {
-      id: 3,
-      patient: "Mike Brown",
-      doctor: "Dr. Williams",
-      time: "02:00 PM",
-      status: "Pending",
-    },
-  ];
+  // const todayAppointments = [
+  //   {
+  //     id: 1,
+  //     patient: "John Doe",
+  //     doctor: "Dr. Smith",
+  //     time: "09:00 AM",
+  //     status: "Confirmed",
+  //   },
+  //   {
+  //     id: 2,
+  //     patient: "Jane Smith",
+  //     doctor: "Dr. Johnson",
+  //     time: "10:30 AM",
+  //     status: "In Progress",
+  //   },
+  //   {
+  //     id: 3,
+  //     patient: "Mike Brown",
+  //     doctor: "Dr. Williams",
+  //     time: "02:00 PM",
+  //     status: "Pending",
+  //   },
+  // ];
 
   const departmentStatus = [
     { name: "Radiology", pending: 4, type: "scans" },
@@ -99,10 +100,24 @@ const Admin = () => {
     emergency: { total: 15, occupied: 12, cleaning: 0 },
   };
 
+  const {
+    data: appointments,
+    isLoading: appointmentLoading,
+    isError: appointmentError,
+  } = useQuery({
+    queryKey: ["appoinments"],
+    queryFn: async () => {
+      const response = await axiosService.get("/appointment");
+      return response.data;
+    },
+  });
+  console.log(appointments)
+
   const handleAppointmentSubmit = async (values: AppointmentFormValues) => {
     try {
-      // TODO: Implement your API call here
-      console.log("Appointment values:", values);
+      console.log("Appointment values: ", values);
+      const response = await axiosService.post("/appointment", values);
+      console.log(response.data);
 
       // Show success message
       toast.success("Appointment scheduled successfully");
@@ -217,32 +232,34 @@ const Admin = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {todayAppointments.map((appointment) => (
+                    {appointments.map((appointment: Appointment) => (
                       <tr key={appointment.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900">
-                            {appointment.patient}
+                            {appointment.patient.fullName}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">
-                            {appointment.doctor}
+                            {appointment.physician.fullName}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">
-                            {appointment.time}
+                            {appointment.timeSlot}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                             ${
-                              appointment.status === "Confirmed"
+                              appointment.status === "scheduled"
                                 ? "bg-green-100 text-green-800"
-                                : appointment.status === "In Progress"
+                                : appointment.status === "confirmed"
                                 ? "bg-blue-100 text-blue-800"
-                                : "bg-yellow-100 text-yellow-800"
+                                : appointment.status === "completed"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-red-100 text-red-800"
                             }`}
                           >
                             {appointment.status}

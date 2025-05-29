@@ -7,36 +7,21 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { Edit, Eye, MoreHorizontal } from "lucide-react";
+import { Edit, Eye, Loader2, MoreHorizontal } from "lucide-react";
 import { Key } from "react";
 import StatusBadge from "../status-badge/StatusBadge";
 import AppointmentCard from "../appointment-card/AppointmentCard";
 
-export type Appointment = {
-  id: number;
-  name: string;
-  gender: string;
-  age: number;
-  date: string;
-  time: string;
-  status: string;
-  mobile: string;
-  email: string;
-  visitType: string;
-  avatar: string;
-  address: string;
-  lastVisit: string;
-  doctor: string;
-  department: string;
-  notes: string;
-};
-
 const AppointmentTable = ({
   appointments,
   tabsStatus,
+  loading,
+  isError,
 }: {
   appointments: Appointment[];
   tabsStatus: string[];
+  loading: boolean;
+  isError: boolean;
 }) => {
   return (
     <Tabs defaultValue={tabsStatus[0]}>
@@ -94,7 +79,9 @@ const AppointmentTable = ({
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {appointments.length > 0 ? (
+                {loading ? (
+                  <Loader2 className="animate-spin" />
+                ) : appointments.length > 0 ? (
                   appointments.map((appointment) => (
                     <tr key={appointment.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -102,11 +89,11 @@ const AppointmentTable = ({
                           <div className="flex-shrink-0 h-10 w-10">
                             <Avatar>
                               <AvatarImage
-                                src={appointment.avatar}
-                                alt={appointment.name}
+                                src={appointment.patient.photo}
+                                alt={appointment.patient.fullName}
                               />
                               <AvatarFallback>
-                                {appointment.name
+                                {appointment.patient.fullName
                                   .split(" ")
                                   .map((n) => n[0])
                                   .join("")}
@@ -115,25 +102,25 @@ const AppointmentTable = ({
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900">
-                              {appointment.name}
+                              {appointment.patient.fullName}
                             </div>
                             <div className="text-sm text-gray-500">
-                              {appointment.visitType}
+                              {appointment.type}
                             </div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
-                          {appointment.date}
+                          {new Date(appointment.date).toDateString()}
                         </div>
                         <div className="text-sm text-gray-500">
-                          {appointment.time}
+                          {appointment.timeSlot}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
-                          {appointment.doctor}
+                          {appointment.physician.fullName}
                         </div>
                         <div className="text-sm text-gray-500">
                           {appointment.department}
@@ -141,10 +128,10 @@ const AppointmentTable = ({
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">
-                          {appointment.mobile}
+                          {appointment.physician.phone}
                         </div>
                         <div className="text-sm text-gray-500 truncate max-w-[200px]">
-                          {appointment.email}
+                          {appointment.physician.email}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -206,8 +193,8 @@ const AppointmentTable = ({
           </div>
 
           {/* Mobile view */}
-          <div className="md:hidden space-y-4">
-            {appointments.length > 0 ? (
+          {/* <div className="md:hidden space-y-4">
+            {loading ? (
               appointments.map((appointment) => (
                 <AppointmentCard
                   key={appointment.id}
@@ -221,7 +208,7 @@ const AppointmentTable = ({
                 </p>
               </div>
             )}
-          </div>
+          </div> */}
 
           {/* Pagination */}
         </TabsContent>
